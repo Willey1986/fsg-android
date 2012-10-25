@@ -10,7 +10,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="42dp"
-        android:text="Large Text"
+        android:text="@string/text1"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <SeekBar
@@ -28,7 +28,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="119dp"
-        android:text="Es gibt Reis!"
+        android:text="@string/text2"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
