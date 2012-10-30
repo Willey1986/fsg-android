@@ -20,6 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.BriefingCheckInActivity"></activity>
+        <activity android:name=".activities.BriefingCheckOutActivity"></activity>
+        <activity android:name=".activities.DriverRegistrationActivity"></activity>
+        <activity android:name=".activities.InfoTerminalActivity"></activity>
+        <activity android:name=".activities.RunActivity"></activity>
     </application>
 
 </manifest>
