@@ -61,7 +61,6 @@ public class BriefingCheckInActivity extends Activity {
 		}
 		mFilters = new IntentFilter[] { ndef, };
 
-		// Setup a tech list for all NfcA tags
 		mTechLists = new String[][] { new String[] { IsoDep.class.getName() } };
 
 		mIntent = getIntent();
@@ -74,18 +73,17 @@ public class BriefingCheckInActivity extends Activity {
 		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
 			System.out.println("Discovered tag with intent: " + intent);
 			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-			IsoDep tag = IsoDep.get(tagFromIntent);
-			System.out.println(tag.getTag());
-			//System.out.println(mfc.getType());
-			byte[] data;
-			try {
-				tag.connect();
-				boolean auth = true;
-				String cardData = null;
-				//System.out.println("Authenticating the Tag..");
-				// Authenticating and reading Block 0 /Sector 1
-				//auth = mfc.authenticateSectorWithKeyA(0, MifareClassic.KEY_DEFAULT);
-				if (auth) {
+			System.out.println(toString(tagFromIntent.getTechList()));
+			if (toString(tagFromIntent.getTechList()).contains("IsoDep")){
+				//Unterscheiden zwischen den verschiedenen Technologien
+				//Immer die "höchste"/"beste" verwenden und auslesen
+			
+				IsoDep tag = IsoDep.get(tagFromIntent);
+				System.out.println(tag.getTag().toString().contains("android"));
+				byte[] data;
+				try {
+					tag.connect();
+					String cardData = null;
 					//data = tag.getHistoricalBytes();
 					byte [] request = new byte [] {(byte)0x00,(byte)0xB2,(byte)0x01,(byte)0x0C,(byte)0x00};
 					//byte [] request = new byte [] {(byte)0x00,(byte)0x0A};
@@ -107,23 +105,10 @@ public class BriefingCheckInActivity extends Activity {
 					} else {
 						showAlert(EMPTY_BLOCK_0);
 					}
-					
-					// reading Block 0 /Sector 1
-//					data = mfc.readBlock(1);
-//					cardData = getHexString(data, data.length);
-//
-//					if (cardData != null) {
-//						System.out.println(cardData);
-//					} else {
-//						showAlert(EMPTY_BLOCK_1);
-//					}
-				} else {
-					showAlert(AUTH);
+				} catch (IOException e) {
+					Log.e(TAG, e.getLocalizedMessage());
+					showAlert(NETWORK);
 				}
-
-			} catch (IOException e) {
-				Log.e(TAG, e.getLocalizedMessage());
-				showAlert(NETWORK);
 			}
 		} else {
 			System.out.println("Online + Scan a tag");
@@ -142,7 +127,7 @@ public class BriefingCheckInActivity extends Activity {
 			alertbox.setMessage("Failed reading Block 0");
 			break;
 		case EMPTY_BLOCK_1:// Block 1 Empty
-			alertbox.setMessage("Failed reading Block 0");
+			alertbox.setMessage("Failed reading Block 1");
 			break;
 		case NETWORK: // Communication Error
 			alertbox.setMessage("Tag reading error");
@@ -153,7 +138,6 @@ public class BriefingCheckInActivity extends Activity {
 
 			// Save the data from the UI to the database - already done
 			public void onClick(DialogInterface arg0, int arg1) {
-				clearFields();
 			}
 		});
 		// display box
@@ -170,23 +154,11 @@ public class BriefingCheckInActivity extends Activity {
 
 			// Save the data from the UI to the database - already done
 			public void onClick(DialogInterface arg0, int arg1) {
-				clearFields();
 			}
 		});
 		// display box
 		alertbox.show();
 
-	}
-
-//	@Override
-//	public void onClick(View v) {
-//		clearFields();
-//	}
-
-	private static void clearFields() {
-//		block_0_Data.setText("");
-//		block_1_Data.setText("");
-//		status_Data.setText("Ready for Scan");
 	}
 
 	public static String getHexString(byte[] raw, int len) {
@@ -210,21 +182,27 @@ public class BriefingCheckInActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters,
-				mTechLists);
+		//mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters, null);
+		mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters, mTechLists);
 	}
 
 	@Override
 	public void onNewIntent(Intent intent) {
 		Log.i("Foreground dispatch", "Discovered tag with intent: " + intent);
 		resolveIntent(intent);
-		// mText.setText("Discovered tag " + ++mCount + " with intent: " +
-		// intent);
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		mAdapter.disableForegroundDispatch(this);
+	}
+	
+	public String toString(String[] stringArray) {
+		String string = new String();
+		for (int i=0; i < stringArray.length; i++){
+			string += stringArray[i]+" ";
+		}
+	    return string;
 	}
 }
