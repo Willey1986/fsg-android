@@ -10,7 +10,48 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Rennen" />
+        android:gravity="center"
+        android:padding="25dp"
+        android:text="Welche Disziplin möchten Sie fahren?"
+        android:textSize="20dp" />
+      
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:onClick="onButtonClick"
+        android:text="Acceleration" />
+    
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button1"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:onClick="onButtonClick"
+        android:text="Skid Pad" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button2"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:onClick="onButtonClick"
+        android:text="Autocross" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button3"
+        android:layout_centerInParent="true"
+        android:onClick="onButtonClick"
+        android:text="Endurance" />
 
 </RelativeLayout>
