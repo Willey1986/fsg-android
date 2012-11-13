@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import de.tubs.cs.ibr.fsg.R;
-import de.tubs.cs.ibr.fsg.nfc.TagReading;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -74,12 +73,14 @@ public class BriefingCheckInActivity extends Activity {
 			System.out.println("Discovered tag with intent: " + intent);
 			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			System.out.println(toString(tagFromIntent.getTechList()));
+			if (toString(tagFromIntent.getTechList()).contains("NdefFormatable")){
+				showAlert("NdefFormatable");
+			}
 			if (toString(tagFromIntent.getTechList()).contains("IsoDep")){
 				//Unterscheiden zwischen den verschiedenen Technologien
 				//Immer die "höchste"/"beste" verwenden und auslesen
 			
 				IsoDep tag = IsoDep.get(tagFromIntent);
-				System.out.println(tag.getTag().toString().contains("android"));
 				byte[] data;
 				try {
 					tag.connect();
