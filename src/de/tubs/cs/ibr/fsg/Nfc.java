@@ -66,7 +66,8 @@ public class Nfc {
 
 		mTechLists = new String[][] { new String[] { MifareClassic.class.getName() } };
 
-		//mIntent = getIntent();
+//		mIntent = intent;
+//		resolveIntent(mIntent);
 	}
 	
 	public NfcAdapter getAdapter(){
@@ -75,5 +76,70 @@ public class Nfc {
 	
 	public PendingIntent getPendingIntent(){
 		return mPendingIntent;
+	}
+	
+	public String[][] getTechLists() {
+		return mTechLists;
+	}
+	
+	public IntentFilter[] getIntentFilter() {
+		return mFilters;
+	}
+	
+	public void resolveIntent(Intent intent) {
+		String action = intent.getAction();
+		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
+			System.out.println("Discovered tag with intent: " + intent);
+			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+			System.out.println(toString(tagFromIntent.getTechList()));
+			if (toString(tagFromIntent.getTechList()).contains("MifareClassic")){
+				MifareClassic tag = MifareClassic.get(tagFromIntent);
+				byte[] data;
+				try{
+					tag.connect();
+					String cardData = null;
+					System.out.println("Authenticating the Tag...");
+					//Sector 0 mit Default Key authentifizieren
+					if (tag.authenticateSectorWithKeyA(0,MifareClassic.KEY_DEFAULT)){
+						data = tag.readBlock(0);
+						cardData = getHexString(data, data.length);
+						System.out.println("Tag reading successfull!");
+					}
+					
+				} catch (IOException e) {
+					Log.e(TAG, e.getLocalizedMessage());
+					//showAlert(NETWORK);
+					System.out.println("Tag reading error!");
+				}
+			}
+		} else {
+			System.out.println("Online + Scan a tag");
+		}
+	}
+	
+	public static String getHexString(byte[] raw, int len) {
+		byte[] hex = new byte[2 * len];
+		int index = 0;
+		int pos = 0;
+
+		for (byte b : raw) {
+			if (pos >= len)
+				break;
+
+			pos++;
+			int v = b & 0xFF;
+			hex[index++] = HEX_CHAR_TABLE[v >>> 4];
+			hex[index++] = HEX_CHAR_TABLE[v & 0xF];
+		}
+
+		return new String(hex);
+	}
+	
+	public String toString(String[] stringArray) {
+		String string = new String();
+		for (int i=0; i < stringArray.length; i++){
+			string += stringArray[i]+" ";
+		}
+	    return string;
 	}
 }
