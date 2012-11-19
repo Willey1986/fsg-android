@@ -18,6 +18,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
 import android.nfc.tech.MifareClassic;
+import android.nfc.tech.NdefFormatable;
 import android.nfc.tech.NfcA;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -47,65 +48,84 @@ public class BriefingCheckInActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_briefing_checkin);
-		//TagReading.readTag(this, this.getIntent());
-		mAdapter = NfcAdapter.getDefaultAdapter(this);
-		mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 		
-		IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
-
-		try {
-			ndef.addDataType("*/*");
-		} catch (MalformedMimeTypeException e) {
-			throw new RuntimeException("fail", e);
-		}
-		mFilters = new IntentFilter[] { ndef, };
-
-		mTechLists = new String[][] { new String[] { IsoDep.class.getName() } };
-
-		mIntent = getIntent();
-		resolveIntent(mIntent);
+		
+		
+//		mAdapter = NfcAdapter.getDefaultAdapter(this);
+//		mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+//		
+//		IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
+//
+//		try {
+//			ndef.addDataType("*/*");
+//		} catch (MalformedMimeTypeException e) {
+//			throw new RuntimeException("fail", e);
+//		}
+//		mFilters = new IntentFilter[] { ndef, };
+//
+//		mTechLists = new String[][] { new String[] { MifareClassic.class.getName() } };
+//
+//		mIntent = getIntent();
+//		resolveIntent(mIntent);
 	}
 	
 	void resolveIntent(Intent intent) {
-		// Parse the intent
 		String action = intent.getAction();
 		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
 			System.out.println("Discovered tag with intent: " + intent);
 			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			System.out.println(toString(tagFromIntent.getTechList()));
-			if (toString(tagFromIntent.getTechList()).contains("NdefFormatable")){
-				showAlert("NdefFormatable");
-			}
-			if (toString(tagFromIntent.getTechList()).contains("IsoDep")){
-				//Unterscheiden zwischen den verschiedenen Technologien
-				//Immer die "höchste"/"beste" verwenden und auslesen
-			
-				IsoDep tag = IsoDep.get(tagFromIntent);
+//			if (toString(tagFromIntent.getTechList()).contains("NdefFormatable")){
+//				showAlert("NdefFormatable");
+//			}
+//			else if (toString(tagFromIntent.getTechList()).contains("IsoDep")){
+//				//Unterscheiden zwischen den verschiedenen Technologien
+//				//Immer die "höchste"/"beste" verwenden und auslesen
+//			
+//				IsoDep tag = IsoDep.get(tagFromIntent);
+//				byte[] data;
+//				try {
+//					tag.connect();
+//					String cardData = null;
+//					//data = tag.getHistoricalBytes();
+//					byte [] request = new byte [] {(byte)0x00,(byte)0xB2,(byte)0x01,(byte)0x0C,(byte)0x00};
+//					//byte [] request = new byte [] {(byte)0x00,(byte)0x0A};
+//					byte[] command = new byte[]{
+//							  (byte)0x00, /* CLA = 00 (first interindustry command set) */
+//							  (byte)0xA4, /* INS = A4 (SELECT) */
+//							  (byte)0x04, /* P1  = 04 (select file by DF name) */
+//							  (byte)0x0C, /* P2  = 0C (first or only file; no FCI) */
+//							  (byte)0x07, /* Lc  = 7  (data/AID has 7 bytes) */
+//							  /* AID = A0000002471001: */
+//							  (byte)0xA0, (byte)0x00, (byte)0x00, (byte)0x02,
+//							  (byte)0x47, (byte)0x10, (byte)0x01
+//							};
+//					data = tag.transceive(command);
+//					cardData = getHexString(data, data.length);
+//
+//					if (cardData != null) {						
+//						showAlert(cardData);
+//					} else {
+//						showAlert(EMPTY_BLOCK_0);
+//					}
+//				} catch (IOException e) {
+//					Log.e(TAG, e.getLocalizedMessage());
+//					showAlert(NETWORK);
+//				}
+//			}
+			if (toString(tagFromIntent.getTechList()).contains("MifareClassic")){
+				MifareClassic tag = MifareClassic.get(tagFromIntent);
 				byte[] data;
-				try {
+				try{
 					tag.connect();
 					String cardData = null;
-					//data = tag.getHistoricalBytes();
-					byte [] request = new byte [] {(byte)0x00,(byte)0xB2,(byte)0x01,(byte)0x0C,(byte)0x00};
-					//byte [] request = new byte [] {(byte)0x00,(byte)0x0A};
-					byte[] command = new byte[]{
-							  (byte)0x00, /* CLA = 00 (first interindustry command set) */
-							  (byte)0xA4, /* INS = A4 (SELECT) */
-							  (byte)0x04, /* P1  = 04 (select file by DF name) */
-							  (byte)0x0C, /* P2  = 0C (first or only file; no FCI) */
-							  (byte)0x07, /* Lc  = 7  (data/AID has 7 bytes) */
-							  /* AID = A0000002471001: */
-							  (byte)0xA0, (byte)0x00, (byte)0x00, (byte)0x02,
-							  (byte)0x47, (byte)0x10, (byte)0x01
-							};
-					data = tag.transceive(command);
-					cardData = getHexString(data, data.length);
-
-					if (cardData != null) {						
-						showAlert(cardData);
-					} else {
-						showAlert(EMPTY_BLOCK_0);
+					System.out.println("Authenticating the Tag...");
+					//Sector 0 mit Default Key authentifizieren
+					if (tag.authenticateSectorWithKeyA(0,MifareClassic.KEY_DEFAULT)){
+						data = tag.readBlock(0);
+						cardData = getHexString(data, data.length);
 					}
+					
 				} catch (IOException e) {
 					Log.e(TAG, e.getLocalizedMessage());
 					showAlert(NETWORK);

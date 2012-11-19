@@ -1,5 +1,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Karte -->
+    <!-- Mifare Plus S-->
     <tech-list>
         <tech>android.nfc.tech.NfcA</tech>
         <tech>android.nfc.tech.IsoDep</tech>
@@ -9,7 +9,13 @@
         <tech>android.nfc.tech.NfcV</tech>
         <tech>android.nfc.tech.NdefFormatable</tech>
     </tech-list>
-    <!-- Mensa-Karte -->
+    <!-- Mifare Classic 4K -->
+    <tech-list>
+        <tech>android.nfc.tech.NfcA</tech>
+        <tech>android.nfc.tech.MifareClassic</tech>
+        <tech>android.nfc.tech.Ndef</tech>
+    </tech-list>
+    <!-- Mifare Classic 4K unbeschrieben -->
     <tech-list>
         <tech>android.nfc.tech.NfcA</tech>
         <tech>android.nfc.tech.MifareClassic</tech>
