@@ -7,6 +7,9 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="15" />
     
+    <uses-permission android:name="de.tubs.ibr.dtn.permission.DTN_COMMUNICATION"/>
+    <uses-permission android:name="de.tubs.ibr.dtn.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.NFC" />
     
      <!--
@@ -41,6 +44,17 @@
         <activity android:name=".activities.DriverRegistrationActivity"></activity>
         <activity android:name=".activities.InfoTerminalActivity"></activity>
         <activity android:name=".activities.RunActivity"></activity>
+        
+        <service android:name=".service.DTNService"></service>
+        
+        
+        <receiver android:enabled="true" android:name=".service.DTNReceiver">
+ 	        <intent-filter>
+	            <action android:name="de.tubs.ibr.dtn.intent.RECEIVE" />
+	            <category android:name="de.tubs.cs.ibr.fsg" />
+	        </intent-filter>
+	    </receiver>
+	    
     </application>
 
 </manifest>
