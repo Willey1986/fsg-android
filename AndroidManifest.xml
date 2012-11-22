@@ -13,6 +13,7 @@
      <uses-feature android:name="android.hardware.nfc" android:required="true" />
      Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein soll
      -->
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:icon="@drawable/ic_launcher"
