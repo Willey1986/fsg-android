@@ -26,9 +26,10 @@ import de.tubs.ibr.dtn.api.TransferMode;
 
 public class DTNService extends IntentService {
 
-	private static final String TAG                   = "FSG-DTNService";
+	private static final String TAG                   = "DTNService";
 	private static final String MARK_DELIVERED_INTENT = "de.tubs.cs.ibr.fsg.MARK_DELIVERED";
 	public  static final String SEND_INTENT           = "de.tubs.cs.ibr.fsg.SEND_DATA";
+	public  static final String REGISTRATION_INTENT   = "de.tubs.cs.ibr.fsg.REGISTRATION";
 	public  static final GroupEndpoint FSG_GROUP_EID  = new GroupEndpoint("dtn://fsg.dtn/broadcast");
 	private DTNClient mClient = null;
 	private Registration mRegistration = null;
@@ -109,6 +110,11 @@ public class DTNService extends IntentService {
 				Log.e(TAG, "Can not send the JSON-Data.", e);
 			}
         	
+        }else if (REGISTRATION_INTENT.equals(action)){
+        	// Hier passiert nichts Zusätzliches. Die Registrierung in der Methode 
+        	// onCreated() reicht aus (...mRegistration = new Registration("fsg");...)
+        	// -->  onCreated() wird nämlich vorher schon ausgeführt.
+        	Log.i(TAG, "IBR-DTN-Registration done");
         }
 	}
 	
