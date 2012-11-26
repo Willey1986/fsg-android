@@ -76,6 +76,7 @@ public class BriefingCheckInActivity extends Activity {
 		mIntent = getIntent();
 		nfc = new Nfc(this);
 		nfc.resolveIntent(mIntent);
+		//nfc.readTag(mIntent, MifareClassic.KEY_DEFAULT);
 	}
 	
 //	void resolveIntent(Intent intent) {
