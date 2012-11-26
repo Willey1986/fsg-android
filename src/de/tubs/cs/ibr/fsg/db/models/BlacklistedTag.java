@@ -1,22 +1,14 @@
 package de.tubs.cs.ibr.fsg.db.models;
 
+import de.tubs.cs.ibr.fsg.db.DBHelper;
+import android.content.ContentValues;
+
 public class BlacklistedTag {
 
-	private long id;
 	private int tag_id;
 	
-	public BlacklistedTag(long id, int tag_id) {
-		super();
-		this.id = id;
+	public BlacklistedTag(int tag_id) {
 		this.tag_id = tag_id;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public int getTag_id() {
@@ -25,6 +17,12 @@ public class BlacklistedTag {
 
 	public void setTag_id(int tag_id) {
 		this.tag_id = tag_id;
+	}
+	
+	public ContentValues getContentValues() {
+		ContentValues values = new ContentValues();
+		values.put(DBHelper.BLACKLISTED_TAGS_COLUMN_TAG_ID, tag_id);
+		return values;
 	}
 	
 }

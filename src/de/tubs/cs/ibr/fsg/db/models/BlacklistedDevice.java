@@ -1,24 +1,16 @@
 package de.tubs.cs.ibr.fsg.db.models;
 
+import de.tubs.cs.ibr.fsg.db.DBHelper;
+import android.content.ContentValues;
+
 public class BlacklistedDevice {
 
-	private long id;
 	private int device_id;
 	private String timestamp;
 	
-	public BlacklistedDevice(long id, int device_id, String timestamp) {
-		super();
-		this.id = id;
+	public BlacklistedDevice(int device_id, String timestamp) {
 		this.device_id = device_id;
 		this.timestamp = timestamp;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public int getDevice_id() {
@@ -35,6 +27,15 @@ public class BlacklistedDevice {
 
 	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
+	}
+	
+	public ContentValues getContentValues() {
+		ContentValues values = new ContentValues();
+		
+		values.put(DBHelper.BLACKLISTED_DEVICES_COLUMN_TAG_ID, device_id);
+		values.put(DBHelper.BLACKLISTED_DEVICES_COLUMN_TIMESTAMP, timestamp);
+		
+		return values;
 	}
 	
 }
