@@ -47,7 +47,7 @@ public class DriverRegistrationActivity extends Activity {
 			JSONObject jsonGeneral = new JSONObject(stringGeneral);
 			JSONArray jsonEvents = jsonGeneral.getJSONArray("Classes");
 			
-			for (int i = 0; i <= jsonDrivers.length(); i++) {
+			for (int i = 0; i < jsonDrivers.length(); i++) {
 				Driver driver = new Driver(jsonDrivers.getJSONObject(i));
 				System.out.println(driver.toString());
 			}
