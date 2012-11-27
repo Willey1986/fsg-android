@@ -3,18 +3,21 @@ package de.tubs.cs.ibr.fsg.db.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.tubs.cs.ibr.fsg.db.DBHelper;
+
+import android.content.ContentValues;
+
 public class Driver {
-	
-	private long id;
+
 	private int user_id;
 	private int team_id;
 	private String first_name;
 	private String last_name;
 	private boolean female;
+	private Team team;
 	
 	public Driver(JSONObject driver) {
 		try {
-			this.id = 1;
 			this.user_id = driver.getInt("UserID");
 			this.team_id = driver.getInt("TeamID");
 			this.first_name = driver.getString("first_name");
@@ -35,21 +38,15 @@ public class Driver {
 	
 	public Driver(long id, int user_id, int team_id, String first_name,
 			String last_name, boolean female) {
-		super();
-		this.id = id;
 		this.user_id = user_id;
 		this.team_id = team_id;
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.female = female;
 	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
+	
+	public Driver() {
+		
 	}
 
 	public int getUser_id() {
@@ -90,6 +87,29 @@ public class Driver {
 
 	public void setGender(boolean female) {
 		this.female = female;
+	}
+	
+	public Team getTeam() {
+		return team;
+	}
+	
+	public void setTeam(Team team) {
+		this.team = team;
+	}
+	
+	public ContentValues getContentValues() {
+		ContentValues values = new ContentValues();
+		
+		values.put(DBHelper.DRIVERS_COLUMN_USER_ID, this.user_id);
+		values.put(DBHelper.DRIVERS_COLUMN_FIRST_NAME, this.first_name);
+		values.put(DBHelper.DRIVERS_COLUMN_LAST_NAME, this.last_name);
+		values.put(DBHelper.DRIVERS_COLUMN_TEAM_ID, this.team_id);
+		if (female)
+			values.put(DBHelper.DRIVERS_COLUMN_GENDER, 1);
+		else
+			values.put(DBHelper.DRIVERS_COLUMN_GENDER, 0);
+		
+		return values;
 	}
 	
 	public String toString() {
