@@ -8,6 +8,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.ShortBuffer;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
 public class NfcData {
 	//testvariables
 	private static short fahrzeugID = 59;
@@ -21,6 +24,9 @@ public class NfcData {
 	 */
 	public static void interpretData(byte[][] inputBlock){
 		System.out.println("ContentID: "+Byte.toString(inputBlock[0][0]));
+		
+		
+		//TODO: needs to decrypt data before returning
 		
 		switch(inputBlock[0][0]){
         	case 10: //registrierungsdaten IDs
@@ -96,5 +102,38 @@ public class NfcData {
 	
 	public static byte[] toBytes(short s) {
         return new byte[]{(byte)(s & 0x00FF),(byte)((s & 0xFF00)>>8)};
+    }
+	
+	/** 
+	 * Method to encrypt the data using AES-methods
+	 * @param raw 
+	 * @param clear 
+	 * @return the encrypted data
+	 * @throws Exception
+	 */
+	private static byte[] encrypt(byte[] raw, byte[] clear) throws Exception {
+    	final String ENCRYPTIONTYPE = "AES";
+        SecretKeySpec skeySpec = new SecretKeySpec(raw, ENCRYPTIONTYPE);
+        Cipher cipher = Cipher.getInstance(ENCRYPTIONTYPE);
+        cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+        byte[] encrypted = cipher.doFinal(clear);
+        return encrypted;
+    }
+
+	/** Method to decrypt the data using AES-methods
+	 * 
+	 * @param raw
+	 * @param encrypted
+	 * @return
+	 * @throws Exception
+	 */
+    private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
+    	final String DECRYPTIONTYPE = "AES";
+    	
+        SecretKeySpec skeySpec = new SecretKeySpec(raw, DECRYPTIONTYPE);
+        Cipher cipher = Cipher.getInstance(DECRYPTIONTYPE);
+        cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+        byte[] decrypted = cipher.doFinal(encrypted);
+        return decrypted;
     }
 }	
