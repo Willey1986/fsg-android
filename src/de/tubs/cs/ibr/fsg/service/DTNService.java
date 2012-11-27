@@ -3,6 +3,7 @@ package de.tubs.cs.ibr.fsg.service;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -48,7 +49,7 @@ public class DTNService extends IntentService {
 		mClient = new DTNClient();
 		mRegistration = new Registration("fsg");
 		mRegistration.add(FSG_GROUP_EID);
-		mClient.setDataHandler(sDataHandler);
+		mClient.setDataHandler(fdDataHandler);
 		
 		try {
 			mClient.initialize(this, mRegistration);
@@ -120,7 +121,9 @@ public class DTNService extends IntentService {
 	
 
 	/**
-	 * Aktuell benutzen wir den SIMPLE-MODE und dafür benutzen wir diese DataHandler-Implementierung.
+	 * Diese DataHandler-Implementierung mit dem SIMPLE-Modus ist korrekt und vollständig
+	 * programmiert, aber sie wird zurzeit nicht benutzt. Aktuell arbeiten wir mit dem 
+	 * FILEDESCRIPTOR-Modus, der in der fdDataHandler-Implementierung angewendet wird.
 	 */
 	private DataHandler sDataHandler = new DataHandler() {
 
@@ -160,7 +163,8 @@ public class DTNService extends IntentService {
 		public void payload(byte[] data) {
 			final String msg = new String(data);
 			
-			DTNService.storeStringToFile(msg);
+			String fileName = System.currentTimeMillis() + ".txt";
+			DTNService.storeStringToFile(msg, fileName);
 		}
 
 		public ParcelFileDescriptor fd() {
@@ -180,9 +184,10 @@ public class DTNService extends IntentService {
 	
 	
 	/**
-	 * Diese DataHandler-Implementierung ist erst mal zum Testen da. Wir werden später wahrscheinlich
-	 * den FILEDESCRIPTOR-MODE anstatt den SIMPLE-MODE benutzen und dafür werden wir diese Implementierung
-	 * brauchen. --Sie ist noch nicht vollständig programmiert--
+	 * Diese DataHandler-Implementierung nutzt zum Empfangen den FILEDESCRIPTOR-Modus,
+	 * der für Android-Geräten geeigneter als der SIMPLE-Modus ist, da im SIMPLE-Modus
+	 * alles im HEAP stattfindet. 
+	 * 
 	 */
 	private DataHandler fdDataHandler = new DataHandler() {
 		private Bundle currentBundle = null;
@@ -205,6 +210,7 @@ public class DTNService extends IntentService {
 				} catch (Exception e) {
 					Log.e(TAG, "Can not mark bundle as delivered.", e);
 				}
+				payloadFile.delete();
 				payloadFile = null;
 			}
 			currentBundle = null;
@@ -241,6 +247,7 @@ public class DTNService extends IntentService {
 			}
 
 			if (payloadFile != null) {
+				DTNService.storeTempFile(payloadFile);
 				payloadFile.delete();
 				payloadFile = null;
 			}
@@ -274,6 +281,38 @@ public class DTNService extends IntentService {
 	};
 
 	
+	
+	/**
+	 * Diese Methode wird nur zum Testen gebraucht, bis die interne Datenbank benutzt werden kann.
+	 * @param tempFile Temporäre Datei, die dauerhaft gespeichert werden soll.
+	 */
+	protected static void storeTempFile(File tempFile) {
+		File root = DTNService.getStoragePath();
+		String outputFileName = System.currentTimeMillis() + ".txt";
+	    File outputFile = new File(root, outputFileName);
+
+	    FileReader in  = null;
+	    FileWriter out = null;
+		try {
+			in = new FileReader(tempFile);
+		    out = new FileWriter(outputFile);
+		    
+		    int c;
+		    while ((c = in.read()) != -1){
+			      out.write(c);
+		    }
+		    in.close();
+		    out.close();
+		    
+		} catch (FileNotFoundException e) {
+			Log.e(TAG, "Can not create a file.", e );
+		} catch (IOException e) {
+			Log.e(TAG, "Can not create a file.", e );
+		}
+	}
+	
+	
+	
 	/**
 	 * Diese Methode wird nur zum Testen gebraucht, bis die interne Datenbank benutzt werden kann.
 	 * @return Gibt den Pfad zurück, wo empfangene Daten als Datei gespeichert werden sollen.
@@ -290,14 +329,14 @@ public class DTNService extends IntentService {
 		}
 		return null;
 	}
-	
-	
+
+
 	/**
 	 * Diese Methode wird nur zum Testen gebraucht, bis die interne Datenbank benutzt werden kann.
-	 * @param mString Text, der in einer Datei gespeichert wird.
+	 * @param stringToSave Text, der in einer Datei gespeichert wird.
+	 * @param fileName Name der Datei, wo der Text gespeichert werden soll.
 	 */
-	private static void storeStringToFile(String mString) {
-		String fileName = System.currentTimeMillis() + ".txt";
+	public static void storeStringToFile(String stringToSave, String fileName) {
 		try {
 			//File root = Environment.getExternalStorageDirectory();
 			File root = DTNService.getStoragePath();
@@ -305,7 +344,7 @@ public class DTNService extends IntentService {
 				File gpxfile = new File(root, fileName);
 				FileWriter gpxwriter = new FileWriter(gpxfile);
 				BufferedWriter out = new BufferedWriter(gpxwriter);
-				out.write(mString);
+				out.write(stringToSave);
 				out.close();
 			}
 		} catch (IOException e) {
