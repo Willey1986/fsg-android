@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" shape="rectangle" >
+
+    <!-- Gradienteffekt -->
+    <gradient
+        android:angle="270"
+        android:endColor="@color/button_end_hover"
+        android:startColor="@color/button_start_hover" />
+    
+    <!-- Um die Knopfecken zu runden -->
+    <corners
+        android:radius="@dimen/grid01" />
+
+</shape>

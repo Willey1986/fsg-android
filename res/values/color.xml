@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <color name="light_blue">#c88ba3fb</color>
+   <color name="light_grey">#c8dbdbdb</color>
+   
+   <color name="button_text_color">#FFFF99</color>
+   
+   <color name="button_start_background">#c86b6b6b</color>
+   <color name="button_end_background">#c80e0e0e</color> 
+   
+   <color name="button_start_hover">#A0E0E0E0</color>
+   <color name="button_end_hover">#A0636363</color>
+   
+
+   
+</resources>

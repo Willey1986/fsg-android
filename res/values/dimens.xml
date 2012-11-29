@@ -6,6 +6,11 @@
     <dimen name="grid04">16dp</dimen>
     <dimen name="grid06">24dp</dimen>
     <dimen name="grid08">32dp</dimen>
+    <dimen name="grid09">36dp</dimen>
+    <dimen name="grid10">40dp</dimen>
+    <dimen name="grid11">44dp</dimen>
     <dimen name="grid12">48dp</dimen>
+    <dimen name="grid13">52dp</dimen>
+    <dimen name="grid14">56dp</dimen>
     
 </resources>
