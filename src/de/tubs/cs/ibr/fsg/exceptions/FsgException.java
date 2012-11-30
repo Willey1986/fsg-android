@@ -7,16 +7,16 @@ public class FsgException extends Exception{
 	public static final int CARD_MEMORY_FULL  = 1;
 
 	/**
-	 * Typ der Exception. Dieses Feld ist dafür da, um mit seiner Hilfe auf der GUI-Ebene entscheiden zu können,
+	 * Typ der Exception. Dieses Feld ist dafï¿½r da, um mit seiner Hilfe auf der GUI-Ebene entscheiden zu kï¿½nnen,
 	 * ob man einen "generischen Dialog" einblendet (so in etwa: "Ein Fehler ist aufgetreten, bitte die Entwickler kontaktieren!"),
 	 * oder ob man einen Dialog einblendet, der auf die jeweiligen Exception angepasst ist (z.B. wenn eine Exception
-	 * beim Speichervorgang ausgeworfen wurde, weil der Speicher voll ist, dann können wir einen Dialog einblenden, der
-	 * genau dies dem User mitteilt und ihn dazu auffordert, er möge eine neue Speicherkarte besorgen...)
+	 * beim Speichervorgang ausgeworfen wurde, weil der Speicher voll ist, dann kï¿½nnen wir einen Dialog einblenden, der
+	 * genau dies dem User mitteilt und ihn dazu auffordert, er mï¿½ge eine neue Speicherkarte besorgen...)
 	 */
 	private int type;
 	
 	/**
-	 * Verständlicher und kurzer Text, wo steht, was passiert ist(-wenn möglich- steht hier auch, was zu tun ist).
+	 * Verstï¿½ndlicher und kurzer Text, wo steht, was passiert ist(-wenn mï¿½glich- steht hier auch, was zu tun ist).
 	 */
 	private String detailMessage;
 	
@@ -26,7 +26,7 @@ public class FsgException extends Exception{
 	private String originClass;
 	
 	/**
-	 * Exception, die ursprünglich ausgeworfen wurde.
+	 * Exception, die ursprï¿½nglich ausgeworfen wurde.
 	 */
 	private Exception originException;
 
@@ -42,7 +42,7 @@ public class FsgException extends Exception{
 
 
 	/**
-	 * Der String fängt normalerweise mit einem für uns unnötigen "class " an, den wir hier in dieser Methode entfernen.
+	 * Der String fï¿½ngt normalerweise mit einem fï¿½r uns unnï¿½tigen "class " an, den wir hier in dieser Methode entfernen.
 	 * 
 	 * @param originClass String mit dem kompletten Klassennamen.
 	 * @return String mit dem Klassennamen, aber ohne den sonst davor stehenden "class ".

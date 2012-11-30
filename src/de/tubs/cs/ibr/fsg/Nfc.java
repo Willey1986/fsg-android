@@ -32,69 +32,60 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import de.tubs.cs.ibr.fsg.NfcData;
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class Nfc {
-
-//	private static NfcAdapter mAdapter;
-//	private static Intent mIntent;
-//	
-//	private static PendingIntent mPendingIntent;
-//	private static IntentFilter[] mFilters;
-//	private static String[][] mTechLists;
 	
+	/**
+	 * Gesamter Inhalt des NFC-Tags
+	 */
 	private String memoryContent;
 	
-	private static final String TAG = "purchtagscanact";
+	/**
+	 * String zur Identifizierung im Log-Cat
+	 */
+	private static final String TAG = "FSG";
 
-	// Hex help
+	/**
+	 * Hilfstabelle für Hex
+	 */
 	private static final byte[] HEX_CHAR_TABLE = { (byte) '0', (byte) '1',
 			(byte) '2', (byte) '3', (byte) '4', (byte) '5', (byte) '6',
 			(byte) '7', (byte) '8', (byte) '9', (byte) 'A', (byte) 'B',
 			(byte) 'C', (byte) 'D', (byte) 'E', (byte) 'F' };
 
-	
+	/**
+	 * Konstruktor
+	 * @param context
+	 */
 	public Nfc(Context context){
-//		mAdapter = NfcAdapter.getDefaultAdapter(context);
-//		mPendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-//		IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
-//		try {
-//			ndef.addDataType("*/*");
-//		} catch (MalformedMimeTypeException e) {
-//			throw new RuntimeException("fail", e);
-//		}
-//		mFilters = new IntentFilter[] { ndef, };
-//
-//		mTechLists = new String[][] { new String[] { MifareClassic.class.getName() } };
 
-//		mIntent = intent;
-//		resolveIntent(mIntent);
 	}
 	
-//	public NfcAdapter getAdapter(){
-//		return mAdapter;
-//	}
-//	
-//	public PendingIntent getPendingIntent(){
-//		return mPendingIntent;
-//	}
-//	
-//	public String[][] getTechLists() {
-//		return mTechLists;
-//	}
-//	
-//	public IntentFilter[] getIntentFilter() {
-//		return mFilters;
-//	}
-	
+	/**
+	 * Speichern des Tag-Inhalts
+	 * @param cardData
+	 */
 	private void setData(String cardData){
 		memoryContent = cardData;
 	}
 	
+	/**
+	 * Auslesen des zuletzt gespeicherten Tag-Inhalts
+	 * @return
+	 */
 	private String getData(){
 		return memoryContent;
 	}
 	
-	public String getData(Intent intent, byte[] key){
+	/**
+	 * Auslesen des Inhalts eines Tags
+	 * @param intent
+	 * @param key
+	 * @return
+	 * @throws FsgException
+	 */
+	public String getData(Intent intent, byte[] key) throws FsgException{
 		readTag(intent, key);
 		if (memoryContent != null)
 			return memoryContent;
@@ -102,7 +93,7 @@ public class Nfc {
 			return "No Data";
 	}
 	
-	public void resolveIntent(Intent intent) {
+	public void resolveIntent(Intent intent) throws FsgException{
 		String action = intent.getAction();
 		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
 			System.out.println("Discovered tag with intent: " + intent);
@@ -129,8 +120,8 @@ public class Nfc {
 					tag.close();
 				} catch (IOException e) {
 					Log.e(TAG, e.getLocalizedMessage());
-					//showAlert(NETWORK);
 					System.out.println("Tag reading error!");
+					throw new FsgException("Fehler beim Lesen des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
 				}
 			}
 		} else {
@@ -138,7 +129,13 @@ public class Nfc {
 		}
 	}
 	
-	public void readTag(Intent intent, byte[] key){
+	/**
+	 * Lesen eines gesamten Tags und Zwischenspeichern des Inhalts
+	 * @param intent
+	 * @param key
+	 * @throws FsgException
+	 */
+	public void readTag(Intent intent, byte[] key) throws FsgException{
 		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
 			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			MifareClassic tag = MifareClassic.get(tagFromIntent);
@@ -160,14 +157,22 @@ public class Nfc {
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
 				System.out.println("Tag reading error!");
+				throw new FsgException("Fehler beim Lesen des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
 			}
 		} else {
 			System.out.println("Ready!");
 		}
 	}
 	
-	//Liest einen ganzen Sector und gibt den String zurück
-	private String readSector(MifareClassic tag, byte[] key, int sectorIndex){
+	/**
+	 * Liest einen Sektor eines gegebenen Tags.
+	 * @param tag
+	 * @param key
+	 * @param sectorIndex
+	 * @return
+	 * @throws FsgException
+	 */
+	public String readSector(MifareClassic tag, byte[] key, int sectorIndex) throws FsgException{
 		byte[] data;
 		String cardData = null;
 		if (tag.isConnected()){
@@ -181,6 +186,7 @@ public class Nfc {
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
 				System.out.println("Tag reading error!");
+				throw new FsgException("Fehler beim Lesen des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
 			}
 			if (cardData != null){
 				return cardData;
@@ -195,22 +201,69 @@ public class Nfc {
 	
 	//Eigentliches Schreiben der einzelnen Blöcke
 	//blockIndex sollte der Index des nächsten leeren Blocks sein, der nicht zum Ungültigmachen benötigt wird
-	public void writeBlock(Intent intent, byte[] key, byte[] blockContent, int blockIndex){
+	public void writeBlock(MifareClassic tag, byte[] key, byte[] blockContent, int blockIndex){
 		
 	}
 	
 	//Auflösen des 2D-Arrays in schreibbare Blöcke
-	public void writeSector(Intent intent, byte[] key, byte[][] sectorContent){
+	//und schreiben der Blöcke
+	public void writeSector(MifareClassic tag, int sectorIndex, byte[] key, byte[][] sectorContent){
 		
 	}
 	
-	public void changeKey(Intent intent, byte[] oldKey, byte[] newKey){
-		
+	public void writeTag(Intent intent, byte[] key, byte[][] content) throws FsgException{
+		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
+			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+			MifareClassic tag = MifareClassic.get(tagFromIntent);
+			try {
+				tag.connect();
+				int emptyBlock = getEmptyBlock(tag, key);
+				if (content.length <= 16){
+					System.out.println("1 Block");
+				} else {
+					System.out.println("Mehr als 1 Block");
+				}
+				tag.close();
+			} catch (IOException e) {
+				Log.e(TAG, e.getLocalizedMessage());
+				System.out.println("Tag reading error!");
+				throw new FsgException("Fehler beim Schreiben des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
+			}
+		} else {
+			System.out.println("Done!"); //Und jetzt am besten noch zurücklesen und vergleichen, ob erfolgreich
+		}
 	}
 	
-	//Gibt ersten gefundenen leeren Block zurück
-	//der kein potentieller ungültig-Block ist
-	private int getEmptyBlock(MifareClassic tag, byte[] key){
+	//Mifare Key:
+    //6 byte for key A
+    //4 byte for Access Bits
+    //6 byte for key B which is optional and can be set to 00 or any other value
+	//d.h. für Key A = 00 11 22 33 44 55 und Access Bits = FF 0F 00 (default) muss geschrieben werden: 00 11 22 33 44 55 FF 0F 00 FF FF FF FF FF FF (Key B unchanged)
+	
+	/**
+	 * Methode zum Ändern des Keys eines Sektors.
+	 * @param tag
+	 * @param sectorIndex
+	 * @param oldKey
+	 * @param newKey
+	 */
+	public void changeKey(MifareClassic tag, int sectorIndex, byte[] oldKey, byte[] newKey){
+		if (tag.isConnected()){
+			
+		} else {
+			System.out.println("Tag disconnected!");
+		}
+	}
+	
+	/**
+	 * Die Methode getEmptyBlock sucht nach dem ersten unbeschriebenen Block, der nicht zum potentiellen
+	 * Ungültigmachen des vorhergehenden Blocks benötigt wird.
+	 * @param tag
+	 * @param key
+	 * @return
+	 * @throws FsgException
+	 */
+	private int getEmptyBlock(MifareClassic tag, byte[] key) throws FsgException{
 		byte[] emptyBlock = new byte[16];
 		int emptyBlockIndex = 1;
 		if (tag.isConnected()) {
@@ -237,6 +290,7 @@ public class Nfc {
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
 				System.out.println("Tag reading error!");
+				throw new FsgException("Fehler beim Lesen des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
 			}
 		} else {
 			System.out.println("Tag disconnected!");
@@ -244,6 +298,30 @@ public class Nfc {
 		return emptyBlockIndex;
 	}
 	
+	/**
+	 * Die Methode getLastSector arbeitet unter der Annahme, dass der Tag sequentiell beschrieben wird.
+	 * Ist dies der Fall, so wird der zum letzten beschriebenen Block gehörende Sektor zurückgegeben.
+	 * @param MifareClassic tag
+	 * @param byte[] key
+	 * @return int lastSectorIndex
+	 * @throws FsgException
+	 */
+	public int getLastSector(MifareClassic tag, byte[] key) throws FsgException{
+		int lastSectorIndex = 1;
+		if (tag.isConnected()){
+			lastSectorIndex = tag.blockToSector(getEmptyBlock(tag, key)-2);
+		} else {
+			System.out.println("Tag disconnected!");
+		}
+		return lastSectorIndex;
+	}
+	
+	/**
+	 * Mehtode zur Umwandlung eines Byte-Arrays in einen String.
+	 * @param raw
+	 * @param len
+	 * @return
+	 */
 	public static String getHexString(byte[] raw, int len) {
 		byte[] hex = new byte[2 * len];
 		int index = 0;
@@ -262,6 +340,11 @@ public class Nfc {
 		return new String(hex);
 	}
 	
+	/**
+	 * Methode zur leserlichen Ausgabe eines String-Arrays.
+	 * @param stringArray
+	 * @return
+	 */
 	public String toString(String[] stringArray) {
 		String string = new String();
 		for (int i=0; i < stringArray.length; i++){
