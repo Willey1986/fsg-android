@@ -121,7 +121,7 @@ public class Nfc {
 				} catch (IOException e) {
 					Log.e(TAG, e.getLocalizedMessage());
 					System.out.println("Tag reading error!");
-					throw new FsgException("Fehler beim Lesen des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
+					throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
 				}
 			}
 		} else {
@@ -157,7 +157,7 @@ public class Nfc {
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
 				System.out.println("Tag reading error!");
-				throw new FsgException("Fehler beim Lesen des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
+				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
 			}
 		} else {
 			System.out.println("Ready!");
@@ -186,7 +186,7 @@ public class Nfc {
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
 				System.out.println("Tag reading error!");
-				throw new FsgException("Fehler beim Lesen des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
+				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
 			}
 			if (cardData != null){
 				return cardData;
@@ -227,7 +227,7 @@ public class Nfc {
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
 				System.out.println("Tag reading error!");
-				throw new FsgException("Fehler beim Schreiben des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
+				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
 			}
 		} else {
 			System.out.println("Done!"); //Und jetzt am besten noch zurücklesen und vergleichen, ob erfolgreich
@@ -290,7 +290,7 @@ public class Nfc {
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
 				System.out.println("Tag reading error!");
-				throw new FsgException("Fehler beim Lesen des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
+				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
 			}
 		} else {
 			System.out.println("Tag disconnected!");

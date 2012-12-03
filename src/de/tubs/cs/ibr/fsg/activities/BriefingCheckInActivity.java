@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.tubs.cs.ibr.fsg.Nfc;
 import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -75,7 +76,15 @@ public class BriefingCheckInActivity extends Activity {
 
 		mIntent = getIntent();
 		nfc = new Nfc(this);
-		nfc.resolveIntent(mIntent);
+		try {
+			//Zum Testen der Fehlermeldung...
+			//throw new FsgException( new Exception("'Hier ist die UrsprungException"), this.getClass().toString(), FsgException.TAG_WRONG_KEY );
+			nfc.resolveIntent(mIntent);
+		} catch (FsgException e) {
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e);
+			startActivity(mIntent);
+		}
 		//nfc.readTag(mIntent, MifareClassic.KEY_DEFAULT);
 	}
 	
@@ -206,7 +215,13 @@ public class BriefingCheckInActivity extends Activity {
 	@Override
 	public void onNewIntent(Intent intent) {
 		Log.i("Foreground dispatch", "Discovered tag with intent: " + intent);
-		nfc.resolveIntent(intent);
+		try {
+			nfc.resolveIntent(intent);
+		} catch (FsgException e) {
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e);
+			startActivity(mIntent);
+		}
 	}
 
 	@Override

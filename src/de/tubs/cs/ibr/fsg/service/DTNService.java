@@ -69,7 +69,7 @@ public class DTNService extends IntentService {
 		super.onDestroy();
 		Log.i(TAG, "service destroyed.");
 	}
-
+	
 	
 	@Override
 	protected void onHandleIntent(Intent intent) {
@@ -180,7 +180,6 @@ public class DTNService extends IntentService {
 		}
 
 	};
-	
 	
 	
 	/**
@@ -351,7 +350,6 @@ public class DTNService extends IntentService {
 			Log.e(TAG, "Could not write file ", e );
 		}
 	}
-	
-
+ 
 
 }
