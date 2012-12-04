@@ -76,6 +76,12 @@ public class SecurityManager {
 		}
 	}
 	
+	/**
+	 * Method to decrypt string and return the decrypted string
+	 * @param encryptedInput is the encrypted data as byte array
+	 * @return a decrypted array of bytes
+	 * @throws FsgException if there is something wrong with the decoding and forward it for the UI
+	 */
 	public byte[] decryptString(byte[] encryptedInput) throws FsgException{
 		
 		//abort if the key is null
