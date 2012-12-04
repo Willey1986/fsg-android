@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.tubs.cs.ibr.fsg.Nfc;
 import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -75,8 +76,13 @@ public class BriefingCheckInActivity extends Activity {
 
 		mIntent = getIntent();
 		nfc = new Nfc(this);
-		nfc.resolveIntent(mIntent);
-		//nfc.readTag(mIntent, MifareClassic.KEY_DEFAULT);
+		
+		try {
+			nfc.resolveIntent(mIntent, 0);
+		} catch (FsgException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 //	void resolveIntent(Intent intent) {
@@ -206,7 +212,12 @@ public class BriefingCheckInActivity extends Activity {
 	@Override
 	public void onNewIntent(Intent intent) {
 		Log.i("Foreground dispatch", "Discovered tag with intent: " + intent);
-		nfc.resolveIntent(intent);
+		try {
+			nfc.resolveIntent(intent, 0);
+		} catch (FsgException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
