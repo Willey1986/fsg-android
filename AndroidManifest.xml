@@ -22,9 +22,11 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
+        
         <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:name=".activities.StartActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />      
@@ -34,6 +36,11 @@
             </intent-filter>
             <meta-data android:name="android.nfc.action.TECH_DISCOVERED" android:resource="@xml/filter_nfc"/>
         </activity>
+        
+        <activity
+            android:name=".activities.MainActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
 
         <activity android:name=".activities.DriverRegistrationActivity"
             android:label="@string/main_activity_button_1" 
@@ -42,10 +49,6 @@
         <activity android:name=".activities.BriefingCheckInActivity"
             android:label="@string/main_activity_button_2" 
             android:icon="@drawable/icon_briefing_in">
-<!--              <intent-filter> -->
-<!--              	<action android:name="android.nfc.action.TECH_DISCOVERED"/> -->
-<!--              </intent-filter> -->
-<!--              <meta-data android:name="android.nfc.action.TECH_DISCOVERED" android:resource="@xml/filter_nfc"/> -->
         </activity>
         
         <activity android:name=".activities.BriefingCheckOutActivity"

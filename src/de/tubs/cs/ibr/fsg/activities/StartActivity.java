@@ -1,30 +1,33 @@
-package de.tubs.cs.ibr.fsg;
+package de.tubs.cs.ibr.fsg.activities;
 
+import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.service.DTNService;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import de.tubs.cs.ibr.fsg.activities.BriefingCheckInActivity;
-import de.tubs.cs.ibr.fsg.activities.BriefingCheckOutActivity;
-import de.tubs.cs.ibr.fsg.activities.DriverRegistrationActivity;
-import de.tubs.cs.ibr.fsg.activities.InfoTerminalActivity;
-import de.tubs.cs.ibr.fsg.activities.RunActivity;
-import de.tubs.cs.ibr.fsg.service.DTNService;
 
+/**
+ * Diese Activity ohne View brauchen wir, um die Registrierung des IBR-DTN-Service "nur" einmal
+ * veranlassen zu koennen, nämlich beim Start der Anwendung. Einmal reicht es vollkommen aus,
+ * ausserdem blockiert der IBR-DTN-Service beim Beenden des DTNClient den UI-Thread, obwohl alles
+ * nebenlaeufig programmiert ist. Und zwar blockiert der DTNClient nur beim Beenden
+ * (DTNClient.terminate() ), starten und laufen tut es in einem anderen Thread, wie es sein soll.
+ * -->TODO: Dieses IBR-DTN-nahes Problem besprechen. Momentan wird nur der Start verzögert, 
+ * wenn es geht, soll dies auch nicht sein...
+ */
+public class StartActivity extends Activity {
 
-public class MainActivity extends Activity {
-
-
-
-	private static final String TAG = "MainActivity";
+	private static final String TAG = "StartActivity";
 	private static final boolean DEVELOPER_MODE = true;
 	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_start);
+        
     	// Während der Entwicklung können wir mit Hilfe des StrictModes darauf aufmerksam gemacht werden,
     	// wenn wir den UI-Thread/Main-Thread mit Sachen blockieren, die eigentlich nebenläufig gehören.
     	// Sonst läuft die App nicht flüssig und es drohen sogar die berühmt-berüchtigte ANR Dialoge
@@ -44,15 +47,7 @@ public class MainActivity extends Activity {
                     .penaltyDeath()
                     .build());
         }
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Log.i(TAG, "activity created.");
         
-    }
-
-    
-	@Override
-	protected void onResume() {
         // Notwendige Registrierung des DTNServices und des DTNReceivers beim IBR-DTN  
         // (durch die Klasse "Registration" der IBR-DTN-API). Dies wird benötigt, wenn die Anwendung
         // zum allerersten Mal auf dem Gerät läuft oder wenn der Cache von IBR-DTN gelöscht 
@@ -61,43 +56,11 @@ public class MainActivity extends Activity {
 		ServiceRegisterRunnable mRunnable = new ServiceRegisterRunnable(this);
 		Thread mThread = new Thread(mRunnable);
 		mThread.start();
-		
-        super.onResume();
-        Log.i(TAG, "activity resumed");
-	}
-	
-	
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
+        
+		Log.i(TAG, "activity created.");
+        startActivity(new Intent(this, MainActivity.class));
     }
-    
-    
-    /**
-     * 
-     * @param view
-     */
-    public void onButtonClick(View view){
-    	switch (view.getId() ){
-    	case R.id.button1:
-    		startActivity(new Intent(this, DriverRegistrationActivity.class));
-    		break;
-    	case R.id.button2:
-    		startActivity(new Intent(this, BriefingCheckInActivity.class));
-    		break;
-    	case R.id.button3:
-    		startActivity(new Intent(this, BriefingCheckOutActivity.class));
-    		break;
-    	case R.id.button4:
-    		startActivity(new Intent(this, RunActivity.class));
-    		break;
-    	case R.id.button5:
-    		startActivity(new Intent(this, InfoTerminalActivity.class));
-    		break;
-    	}
-    }
-    
+
     
     /**
      * Mit Hilfe dieser Runnable lagern wir die Arbeiten um den IBR-DTN-Dienst aus,
@@ -106,9 +69,9 @@ public class MainActivity extends Activity {
      */
     private class ServiceRegisterRunnable implements Runnable{
 
-    	private MainActivity mActivity;
+    	private StartActivity mActivity;
     	
-		public ServiceRegisterRunnable(MainActivity mActivity) {
+		public ServiceRegisterRunnable(StartActivity mActivity) {
 			super();
 			this.mActivity = mActivity;
 		}
