@@ -33,6 +33,47 @@ public class MainActivity extends Activity {
         return true;
     }
     
+        @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+    	super.onOptionsItemSelected(item);
+    	switch(item.getItemId()){
+    	case R.id.user:
+    		chooseUser();
+    		break;
+    	case R.id.menu_settings:
+    		settingsMenuItem();
+    		break;
+    	}
+    	
+    	return true;
+    }
+    
+    private void chooseUser(){
+    	new AlertDialog.Builder (this)
+    	.setTitle("Nutzertyp auswählen")
+    	.setMessage("Wahl zwischen Administrator und normalen Nutzer")
+    	.setNeutralButton("Ok",new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+
+    		}
+    	}).show();
+    }
+    
+    private void settingsMenuItem(){
+    	new AlertDialog.Builder (this)
+    	.setTitle("Settings")
+    	.setMessage("Auswahl der Einstellungen")
+    	.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+			
+    		}
+    	}).show();
+    }
+    
     
     /**
      * 
