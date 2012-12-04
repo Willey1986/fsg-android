@@ -1,13 +1,11 @@
-/** 20.11.2012 - v1
+/** 20.11.2012 - v2
  * 	t.luedtke@tu-bs.de
  *  This class should generate the raw data, which then is written on the tags (or interpoutputBlock vice versa).
  */
 package de.tubs.cs.ibr.fsg;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.ShortBuffer;
 import java.security.SecureRandom;
+import de.tubs.cs.ibr.fsg.db.models.Driver;
 
 public class NfcData {
 	//testvariables
@@ -57,7 +55,7 @@ public class NfcData {
 	/*
 	 * generates the data blocks for the reg. data
 	 */
-	public static byte[][] generateDataRegistration(){
+	public static byte[][] generateDataRegistration(Driver theDriver){
 		byte contentID = 10;
 		//String input1 = "{"UserID":18664,"TeamID":33,"first_name":"Alexander","last_name":"Mustermann","gender":0}";
 		//String input2 = "{"TeamID":33,"CN":"AT","cn_short_en":"Austria","city":"Graz","U":"TU","Car":59,"Pit":49,"iswaiting":0,"class":1,"name_pits":"TU Graz"}";
@@ -77,34 +75,11 @@ public class NfcData {
 		outputBlock[0][6] = (byte)((teamID >> 8) & 0xff);
 		outputBlock[0][7] = (byte)(eventID & 0xff);
 		outputBlock[0][8] = (byte)((eventID >> 8) & 0xff);
-		
-		
-
-		 //System.out.println("Fid1:"+result);
-		//TODO:name
-		//byte[] bval = new BigInteger(binarized1, 2).toByteArray();
-		
-		//String complete = binarized0+binarized1+binarized2+binarized3+binarized4;
-		//System.out.println("binarized: "+complete);
-		/*
-		ByteBuffer buffer = ByteBuffer.allocate(2);
-		buffer.putShort(fahrzeugID);
-		buffer.flip();
-		buffer.array();*/
-		
-		/*
-		InputStream bais = new ByteArrayInputStream(complete.getBytes());
-
-		in = new BufferedInputStream(, 1024*32);
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		byte[] dataBuffer = new byte[1024 * 16];
-		int size = 0;
-		while ((size = in.read(dataBuffer)) != -1) {
-		    out.write(dataBuffer, 0, size);
+		for(int i=9;i<16;i++){
+			outputBlock[0][i] = (byte) 0xff;
 		}
-		byte[] bytes = out.toByteArray();
-		*/
-		//outputBlockurn complete;
+		
+		
 		return outputBlock;
 	}
 	
