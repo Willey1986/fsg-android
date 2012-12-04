@@ -100,7 +100,7 @@ public class Nfc {
 				MifareClassic tag = MifareClassic.get(tagFromIntent);
 				try{
 					tag.connect();
-					
+					readTag(intent, MifareClassic.KEY_DEFAULT);
 					tag.close();
 				} catch (IOException e) {
 					Log.e(TAG, e.getLocalizedMessage());
