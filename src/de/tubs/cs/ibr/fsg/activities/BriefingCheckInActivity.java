@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import de.tubs.cs.ibr.fsg.Nfc;
+import de.tubs.cs.ibr.fsg.NfcData;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import android.app.Activity;
@@ -74,6 +75,7 @@ public class BriefingCheckInActivity extends Activity {
 			//Zum Testen der Fehlermeldung...
 			//throw new FsgException( new Exception("'Hier ist die UrsprungException"), this.getClass().toString(), FsgException.TAG_WRONG_KEY );
 			nfc.resolveIntent(mIntent);
+			//nfc.writeTag(mIntent, MifareClassic.KEY_DEFAULT, NfcData.generateDataRegistration());
 		} catch (FsgException e) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
 			mIntent.putExtra("Exception", e);
