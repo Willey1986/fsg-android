@@ -1,11 +1,14 @@
 package de.tubs.cs.ibr.fsg.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.R.id;
