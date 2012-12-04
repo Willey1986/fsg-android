@@ -96,6 +96,31 @@ public class DBAdapter {
 		}
 	}
 	
+	public Driver getDriver(int driverID) {
+		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVERS
+				+ " WHERE " + DBHelper.DRIVERS_COLUMN_USER_ID
+				+ " = " + driverID + ";";
+		open();
+		Cursor cursor = database.rawQuery(sql, null);
+		
+		if(cursor.moveToFirst()) {
+			Driver driver = new Driver();
+			driver.setUser_id(cursor.getInt(0));
+			driver.setTeam_id(cursor.getInt(1));
+			driver.setTeam(null);
+			driver.setFirst_name(cursor.getString(2));
+			driver.setLast_name(cursor.getString(3));
+			if (cursor.getInt(4)==0)
+				driver.setGender(false);
+			else 
+				driver.setGender(true);
+			return driver;
+		}
+		else
+			return null;
+		
+	}
+	
 	public ArrayList<Driver> getAllDrivers() {
 		ArrayList<Driver> drivers = new ArrayList<Driver>();
 		

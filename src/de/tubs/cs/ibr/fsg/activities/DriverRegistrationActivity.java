@@ -89,6 +89,9 @@ public class DriverRegistrationActivity extends Activity {
 			
 			dba.getAllDrivers();
 			
+			Driver d = dba.getDriver(123123);
+			System.out.println(d.toString());
+			
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
