@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
     
     private void chooseUser(){
     	new AlertDialog.Builder (this)
-    	.setTitle("Nutzertyp auswählen")
+    	.setTitle("Nutzertyp auswaehlen")
     	.setMessage("Wahl zwischen Administrator und normalen Nutzer")
     	.setNeutralButton("Ok",new DialogInterface.OnClickListener() {
 			
