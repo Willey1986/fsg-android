@@ -1,33 +1,24 @@
-/** 20.11.2012 - v2
+/** 04.12.2012 - v2
  * 	t.luedtke@tu-bs.de
- *  This class should generate the raw data, which then is written on the tags (or interpoutputBlock vice versa).
+ *  This class generates the raw data, which then is written on the tags or interpret inputBlock vice versa.
  */
 package de.tubs.cs.ibr.fsg;
 
+import java.io.IOException;
 import java.security.SecureRandom;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class NfcData {
-	//testvariables
-	private static short fahrzeugID = 59;
-	private static short userID 	= 18664;
-	private static short teamID 	= 33;
-	private static short eventID 	= 1;
-	
 	//at the beginning of each sector there is a informationblock to get
-	
-	//max 1 Block
-	private static String name 		= "Alexander M.";
 	
 	//constants for the encryption/decryption
 	private final static String SECUREKEY = "KEY";
 	
-	/*
-	 * reads out & converts the binary encoded data
+	/* reads out & converts the binary encoded data
 	 */
 	public static void interpretData(byte[][] inputBlock){
 		System.out.println("ContentID: "+Byte.toString(inputBlock[0][0]));
-		
 		
 		//TODO: needs to decrypt data before returning
 		
@@ -55,15 +46,19 @@ public class NfcData {
 	/*
 	 * generates the data blocks for the reg. data
 	 */
-	public static byte[][] generateDataRegistration(Driver theDriver){
-		byte contentID = 10;
-		//String input1 = "{"UserID":18664,"TeamID":33,"first_name":"Alexander","last_name":"Mustermann","gender":0}";
-		//String input2 = "{"TeamID":33,"CN":"AT","cn_short_en":"Austria","city":"Graz","U":"TU","Car":59,"Pit":49,"iswaiting":0,"class":1,"name_pits":"TU Graz"}";
+	public static byte[][] generateDataRegistration(Driver theDriver) throws FsgException{
+		//convert the IDs now
+		byte contentID 		= 10;
+				
+		short fahrzeugID 	= 0; //TODO:theDriver.get;
+		short userID 		= 1;//theDriver.getUser_id();
+		short teamID 		= 1;//theDriver.getTeam_id();
+		short eventID 		= 1;
 
-		//generate binary code
-		byte[][] outputBlock = new byte[1][16];
+		//generate binary code with explicit size
+		byte[][] outputBlock = new byte[2][16];
 		
-		System.out.println("NfcData#generateDataRegistration failed");
+		//System.out.println("NfcData#generateDataRegistration failed");
 
 		outputBlock[0][0] = contentID;
 		
@@ -79,6 +74,21 @@ public class NfcData {
 			outputBlock[0][i] = (byte) 0xff;
 		}
 		
+		//read out and convert the name now
+		contentID = 11;
+		String prename, lastname, lastname2;
+		try{
+			prename	= theDriver.getFirst_name();
+			lastname = theDriver.getLast_name();
+				lastname2 = theDriver.getLast_name().substring(0, 1)+".";
+		} catch (Exception  e) {
+			throw new FsgException( e, "NfcData", FsgException.GENERIC_EXCEPTION);
+		}
+		
+		String fullname = prename+" "+lastname2;		
+		System.out.println("Name: "+fullname);
+		
+		outputBlock[1] = fullname.getBytes();
 		
 		return outputBlock;
 	}
