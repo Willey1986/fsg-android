@@ -93,7 +93,7 @@ public class Nfc {
 			return "No Data";
 	}
 	
-	public void resolveIntent(Intent intent, int action) throws FsgException{
+	public void resolveIntent(Intent intent) throws FsgException{
 		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
 			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			if (toString(tagFromIntent.getTechList()).contains("MifareClassic")){
@@ -102,8 +102,10 @@ public class Nfc {
 					tag.connect();
 					
 					tag.close();
-				} catch (IOException e){
-					throw new FsgException("Fehler beim Lesen oder Schreiben des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
+				} catch (IOException e) {
+					Log.e(TAG, e.getLocalizedMessage());
+					System.out.println("Tag reading error!");
+					throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
 				}
 			}
 		} else {
@@ -177,7 +179,7 @@ public class Nfc {
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
 				System.out.println("Tag reading error!");
-				throw new FsgException("Fehler beim Lesen des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
+				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
 			}
 		} else {
 			System.out.println("Ready!");
@@ -206,7 +208,7 @@ public class Nfc {
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
 				System.out.println("Tag reading error!");
-				throw new FsgException("Fehler beim Lesen des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
+				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
 			}
 			if (cardData != null){
 				return cardData;
@@ -257,7 +259,7 @@ public class Nfc {
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
 				System.out.println("Tag reading error!");
-				throw new FsgException("Fehler beim Schreiben des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
+				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
 			}
 		} else {
 			System.out.println("Done!"); //Und jetzt am besten noch zurücklesen und vergleichen, ob erfolgreich
@@ -320,7 +322,7 @@ public class Nfc {
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
 				System.out.println("Tag reading error!");
-				throw new FsgException("Fehler beim Lesen des Tags, eventuell Key falsch", e, this.getClass().toString(), FsgException.GENERIC_EXCEPTION);
+				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
 			}
 		} else {
 			System.out.println("Tag disconnected!");

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" 
+    android:padding="@dimen/grid06"
+    android:background="@drawable/background_grey" >
 
     <TextView
         android:id="@+id/textView1"
@@ -11,26 +11,36 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:textSize="20dp"
-        android:text="Initialisierung des Fahrers" />
+        android:textSize="@dimen/grid06"
+        android:gravity="center"
+        android:textColor="@color/button_text_color"
+        android:text="@string/init_driver" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView1"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="Fahrerarmband an Gerät halten"
-        android:textSize="15dp"
-        android:padding="5dp" />
+        android:text="@string/wristband_near"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid04"
+        android:padding="@dimen/grid01" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="100dp"
-        android:layout_height="40dp"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
-        android:text="Scan" />
+        android:layout_height="wrap_content"
+        android:background="@layout/button_selector"
+        android:gravity="center" 
+        android:textColor="@color/button_text_color"
+        android:layout_marginTop="@dimen/grid08"
+        android:onClick="onButtonClick"
+        android:text="@string/scan"
+
+        />
 
 </RelativeLayout>

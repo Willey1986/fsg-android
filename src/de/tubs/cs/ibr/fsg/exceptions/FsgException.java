@@ -4,7 +4,10 @@ public class FsgException extends Exception{
 	private static final long serialVersionUID = -5809846041471649169L;
 	
 	public static final int GENERIC_EXCEPTION = 0;
-	public static final int CARD_MEMORY_FULL  = 1;
+	public static final int TAG_MEMORY_FULL   = 1;
+	public static final int TAG_WRONG_KEY     = 2;
+	
+	public static final int END_OF_ROAD       = 2000; // Nur zum Testen....
 
 	/**
 	 * Typ der Exception. Dieses Feld ist daf�r da, um mit seiner Hilfe auf der GUI-Ebene entscheiden zu k�nnen,
@@ -14,11 +17,6 @@ public class FsgException extends Exception{
 	 * genau dies dem User mitteilt und ihn dazu auffordert, er m�ge eine neue Speicherkarte besorgen...)
 	 */
 	private int type;
-	
-	/**
-	 * Verst�ndlicher und kurzer Text, wo steht, was passiert ist(-wenn m�glich- steht hier auch, was zu tun ist).
-	 */
-	private String detailMessage;
 	
 	/**
 	 * Klasse, wo die Exception ausgeworfen wurde.
@@ -32,11 +30,10 @@ public class FsgException extends Exception{
 
 	
 
-	public FsgException(String detailMessage, Exception originException, String originClass, int type ) {
-		super(detailMessage);
+	public FsgException(Exception originException, String originClass, int type ) {
+		super("");
 		this.type            = type;
 		this.originClass     = FsgException.formatClassString(originClass);
-		this.detailMessage   = detailMessage;
 		this.originException = originException;
 	}
 
@@ -64,16 +61,6 @@ public class FsgException extends Exception{
 
 	public void setType(int type) {
 		this.type = type;
-	}
-
-
-	public String getDetailMessage() {
-		return detailMessage;
-	}
-
-
-	public void setDetailMessage(String detailMessage) {
-		this.detailMessage = detailMessage;
 	}
 
 

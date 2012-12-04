@@ -13,4 +13,6 @@
     <dimen name="grid13">52dp</dimen>
     <dimen name="grid14">56dp</dimen>
     
+    <dimen name="button_width">260dp</dimen>
+    
 </resources>
