@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import de.tubs.cs.ibr.fsg.MainActivity;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
