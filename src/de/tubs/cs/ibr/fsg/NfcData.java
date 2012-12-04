@@ -7,9 +7,7 @@ package de.tubs.cs.ibr.fsg;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.ShortBuffer;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
+import java.security.SecureRandom;
 
 public class NfcData {
 	//testvariables
@@ -17,7 +15,14 @@ public class NfcData {
 	private static short userID 	= 18664;
 	private static short teamID 	= 33;
 	private static short eventID 	= 1;
+	
+	//at the beginning of each sector there is a informationblock to get
+	
+	//max 1 Block
 	private static String name 		= "Alexander M.";
+	
+	//constants for the encryption/decryption
+	private final static String SECUREKEY = "KEY";
 	
 	/*
 	 * reads out & converts the binary encoded data
@@ -48,7 +53,6 @@ public class NfcData {
         		break;
         }
 	}
-	
 
 	/*
 	 * generates the data blocks for the reg. data
@@ -57,10 +61,14 @@ public class NfcData {
 		byte contentID = 10;
 		//String input1 = "{"UserID":18664,"TeamID":33,"first_name":"Alexander","last_name":"Mustermann","gender":0}";
 		//String input2 = "{"TeamID":33,"CN":"AT","cn_short_en":"Austria","city":"Graz","U":"TU","Car":59,"Pit":49,"iswaiting":0,"class":1,"name_pits":"TU Graz"}";
-		
+
 		//generate binary code
 		byte[][] outputBlock = new byte[1][16];
+		
+		System.out.println("NfcData#generateDataRegistration failed");
+
 		outputBlock[0][0] = contentID;
+		
 		outputBlock[0][1] = (byte)(fahrzeugID & 0xff);
 		outputBlock[0][2] = (byte)((fahrzeugID >> 8) & 0xff);
 		outputBlock[0][3] = (byte)(userID & 0xff);
@@ -70,7 +78,7 @@ public class NfcData {
 		outputBlock[0][7] = (byte)(eventID & 0xff);
 		outputBlock[0][8] = (byte)((eventID >> 8) & 0xff);
 		
-
+		
 
 		 //System.out.println("Fid1:"+result);
 		//TODO:name
@@ -104,36 +112,4 @@ public class NfcData {
         return new byte[]{(byte)(s & 0x00FF),(byte)((s & 0xFF00)>>8)};
     }
 	
-	/** 
-	 * Method to encrypt the data using AES-methods
-	 * @param raw 
-	 * @param clear 
-	 * @return the encrypted data
-	 * @throws Exception
-	 */
-	private static byte[] encrypt(byte[] raw, byte[] clear) throws Exception {
-    	final String ENCRYPTIONTYPE = "AES";
-        SecretKeySpec skeySpec = new SecretKeySpec(raw, ENCRYPTIONTYPE);
-        Cipher cipher = Cipher.getInstance(ENCRYPTIONTYPE);
-        cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-        byte[] encrypted = cipher.doFinal(clear);
-        return encrypted;
-    }
-
-	/** Method to decrypt the data using AES-methods
-	 * 
-	 * @param raw
-	 * @param encrypted
-	 * @return
-	 * @throws Exception
-	 */
-    private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
-    	final String DECRYPTIONTYPE = "AES";
-    	
-        SecretKeySpec skeySpec = new SecretKeySpec(raw, DECRYPTIONTYPE);
-        Cipher cipher = Cipher.getInstance(DECRYPTIONTYPE);
-        cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-        byte[] decrypted = cipher.doFinal(encrypted);
-        return decrypted;
-    }
 }	
