@@ -30,6 +30,7 @@ public class RunActivity extends Activity {
     			Intent mIntent = new Intent(this, ErrorActivity.class);
     			mIntent.putExtra("Exception", e);
     			startActivity(mIntent);
+    			finish();
     		}
     		break;
     	case R.id.button2:
@@ -41,6 +42,7 @@ public class RunActivity extends Activity {
     			Intent mIntent = new Intent(this, ErrorActivity.class);
     			mIntent.putExtra("Exception", e);
     			startActivity(mIntent);
+    			finish();
     		}
     		break;
     	case R.id.button3:
@@ -52,6 +54,7 @@ public class RunActivity extends Activity {
     			Intent mIntent = new Intent(this, ErrorActivity.class);
     			mIntent.putExtra("Exception", e);
     			startActivity(mIntent);
+    			finish();
     		}
     		break;
     	case R.id.button4:
@@ -63,6 +66,7 @@ public class RunActivity extends Activity {
     			Intent mIntent = new Intent(this, ErrorActivity.class);
     			mIntent.putExtra("Exception", e);
     			startActivity(mIntent);
+    			finish();
     		}
     		break;
 

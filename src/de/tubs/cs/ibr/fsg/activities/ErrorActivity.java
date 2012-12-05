@@ -41,6 +41,11 @@ public class ErrorActivity extends Activity {
     		res = getResources();
         	userText.setText(res.getString(R.string.error_tag_wrong_key));
     		break;
+    	case FsgException.NOT_NFC_SUPPORT:
+    		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
+    		res = getResources();
+        	userText.setText(res.getString(R.string.not_nfc_support));
+    		break;
     	case FsgException.END_OF_ROAD:
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
     		res = getResources();

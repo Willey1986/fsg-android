@@ -20,33 +20,12 @@ import android.util.Log;
 public class StartActivity extends Activity {
 
 	private static final String TAG = "StartActivity";
-	private static final boolean DEVELOPER_MODE = true;
 	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        
-    	// Während der Entwicklung können wir mit Hilfe des StrictModes darauf aufmerksam gemacht werden,
-    	// wenn wir den UI-Thread/Main-Thread mit Sachen blockieren, die eigentlich nebenläufig gehören.
-    	// Sonst läuft die App nicht flüssig und es drohen sogar die berühmt-berüchtigte ANR Dialoge
-    	// (Application not Responding Dialog). Abhilfe: z.B. AsyncTask(einfach) oder zu Fuss mit einer
-    	// kompletten Multithreading-Lösung mit einem Standard-Java-Thread (schwieriger).
-        if (DEVELOPER_MODE) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectDiskReads()
-                    .detectDiskWrites()
-                    .detectNetwork()   
-                    .penaltyLog()
-                    .build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                    .detectLeakedSqlLiteObjects()
-                    .detectLeakedClosableObjects()
-                    .penaltyLog()
-                    .penaltyDeath()
-                    .build());
-        }
         
         // Notwendige Registrierung des DTNServices und des DTNReceivers beim IBR-DTN  
         // (durch die Klasse "Registration" der IBR-DTN-API). Dies wird benötigt, wenn die Anwendung
