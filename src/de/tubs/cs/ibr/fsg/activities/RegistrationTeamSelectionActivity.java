@@ -39,6 +39,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 			TextView teamCity = new TextView(this);
 			TextView teamUniversity = new TextView(this);
 			teamId.setText(""+team.getTeamId());
+			teamId.setPadding(15, 0, 0, 0);
 			teamName.setText(team.getName_pits());
 			teamCountry.setText(team.getCn_short_en());
 			teamCity.setText(team.getCity());

@@ -30,31 +30,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ems="10" />
+            android:ems="10"
+            android:textColor="@color/button_text_color"
+            android:textColorLink="@color/button_text_color" />
 
         <Button
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:text="@string/btnRegSearch" />
+            android:text="@string/btnRegSearch"
+            android:textColor="@color/button_text_color" />
+
     </LinearLayout>
 
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_alignLeft="@+id/linearLayout1"
         android:layout_below="@+id/linearLayout1"
+        android:background="@color/dark_grey"
         android:textColor="@color/button_text_color" >
 
         <TableLayout
             android:id="@+id/regTable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/grid01"
-            android:layout_marginRight="@dimen/grid01"
-            android:stretchColumns="1"
+            android:stretchColumns="*"
             android:textColor="@color/button_text_color" >
 
             <TableRow
@@ -62,6 +65,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@color/black"
+                android:divider="@null"
+                android:padding="@dimen/grid02"
                 android:textColor="@color/button_text_color" >
 
                 <TextView
@@ -119,6 +125,19 @@
                     android:textSize="@dimen/table_header"
                     android:textStyle="bold" />
             </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+            	<View
+            	    android:layout_weight="1"
+            	    android:layout_height="2dip"
+            	    android:background="@color/button_text_color" />
+
+            </TableRow>
+
         </TableLayout>
     </ScrollView>
 

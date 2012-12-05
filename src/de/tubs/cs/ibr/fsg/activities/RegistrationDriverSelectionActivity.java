@@ -25,11 +25,10 @@ public class RegistrationDriverSelectionActivity extends Activity{
 		
 		Bundle extras = getIntent().getExtras();
 		if(extras != null) {
-			TextView test = (TextView) findViewById(R.id.txtSelectedTeamID);
+			TextView test = (TextView) findViewById(R.id.txtSelectedTeam);
 			test.setText("Ausgewähltes Team: " + extras.getString("teamName"));
 			int teamId = extras.getInt("teamID");
 			ArrayList<Driver> drivers = dba.getAllDriversByTeamID(teamId);
-			System.out.println("**********************************" + drivers.size());
 			if (drivers.size()>0) {
 				for(int i=0; i<drivers.size(); i++) {
 					Driver driver = drivers.get(i);
