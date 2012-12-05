@@ -8,13 +8,15 @@ import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.db.models.Team;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.*;
+import android.view.View.OnClickListener;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class DriverRegistrationActivity extends Activity {
+public class RegistrationTeamSelectionActivity extends Activity {
 	
 	TableLayout regTable;
 	
@@ -24,13 +26,13 @@ public class DriverRegistrationActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_driver_registration);
+		setContentView(R.layout.activity_registration_team_selection);
 		regTable = (TableLayout) findViewById(R.id.regTable);
 		ArrayList<Team> teams = dba.getAllTeams();
 		for (int i = 0; i < teams.size(); i++) {
-			Team team = teams.get(i);
+			final Team team = teams.get(i);
 			TableRow row = new TableRow(this);
-			TextView teamId = new TextView(this);
+			final TextView teamId = new TextView(this);
 			TextView teamName = new TextView(this);
 			TextView teamCountry = new TextView(this);
 			TextView teamCity = new TextView(this);
@@ -50,12 +52,20 @@ public class DriverRegistrationActivity extends Activity {
 			row.addView(teamCountry);
 			row.addView(teamCity);
 			row.addView(teamUniversity);
+			row.setOnClickListener(new OnClickListener() {
+				
+				public void onClick(View v) {
+					Intent intent = new Intent(getBaseContext(), RegistrationDriverSelectionActivity.class);
+					intent.putExtra("test", ""+team.getTeamId());
+					startActivity(intent);
+				}
+			});
 			regTable.addView(row);
 		}
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_driver_registration, menu);
+		getMenuInflater().inflate(R.menu.registration, menu);
 	    return true;
 	}
 	

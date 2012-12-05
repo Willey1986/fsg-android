@@ -34,6 +34,7 @@
     <string name="tblRegTitleCity">City</string>
     <string name="tblRegTitleUniversity">University</string>
     <string name="tblRegTitleTeamname">Teamname</string>
+    <string name="btnRegSearch">Suchen</string>
 
 
 </resources>

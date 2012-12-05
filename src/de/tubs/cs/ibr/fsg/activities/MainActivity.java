@@ -107,7 +107,7 @@ public class MainActivity extends Activity {
     public void onButtonClick(View view){
     	switch (view.getId() ){
     	case R.id.button1:
-    		startActivity(new Intent(this, DriverRegistrationActivity.class));
+    		startActivity(new Intent(this, RegistrationTeamSelectionActivity.class));
     		break;
     	case R.id.button2:
     		startActivity(new Intent(this, BriefingCheckInActivity.class));
