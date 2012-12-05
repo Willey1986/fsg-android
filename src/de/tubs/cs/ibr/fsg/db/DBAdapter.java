@@ -157,7 +157,8 @@ public class DBAdapter {
 	public ArrayList<Driver> getAllDriversByTeamID(int teamID) {
 		ArrayList<Driver> drivers = new ArrayList<Driver>();
 		
-		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVERS;
+		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVERS
+				+ " WHERE team_id=" + teamID + ";";
 		open();
 		Cursor cursor = database.rawQuery(sql, null);
 		
@@ -181,6 +182,24 @@ public class DBAdapter {
 	public ArrayList<Team> getAllTeams() {
 		ArrayList<Team> teams = new ArrayList<Team>();
 		
+		String sql = "SELECT * FROM " + DBHelper.TABLE_TEAMS + ";";
+		
+		open();
+		Cursor cursor = database.rawQuery(sql, null);
+		if(cursor.moveToFirst()) {
+			do {
+				Team team = new Team();
+				team.setTeamId((short)cursor.getInt(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_TEAM_ID)));
+				team.setName_pits(cursor.getString(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_NAME_PITS)));
+				team.setCn_short_en(cursor.getString(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_CN_SHORT_EN)));
+				team.setCity(cursor.getString(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_CITY)));
+				team.setUniversity(cursor.getString(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_U)));
+				
+				teams.add(team);
+			} while(cursor.moveToNext());
+		}
+		
+		close();
 		return teams;
 	}
 	

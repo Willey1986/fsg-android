@@ -40,41 +40,70 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/grid01"
             android:layout_marginRight="@dimen/grid01"
+            android:stretchColumns="1"
             android:textColor="@color/button_text_color" >
 
             <TableRow
                 android:id="@+id/regTableHead"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:textColor="@color/button_text_color" >
                 
                 <TextView
                     android:id="@+id/tblTTeamID"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
                     android:text="@string/tblRegTitleID"
-                    android:textColor="@color/button_text_color" />
+                    android:textColor="@color/button_text_color"
+                    android:textSize="@dimen/table_header"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tblTTeamname"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:text="@string/tblRegTitleTeamname"
+                    android:textColor="@color/button_text_color"
+                    android:textSize="@dimen/table_header"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tblTCountry"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
                     android:text="@string/tblRegTitleCountry"
-                    android:textColor="@color/button_text_color" />
+                    android:textColor="@color/button_text_color"
+                    android:textSize="@dimen/table_header"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tblTCity"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
                     android:text="@string/tblRegTitleCity"
-                    android:textColor="@color/button_text_color" />
+                    android:textColor="@color/button_text_color"
+                    android:textSize="@dimen/table_header"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tblTUniversity"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
                     android:text="@string/tblRegTitleUniversity"
-                    android:textColor="@color/button_text_color" />
+                    android:textColor="@color/button_text_color"
+                    android:textSize="@dimen/table_header"
+                    android:textStyle="bold" />
 
             </TableRow>
 

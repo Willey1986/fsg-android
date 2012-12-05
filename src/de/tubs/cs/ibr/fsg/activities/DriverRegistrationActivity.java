@@ -26,23 +26,30 @@ public class DriverRegistrationActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_driver_registration);
 		regTable = (TableLayout) findViewById(R.id.regTable);
-		ArrayList<Driver> drivers = dba.getAllDrivers();
-		System.out.println(drivers.toString());
-		for (int i = 0; i < drivers.size(); i++) {
-			Driver driver = drivers.get(i);
+		ArrayList<Team> teams = dba.getAllTeams();
+		for (int i = 0; i < teams.size(); i++) {
+			Team team = teams.get(i);
 			TableRow row = new TableRow(this);
-			TextView id = new TextView(this);
-			TextView teamid = new TextView(this);
-			TextView firstname = new TextView(this);
-			TextView lastname = new TextView(this);
-			id.setText(""+driver.getUser_id());
-			teamid.setText(""+driver.getTeam_id());
-			firstname.setText(driver.getFirst_name());
-			lastname.setText(driver.getLast_name());
-			row.addView(id);
-			row.addView(teamid);
-			row.addView(firstname);
-			row.addView(lastname);
+			TextView teamId = new TextView(this);
+			TextView teamName = new TextView(this);
+			TextView teamCountry = new TextView(this);
+			TextView teamCity = new TextView(this);
+			TextView teamUniversity = new TextView(this);
+			teamId.setText(""+team.getTeamId());
+			teamName.setText(team.getName_pits());
+			teamCountry.setText(team.getCn_short_en());
+			teamCity.setText(team.getCity());
+			teamUniversity.setText(team.getUniversity());
+			teamId.setTextColor(getResources().getColor(R.color.white));
+			teamName.setTextColor(getResources().getColor(R.color.white));
+			teamCountry.setTextColor(getResources().getColor(R.color.white));
+			teamCity.setTextColor(getResources().getColor(R.color.white));
+			teamUniversity.setTextColor(getResources().getColor(R.color.white));
+			row.addView(teamId);
+			row.addView(teamName);
+			row.addView(teamCountry);
+			row.addView(teamCity);
+			row.addView(teamUniversity);
 			regTable.addView(row);
 		}
 	}

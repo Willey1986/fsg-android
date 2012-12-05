@@ -33,6 +33,7 @@
     <string name="tblRegTitleCountry">Country</string>
     <string name="tblRegTitleCity">City</string>
     <string name="tblRegTitleUniversity">University</string>
+    <string name="tblRegTitleTeamname">Teamname</string>
 
 
 </resources>
