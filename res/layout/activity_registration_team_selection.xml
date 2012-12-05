@@ -65,8 +65,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/black"
-                android:divider="@null"
+                android:background="@drawable/tablerow_gradient"
                 android:padding="@dimen/grid02"
                 android:textColor="@color/button_text_color" >
 

@@ -39,7 +39,6 @@ public class RegistrationTeamSelectionActivity extends Activity {
 			TextView teamCity = new TextView(this);
 			TextView teamUniversity = new TextView(this);
 			teamId.setText(""+team.getTeamId());
-			teamId.setPadding(15, 0, 0, 0);
 			teamName.setText(team.getName_pits());
 			teamCountry.setText(team.getCn_short_en());
 			teamCity.setText(team.getCity());
@@ -54,6 +53,8 @@ public class RegistrationTeamSelectionActivity extends Activity {
 			row.addView(teamCountry);
 			row.addView(teamCity);
 			row.addView(teamUniversity);
+			row.setBackgroundResource(R.drawable.tablerow_gradient_light);
+			row.setPadding(8, 8, 8, 8);
 			row.setOnClickListener(new OnClickListener() {
 				
 				public void onClick(View v) {
