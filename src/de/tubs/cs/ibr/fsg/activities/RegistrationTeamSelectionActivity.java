@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.db.DBAdapter;
+import de.tubs.cs.ibr.fsg.db.DBHelper;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.db.models.Team;
 
@@ -32,7 +33,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		for (int i = 0; i < teams.size(); i++) {
 			final Team team = teams.get(i);
 			TableRow row = new TableRow(this);
-			final TextView teamId = new TextView(this);
+			TextView teamId = new TextView(this);
 			TextView teamName = new TextView(this);
 			TextView teamCountry = new TextView(this);
 			TextView teamCity = new TextView(this);
@@ -56,7 +57,8 @@ public class RegistrationTeamSelectionActivity extends Activity {
 				
 				public void onClick(View v) {
 					Intent intent = new Intent(getBaseContext(), RegistrationDriverSelectionActivity.class);
-					intent.putExtra("test", ""+team.getTeamId());
+					intent.putExtra("teamID", team.getTeamId());
+					intent.putExtra("teamName", team.getName_pits());
 					startActivity(intent);
 				}
 			});
@@ -74,6 +76,9 @@ public class RegistrationTeamSelectionActivity extends Activity {
 			case R.id.menuItemRefresh:
 				refreshDB();
 				return true;
+			case R.id.miRegInsertDummyData:
+				writeSampleDataToDb();
+				return true;
 		}
 		return false;
 	}
@@ -83,6 +88,26 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		Team team = new Team((short) 1, "Test", "Test Team", "BS", "TU",(short) 12, (short) 14, (short) 0, (short) 1, "TU Racing");
 		dba.writeDriverToDB(driver);	
 		dba.writeTeamToDB(team);
+	}
+	
+	public void writeSampleDataToDb() {
+		String writeDriver1 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(80,20,'Harald','Juhnke',0);";
+		String writeDriver2 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(81,20,'Stefan','Raab',0);";
+		String writeDriver3 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(82,20,'Verona','Pooth',1);";
+		String writeDriver4 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(83,21,'Claudia','Roth',1);";
+		String writeDriver5 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(84,21,'Michael','Schumacher',0);";
+		
+		String writeTeam1 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_TEAMS + " VALUES(20,'DE','Germany','Braunschweig','TU',11,3,0,1,'Lions Racing Team');";
+		String writeTeam2 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_TEAMS + " VALUES(21,'E','Spain','Barcelona','U',20,4,0,1,'Fernando Alonso Racing');";
+		
+		dba.rawQuery(writeDriver1);
+		dba.rawQuery(writeDriver2);
+		dba.rawQuery(writeDriver3);
+		dba.rawQuery(writeDriver4);
+		dba.rawQuery(writeDriver5);
+		
+		dba.rawQuery(writeTeam1);
+		dba.rawQuery(writeTeam2);
 	}
 	
 }

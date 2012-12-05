@@ -159,6 +159,7 @@ public class DBAdapter {
 		
 		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVERS
 				+ " WHERE team_id=" + teamID + ";";
+		System.out.println(sql);
 		open();
 		Cursor cursor = database.rawQuery(sql, null);
 		
@@ -229,6 +230,12 @@ public class DBAdapter {
 	public void writeBlacklistedTagToDB(BlacklistedTag blTag) {
 		ContentValues values = blTag.getContentValues();
 		database.insert(DBHelper.TABLE_BLACKLISTED_TAGS, null, values);
+	}
+	
+	public void rawQuery(String sql) {
+		open();
+		database.execSQL(sql);
+		close();
 	}
 	
 	

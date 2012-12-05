@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/menuItemRefresh" 
         android:title="Refresh" />
-    <item android:id="@+id/menuItemSync" android:title="NetSync"></item>
+    <item android:id="@+id/miRegInsertDummyData" android:title="Sampledata in DB schreiben"></item>
     
 
 </menu>
