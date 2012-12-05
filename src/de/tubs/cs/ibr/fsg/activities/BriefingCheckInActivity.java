@@ -1,30 +1,17 @@
 package de.tubs.cs.ibr.fsg.activities;
 
-import java.io.IOException;
-import java.util.List;
-
-import de.tubs.cs.ibr.fsg.Nfc;
-import de.tubs.cs.ibr.fsg.R;
-import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.IsoDep;
 import android.nfc.tech.MifareClassic;
-import android.nfc.tech.NdefFormatable;
-import android.nfc.tech.NfcA;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
+import de.tubs.cs.ibr.fsg.Nfc;
+import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class BriefingCheckInActivity extends Activity {
 	
@@ -50,41 +37,67 @@ public class BriefingCheckInActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_briefing_checkin);
-		
-		mAdapter = NfcAdapter.getDefaultAdapter(this);
-		mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-		
-		IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
-
 		try {
+
+			setContentView(R.layout.activity_briefing_checkin);
+		
+			mAdapter = NfcAdapter.getDefaultAdapter(this);
+			if(mAdapter==null){
+				throw new FsgException( new NullPointerException("'Der NfcAdapter ist ein \"null\"-Objekt. Grund: Keine NFC-Unterstützung auf dem Gerät"), this.getClass().toString(), FsgException.NOT_NFC_SUPPORT );
+			}
+			mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+		
+			IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
+
+
 			ndef.addDataType("*/*");
-		} catch (MalformedMimeTypeException e) {
-			throw new RuntimeException("fail", e);
-		}
-		mFilters = new IntentFilter[] { ndef, };
 
-		mTechLists = new String[][] { new String[] { MifareClassic.class.getName() } };
+			mFilters = new IntentFilter[] { ndef, };
 
-		mIntent = getIntent();
-		nfc = new Nfc(this);
+			mTechLists = new String[][] { new String[] { MifareClassic.class.getName() } };
 
-		try {
-			//Zum Testen der Fehlermeldung...
-			//throw new FsgException( new Exception("'Hier ist die UrsprungException"), this.getClass().toString(), FsgException.TAG_WRONG_KEY );
+			mIntent = getIntent();
+			nfc = new Nfc(this);
+
+
 			nfc.resolveIntent(mIntent);
-		} catch (FsgException e) {
+			//nfc.writeTag(mIntent, MifareClassic.KEY_DEFAULT, NfcData.generateDataRegistration());
+		} catch (FsgException e1) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
-			mIntent.putExtra("Exception", e);
+			mIntent.putExtra("Exception", e1);
 			startActivity(mIntent);
+			finish();
+		} catch (MalformedMimeTypeException e2) {
+			FsgException mException =  new FsgException( e2, this.getClass().toString(), FsgException.GENERIC_EXCEPTION );
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", mException);
+			startActivity(mIntent);
+			finish();
 		}
+		super.onCreate(savedInstanceState);
 	}
 
 	@Override
 	public void onResume() {
+		try{
+			if(mAdapter==null){
+				throw new FsgException( new NullPointerException("'Der NfcAdapter ist ein \"null\"-Objekt. Grund: Keine NFC-Unterstützung auf dem Gerät"), this.getClass().toString(), FsgException.NOT_NFC_SUPPORT );
+			}else{
+				mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters, mTechLists);
+			}
+			
+		}catch (FsgException e1){
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e1);
+			startActivity(mIntent);
+			finish();
+		}catch (Exception e2){
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e2);
+			startActivity(mIntent);
+			finish();
+		}
 		super.onResume();
-		mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters, mTechLists);
 	}
 
 	@Override
@@ -100,8 +113,26 @@ public class BriefingCheckInActivity extends Activity {
 	}
 
 	@Override
-	public void onPause() {
+	public void onPause() {	
+		try{
+			if(mAdapter==null){
+				throw new FsgException( new NullPointerException("'Der NfcAdapter ist ein \"null\"-Objekt. Grund: Keine NFC-Unterstützung auf dem Gerät"), this.getClass().toString(), FsgException.NOT_NFC_SUPPORT );
+			}else{
+				mAdapter.disableForegroundDispatch(this);
+			}
+			
+		}catch (FsgException e1){
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e1);
+			startActivity(mIntent);
+			finish();
+		}catch (Exception e2){
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e2);
+			startActivity(mIntent);
+			finish();
+		}
 		super.onPause();
-		mAdapter.disableForegroundDispatch(this);
+		
 	}
 }

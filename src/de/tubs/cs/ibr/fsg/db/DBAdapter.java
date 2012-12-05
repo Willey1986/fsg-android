@@ -74,8 +74,9 @@ public class DBAdapter {
 	 * @param driver
 	 */
 	public void writeDriverToDB(Driver driver) {
-		ContentValues values = driver.getContentValues();
-		database.insert(DBHelper.TABLE_DRIVERS, null, values);
+		open();
+		database.insertWithOnConflict(DBHelper.TABLE_DRIVERS, null, driver.getContentValues(), SQLiteDatabase.CONFLICT_IGNORE);
+		close();
 	}
 	
 	/**
@@ -85,35 +86,43 @@ public class DBAdapter {
 	public void writeDriversToDB(String jsonArray) {
 		try {
 			JSONArray jDrivers = new JSONArray(jsonArray);
-			open();
 			for(int i = 0; i < jDrivers.length(); i++) {
 				Driver driver = new Driver(jDrivers.getJSONObject(i));
 				writeDriverToDB(driver);
 			}
-			close();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public Driver getDriver(int driverID) {
-		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVERS
-				+ " WHERE " + DBHelper.DRIVERS_COLUMN_USER_ID
-				+ " = " + driverID + ";";
+		String sqlDriver = "SELECT * FROM " + DBHelper.TABLE_DRIVERS
+				+ " CROSS JOIN " + DBHelper.TABLE_TEAMS 
+				+ " WHERE teams.team_id=drivers.team_id"
+				+ " AND drivers.user_id=" + driverID
+				+ ";";
 		open();
-		Cursor cursor = database.rawQuery(sql, null);
+		Cursor cursor = database.rawQuery(sqlDriver, null);
 		
 		if(cursor.moveToFirst()) {
 			Driver driver = new Driver();
-			driver.setUser_id(cursor.getInt(0));
-			driver.setTeam_id(cursor.getInt(1));
-			driver.setTeam(null);
+			Team team = new Team();
+			driver.setUser_id((short) cursor.getShort(0));
+			driver.setTeam_id((short) cursor.getShort(1));
 			driver.setFirst_name(cursor.getString(2));
 			driver.setLast_name(cursor.getString(3));
-			if (cursor.getInt(4)==0)
-				driver.setGender(false);
-			else 
-				driver.setGender(true);
+			driver.setFemale((short) cursor.getShort(4));			
+			team.setTeamId((short) cursor.getShort(5));
+			team.setCn(cursor.getString(6));
+			team.setCn_short_en(cursor.getString(7));
+			team.setCity(cursor.getString(8));
+			team.setUniversity(cursor.getString(9));
+			team.setCarNr(cursor.getShort(10));
+			team.setPitNr(cursor.getShort(11));
+			team.setIsWaiting(cursor.getShort(12));
+			team.setEventClass(cursor.getShort(13));
+			team.setName_pits(cursor.getString(14));
+			driver.setTeam(team);
 			return driver;
 		}
 		else
@@ -131,14 +140,12 @@ public class DBAdapter {
 		if(cursor.moveToFirst()) {
 			do {
 				Driver driver = new Driver();
-				driver.setUser_id(cursor.getInt(0));
-				driver.setTeam_id(cursor.getInt(1));
+				driver.setUser_id((short) cursor.getInt(0));
+				driver.setTeam_id((short) cursor.getInt(1));
 				driver.setFirst_name(cursor.getString(2));
 				driver.setLast_name(cursor.getString(3));
-				if (cursor.getInt(4)==0)
-					driver.setGender(false);
-				else
-					driver.setGender(true);
+				driver.setFemale((short) cursor.getShort(4));	
+				
 				drivers.add(driver);
 			} while(cursor.moveToNext());
 		}
@@ -148,11 +155,21 @@ public class DBAdapter {
 	}
 	
 	public void writeTeamToDB(Team team) {
-		
+		open();
+		database.insertWithOnConflict(DBHelper.TABLE_TEAMS, null, team.getContentValues(), SQLiteDatabase.CONFLICT_IGNORE);
+		close();
 	}
 	
 	public void writeTeamsToDB(String jsonArray) {
-		
+		try {
+			JSONArray jTeams = new JSONArray(jsonArray);
+			for(int i = 0; i < jTeams.length(); i++) {
+				Team team = new Team(jTeams.getJSONObject(i));
+				writeTeamToDB(team);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void writeBlacklistedDeviceToDB(BlacklistedDevice blDevice) {

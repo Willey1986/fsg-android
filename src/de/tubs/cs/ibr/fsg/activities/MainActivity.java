@@ -20,12 +20,34 @@ import de.tubs.cs.ibr.fsg.service.DTNService;
 public class MainActivity extends Activity {
 
 	private static final String TAG = "MainActivity";
+	private static final boolean DEVELOPER_MODE = true;
 
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+    	// Während der Entwicklung können wir mit Hilfe des StrictModes darauf aufmerksam gemacht werden,
+    	// wenn wir den UI-Thread/Main-Thread mit Sachen blockieren, die eigentlich nebenläufig gehören.
+    	// Sonst läuft die App nicht flüssig und es drohen sogar die berühmt-berüchtigte ANR Dialoge
+    	// (Application not Responding Dialog). Abhilfe: z.B. AsyncTask(einfach) oder zu Fuss mit einer
+    	// kompletten Multithreading-Lösung mit einem Standard-Java-Thread (schwieriger).
+        if (DEVELOPER_MODE) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()   
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+        }
+        
         Log.i(TAG, "activity created.");
     }
 

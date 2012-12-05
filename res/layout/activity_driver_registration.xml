@@ -19,11 +19,12 @@
 
     <SearchView
         android:id="@+id/searchView1"
-        android:textColor="@color/button_text_color"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1" />
+        android:layout_below="@+id/textView1"
+        android:iconifiedByDefault="false"
+        android:textColor="@color/button_text_color" />
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -47,13 +48,12 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
                 
-
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/lbTeamID"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/button_text_color"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textColor="@color/button_text_color" />
 
                 <TextView
                     android:id="@+id/textView3"

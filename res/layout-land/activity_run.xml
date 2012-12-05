@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:padding="@dimen/grid01"
-    android:background="@drawable/background_grey" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="10"
+    android:background="@drawable/background_grey"
+    android:gravity="center_vertical|center_horizontal" >
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_above="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_width="510dp"
+        android:layout_height="35dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="@dimen/grid02"
         android:textSize="@dimen/grid06"
         android:gravity="center"
         android:textColor="@color/button_text_color"
@@ -18,54 +20,50 @@
       
     <Button
         android:id="@+id/button1"
-        android:layout_above="@+id/button2"
         android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/grid10"
-        android:layout_centerHorizontal="true"
+        android:layout_height="35dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="@dimen/grid02"
         android:background="@layout/button_selector"
         android:gravity="center" 
         android:textColor="@color/button_text_color"
-        android:layout_marginTop="@dimen/grid02"
         android:onClick="onButtonClick"
         android:text="@string/acceleration" />
     
     <Button
         android:id="@+id/button2"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/grid10"
+        android:layout_height="35dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="@dimen/grid02"
         android:background="@layout/button_selector"
         android:gravity="center" 
         android:textColor="@color/button_text_color"
-        android:layout_marginTop="@dimen/grid02"
         android:onClick="onButtonClick"
         android:text="@string/skipad" />
 
     <Button
         android:id="@+id/button3"
-        android:layout_below="@+id/button2"
         android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/grid10"
-        android:layout_centerHorizontal="true"
+        android:layout_height="35dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="@dimen/grid02"
         android:background="@layout/button_selector"
         android:gravity="center" 
         android:textColor="@color/button_text_color"
-        android:layout_marginTop="@dimen/grid02"
         android:onClick="onButtonClick"
         android:text="@string/autocross" />
 
     <Button
         android:id="@+id/button4"
-        android:layout_below="@+id/button3"
         android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/grid10"
-        android:layout_centerHorizontal="true"
+        android:layout_height="35dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="@dimen/grid02"
         android:background="@layout/button_selector"
         android:gravity="center" 
         android:textColor="@color/button_text_color"
-        android:layout_marginTop="@dimen/grid02"
         android:onClick="onButtonClick"
         android:text="@string/endurance" />
 
-</RelativeLayout>
+</LinearLayout>

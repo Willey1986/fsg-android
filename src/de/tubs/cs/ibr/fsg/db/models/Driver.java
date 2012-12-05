@@ -9,35 +9,28 @@ import android.content.ContentValues;
 
 public class Driver {
 
-	private int user_id; 
-	private int team_id;
+	private short user_id; 
+	private short team_id;
 	private String first_name;
 	private String last_name;
-	private boolean female;
+	private short female;
 	private Team team;
 	
 	public Driver(JSONObject driver) {
 		try {
-			this.user_id = driver.getInt("UserID");
-			this.team_id = driver.getInt("TeamID");
+			this.user_id = (short) driver.getInt("UserID");
+			this.team_id = (short) driver.getInt("TeamID");
 			this.first_name = driver.getString("first_name");
 			this.last_name = driver.getString("last_name");
-			switch (driver.getInt("gender")) {
-				case 0:
-					this.female = false;
-					break;
-				case 1:
-					this.female = true;
-					break;
-			}
+			this.female = (short) driver.getInt("gender");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		
 	}
 	
-	public Driver(long id, int user_id, int team_id, String first_name,
-			String last_name, boolean female) {
+	public Driver(short user_id, short team_id, String first_name,
+			String last_name, short female) {
 		this.user_id = user_id;
 		this.team_id = team_id;
 		this.first_name = first_name;
@@ -53,7 +46,7 @@ public class Driver {
 		return user_id;
 	}
 
-	public void setUser_id(int user_id) {
+	public void setUser_id(short user_id) {
 		this.user_id = user_id;
 	}
 
@@ -61,7 +54,7 @@ public class Driver {
 		return team_id;
 	}
 
-	public void setTeam_id(int team_id) {
+	public void setTeam_id(short team_id) {
 		this.team_id = team_id;
 	}
 
@@ -81,11 +74,11 @@ public class Driver {
 		this.last_name = last_name;
 	}
 
-	public boolean isFemale() {
+	public short getFemale() {
 		return female;
 	}
 
-	public void setGender(boolean female) {
+	public void setFemale(short female) {
 		this.female = female;
 	}
 	
@@ -104,11 +97,8 @@ public class Driver {
 		values.put(DBHelper.DRIVERS_COLUMN_FIRST_NAME, this.first_name);
 		values.put(DBHelper.DRIVERS_COLUMN_LAST_NAME, this.last_name);
 		values.put(DBHelper.DRIVERS_COLUMN_TEAM_ID, this.team_id);
-		if (female)
-			values.put(DBHelper.DRIVERS_COLUMN_GENDER, 1);
-		else
-			values.put(DBHelper.DRIVERS_COLUMN_GENDER, 0);
-		
+		values.put(DBHelper.DRIVERS_COLUMN_GENDER, this.female);
+
 		return values;
 	}
 	
