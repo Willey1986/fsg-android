@@ -28,6 +28,10 @@
     <string name="skipad">Ski Pad</string>
     <string name="autocross">Autocross</string>
     <string name="endurance">Endurance</string>
+    <string name="tblRegTitleID">Team ID</string>
+    <string name="tblRegTitleCountry">Country</string>
+    <string name="tblRegTitleCity">City</string>
+    <string name="tblRegTitleUniversity">University</string>
 
 
 </resources>

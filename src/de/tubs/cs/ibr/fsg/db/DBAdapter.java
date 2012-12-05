@@ -154,6 +154,36 @@ public class DBAdapter {
 		return drivers;
 	}
 	
+	public ArrayList<Driver> getAllDriversByTeamID(int teamID) {
+		ArrayList<Driver> drivers = new ArrayList<Driver>();
+		
+		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVERS;
+		open();
+		Cursor cursor = database.rawQuery(sql, null);
+		
+		if(cursor.moveToFirst()) {
+			do {
+				Driver driver = new Driver();
+				driver.setUser_id((short) cursor.getInt(0));
+				driver.setTeam_id((short) cursor.getInt(1));
+				driver.setFirst_name(cursor.getString(2));
+				driver.setLast_name(cursor.getString(3));
+				driver.setFemale((short) cursor.getShort(4));	
+				
+				drivers.add(driver);
+			} while(cursor.moveToNext());
+		}
+
+		close();
+		return drivers;
+	}
+	
+	public ArrayList<Team> getAllTeams() {
+		ArrayList<Team> teams = new ArrayList<Team>();
+		
+		return teams;
+	}
+	
 	public void writeTeamToDB(Team team) {
 		open();
 		database.insertWithOnConflict(DBHelper.TABLE_TEAMS, null, team.getContentValues(), SQLiteDatabase.CONFLICT_IGNORE);
