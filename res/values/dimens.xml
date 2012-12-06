@@ -15,4 +15,6 @@
     
     <dimen name="button_width">260dp</dimen>
     
+    <dimen name="table_header">16dp</dimen>
+    
 </resources>

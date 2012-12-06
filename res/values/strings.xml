@@ -29,6 +29,13 @@
     <string name="skipad">Ski Pad</string>
     <string name="autocross">Autocross</string>
     <string name="endurance">Endurance</string>
+    <string name="tblRegTitleID">#</string>
+    <string name="tblRegTitleCountry">Country</string>
+    <string name="tblRegTitleCity">City</string>
+    <string name="tblRegTitleUniversity">University</string>
+    <string name="tblRegTitleTeamname">Teamname</string>
+    <string name="btnRegSearch">Suchen</string>
+    <string name="tblDriversName">Name</string>
 
 
 </resources>

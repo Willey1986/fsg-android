@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/registerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_grey"
+    android:padding="@dimen/grid02" >
+
+    <TextView
+        android:id="@+id/txtRegInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="left"
+        android:padding="@dimen/grid01"
+        android:text="@string/select_team"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid06" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtRegInfo"
+        android:layout_below="@+id/txtRegInfo" >
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:textColor="@color/button_text_color"
+            android:textColorLink="@color/button_text_color" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="@string/btnRegSearch"
+            android:textColor="@color/button_text_color" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignLeft="@+id/linearLayout1"
+        android:layout_below="@+id/linearLayout1"
+        android:background="@color/dark_grey"
+        android:textColor="@color/button_text_color" >
+
+        <TableLayout
+            android:id="@+id/regTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:textColor="@color/button_text_color" >
+
+            <TableRow
+                android:id="@+id/regTableHead"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/tablerow_gradient"
+                android:padding="@dimen/grid02"
+                android:textColor="@color/button_text_color" >
+
+                <TextView
+                    android:id="@+id/tblTTeamID"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:text="@string/tblRegTitleID"
+                    android:textColor="@color/button_text_color"
+                    android:textSize="@dimen/table_header"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tblTTeamname"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:text="@string/tblRegTitleTeamname"
+                    android:textColor="@color/button_text_color"
+                    android:textSize="@dimen/table_header"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tblTCountry"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:text="@string/tblRegTitleCountry"
+                    android:textColor="@color/button_text_color"
+                    android:textSize="@dimen/table_header"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tblTCity"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:text="@string/tblRegTitleCity"
+                    android:textColor="@color/button_text_color"
+                    android:textSize="@dimen/table_header"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tblTUniversity"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:text="@string/tblRegTitleUniversity"
+                    android:textColor="@color/button_text_color"
+                    android:textSize="@dimen/table_header"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+            	<View
+            	    android:layout_weight="1"
+            	    android:layout_height="2dip"
+            	    android:background="@color/button_text_color" />
+
+            </TableRow>
+
+        </TableLayout>
+    </ScrollView>
+
+</RelativeLayout>

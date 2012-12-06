@@ -10,6 +10,9 @@
    
    <color name="button_start_hover">#A0E0E0E0</color>
    <color name="button_end_hover">#A0636363</color>
+   <color name="white">#FFFFFF</color>
+   <color name="dark_grey">#EE333333</color>
+   <color name="black">#000000</color>
    
 
    

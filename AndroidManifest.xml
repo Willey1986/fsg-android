@@ -42,7 +42,11 @@
             android:label="@string/title_activity_main" >
         </activity>
 
-        <activity android:name=".activities.DriverRegistrationActivity"
+        <activity android:name=".activities.RegistrationTeamSelectionActivity"
+            android:label="@string/main_activity_button_1" 
+            android:icon="@drawable/icon_register"></activity>
+        
+        <activity android:name=".activities.RegistrationDriverSelectionActivity"
             android:label="@string/main_activity_button_1" 
             android:icon="@drawable/icon_register"></activity>
         

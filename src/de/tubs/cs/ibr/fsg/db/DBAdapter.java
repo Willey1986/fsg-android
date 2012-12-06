@@ -133,7 +133,7 @@ public class DBAdapter {
 	public ArrayList<Driver> getAllDrivers() {
 		ArrayList<Driver> drivers = new ArrayList<Driver>();
 		
-		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVERS;
+		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVERS + " ORDER BY " + DBHelper.DRIVERS_COLUMN_LAST_NAME + " ASC;";
 		open();
 		Cursor cursor = database.rawQuery(sql, null);
 		
@@ -152,6 +152,58 @@ public class DBAdapter {
 
 		close();
 		return drivers;
+	}
+	
+	public ArrayList<Driver> getAllDriversByTeamID(int teamID) {
+		ArrayList<Driver> drivers = new ArrayList<Driver>();
+		
+		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVERS
+				+ " WHERE team_id=" + teamID 
+				+ " ORDER BY " + DBHelper.DRIVERS_COLUMN_LAST_NAME 
+				+ " ASC";
+		System.out.println(sql);
+		open();
+		Cursor cursor = database.rawQuery(sql, null);
+		
+		if(cursor.moveToFirst()) {
+			do {
+				Driver driver = new Driver();
+				driver.setUser_id((short) cursor.getInt(0));
+				driver.setTeam_id((short) cursor.getInt(1));
+				driver.setFirst_name(cursor.getString(2));
+				driver.setLast_name(cursor.getString(3));
+				driver.setFemale((short) cursor.getShort(4));	
+				
+				drivers.add(driver);
+			} while(cursor.moveToNext());
+		}
+
+		close();
+		return drivers;
+	}
+	
+	public ArrayList<Team> getAllTeams() {
+		ArrayList<Team> teams = new ArrayList<Team>();
+		
+		String sql = "SELECT * FROM " + DBHelper.TABLE_TEAMS + ";";
+		
+		open();
+		Cursor cursor = database.rawQuery(sql, null);
+		if(cursor.moveToFirst()) {
+			do {
+				Team team = new Team();
+				team.setTeamId((short)cursor.getInt(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_TEAM_ID)));
+				team.setName_pits(cursor.getString(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_NAME_PITS)));
+				team.setCn_short_en(cursor.getString(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_CN_SHORT_EN)));
+				team.setCity(cursor.getString(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_CITY)));
+				team.setUniversity(cursor.getString(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_U)));
+				
+				teams.add(team);
+			} while(cursor.moveToNext());
+		}
+		
+		close();
+		return teams;
 	}
 	
 	public void writeTeamToDB(Team team) {
@@ -180,6 +232,12 @@ public class DBAdapter {
 	public void writeBlacklistedTagToDB(BlacklistedTag blTag) {
 		ContentValues values = blTag.getContentValues();
 		database.insert(DBHelper.TABLE_BLACKLISTED_TAGS, null, values);
+	}
+	
+	public void rawQuery(String sql) {
+		open();
+		database.execSQL(sql);
+		close();
 	}
 	
 	
