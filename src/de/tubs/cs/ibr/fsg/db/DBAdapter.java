@@ -133,7 +133,7 @@ public class DBAdapter {
 	public ArrayList<Driver> getAllDrivers() {
 		ArrayList<Driver> drivers = new ArrayList<Driver>();
 		
-		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVERS;
+		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVERS + " ORDER BY " + DBHelper.DRIVERS_COLUMN_LAST_NAME + " ASC;";
 		open();
 		Cursor cursor = database.rawQuery(sql, null);
 		
@@ -158,7 +158,9 @@ public class DBAdapter {
 		ArrayList<Driver> drivers = new ArrayList<Driver>();
 		
 		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVERS
-				+ " WHERE team_id=" + teamID + ";";
+				+ " WHERE team_id=" + teamID 
+				+ " ORDER BY " + DBHelper.DRIVERS_COLUMN_LAST_NAME 
+				+ " ASC";
 		System.out.println(sql);
 		open();
 		Cursor cursor = database.rawQuery(sql, null);

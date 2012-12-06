@@ -1,0 +1,25 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/tablerow_gradient_light" >
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="80dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="@dimen/grid02"
+            android:background="@color/black" />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/view1"
+            android:layout_toRightOf="@+id/view1"
+            android:text="@string/tblDriversName"
+            android:textSize="@dimen/grid08"
+            android:textStyle="bold" />
+	</RelativeLayout>
+</merge>

@@ -15,78 +15,18 @@
         android:textColor="@color/button_text_color"
         android:textSize="@dimen/grid06" />
 
-    <TableLayout
-        android:id="@+id/tblRegDrivers"
+    <ScrollView
+        android:id="@+id/sVDrivers"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="1" >
+        android:layout_height="wrap_content" >
 
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+        <LinearLayout
+            android:id="@+id/llDriversList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/button_text_color"
-                android:textSize="@dimen/table_header"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/button_text_color"
-                android:textSize="@dimen/table_header"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/button_text_color"
-                android:textSize="@dimen/table_header"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/button_text_color"
-                android:textSize="@dimen/table_header"
-                android:textStyle="bold" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </TableRow>
-    </TableLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
