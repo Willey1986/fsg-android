@@ -21,7 +21,7 @@ public class InfoTerminalActivity extends Activity {
 		DBAdapter test = new DBAdapter(this);
 		
 		try {
-			NfcData.interpretData(NfcData.generateDataRegistration(test.getDriver(18618)));
+			NfcData.interpretData(NfcData.generateDataRegistration(test.getDriver((short)18618)));
 		} catch (FsgException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

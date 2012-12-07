@@ -18,7 +18,7 @@ public class RegistrationDriverSelectionActivity extends Activity{
 	TableLayout tblRegDrivers;
 	DBAdapter dba;
 	String teamName;
-	int teamId;
+	short teamId;
 	LinearLayout llDriversList;
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class RegistrationDriverSelectionActivity extends Activity{
 		
 		Bundle extras = getIntent().getExtras();
 		teamName = extras.getString("teamName");
-		teamId = extras.getInt("teamID");
+		teamId = extras.getShort("teamID");
 		llDriversList = (LinearLayout) findViewById(R.id.llDriversList);
 		
 		dba = new DBAdapter(this);

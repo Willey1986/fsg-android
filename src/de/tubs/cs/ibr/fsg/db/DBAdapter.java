@@ -95,7 +95,7 @@ public class DBAdapter {
 		}
 	}
 	
-	public Driver getDriver(int driverID) {
+	public Driver getDriver(short driverID) {
 		String sqlDriver = "SELECT * FROM " + DBHelper.TABLE_DRIVERS
 				+ " CROSS JOIN " + DBHelper.TABLE_TEAMS 
 				+ " WHERE teams.team_id=drivers.team_id"
@@ -154,7 +154,7 @@ public class DBAdapter {
 		return drivers;
 	}
 	
-	public ArrayList<Driver> getAllDriversByTeamID(int teamID) {
+	public ArrayList<Driver> getAllDriversByTeamID(short teamID) {
 		ArrayList<Driver> drivers = new ArrayList<Driver>();
 		
 		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVERS
