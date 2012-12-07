@@ -4,7 +4,8 @@
  */
 package de.tubs.cs.ibr.fsg;
 
-import java.io.IOException;
+import java.io.*;
+//import java.io.IOException;
 import java.security.SecureRandom;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
@@ -46,13 +47,13 @@ public class NfcData {
 	/*
 	 * generates the data blocks for the reg. data
 	 */
-	public static byte[][] generateDataRegistration(Driver theDriver) throws FsgException{
+	public static byte[][] generateDataRegistration(Driver theDriver) throws FsgException, IOException {
 		//convert the IDs now
 		byte contentID 		= 10;
 				
 		short fahrzeugID 	= 0; //TODO:theDriver.get;
-		short userID 		= 1;//theDriver.getUser_id();
-		short teamID 		= 1;//theDriver.getTeam_id();
+		short userID 		= (short) theDriver.getUser_id();
+		short teamID 		= (short) theDriver.getTeam_id();
 		short eventID 		= 1;
 
 		//generate binary code with explicit size
@@ -76,19 +77,23 @@ public class NfcData {
 		
 		//read out and convert the name now
 		contentID = 11;
-		String prename, lastname, lastname2;
+		String prename, lastname;
+		
 		try{
-			prename	= theDriver.getFirst_name();
-			lastname = theDriver.getLast_name();
-				lastname2 = theDriver.getLast_name().substring(0, 1)+".";
+			prename	= theDriver.getFirst_name().substring(0, 16);
+			lastname = theDriver.getLast_name().substring(0, 1)+".";
 		} catch (Exception  e) {
 			throw new FsgException( e, "NfcData", FsgException.GENERIC_EXCEPTION);
 		}
 		
-		String fullname = prename+" "+lastname2;		
-		System.out.println("Name: "+fullname);
+		String fullname = prename+" "+lastname;		
+		System.out.println("NfcData#Name: "+fullname);
 		
-		outputBlock[1] = fullname.getBytes();
+		/* >= 1Byte pro Buchstabe bei UTF-8
+		 * >= 2Byte pro Buchstabe bei UTF-16 (UTF-16LE)
+		 * 	Umlaute immer 2Byte
+		 */
+		outputBlock[1] = fullname.getBytes("UTF-8"); 
 		
 		return outputBlock;
 	}
