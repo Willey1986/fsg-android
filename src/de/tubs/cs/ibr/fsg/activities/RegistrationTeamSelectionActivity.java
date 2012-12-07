@@ -111,6 +111,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		String writeDriver10 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(89,21,'Peter','Lustig',0);";
 		String writeDriver11 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(90,21,'Hein','Blšd',0);";
 		String writeDriver12 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(91,21,'Frauke','Ludowig',1);";
+		String writeDriver13 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(92,21,'Hans-Bernd-Sebastian-Ludwig-Martin-Hans','Meier von und zu Hohenzollern',0);";
 		
 		String writeTeam1 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_TEAMS + " VALUES(20,'DE','Germany','Braunschweig','TU',11,3,0,1,'Lions Racing Team');";
 		String writeTeam2 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_TEAMS + " VALUES(21,'E','Spain','Barcelona','U',20,4,0,1,'Fernando Alonso Racing');";
@@ -127,7 +128,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		dba.rawQuery(writeDriver10);
 		dba.rawQuery(writeDriver11);
 		dba.rawQuery(writeDriver12);
-		
+		dba.rawQuery(writeDriver13);
 		
 		dba.rawQuery(writeTeam1);
 		dba.rawQuery(writeTeam2);

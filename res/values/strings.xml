@@ -36,6 +36,7 @@
     <string name="tblRegTitleTeamname">Teamname</string>
     <string name="btnRegSearch">Suchen</string>
     <string name="tblDriversName">Name</string>
+    <string name="lbSelectedTeam">Team: </string>
 
 
 </resources>
