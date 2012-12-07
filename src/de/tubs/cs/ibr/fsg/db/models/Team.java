@@ -66,7 +66,7 @@ public class Team {
 		}
 	}
 
-	public int getTeamId() {
+	public short getTeamId() {
 		return teamId;
 	}
 
@@ -106,7 +106,7 @@ public class Team {
 		this.university = university;
 	}
 
-	public int getCarNr() {
+	public short getCarNr() {
 		return carNr;
 	}
 
@@ -114,7 +114,7 @@ public class Team {
 		this.carNr = carNr;
 	}
 
-	public int getPitNr() {
+	public short getPitNr() {
 		return pitNr;
 	}
 

@@ -42,7 +42,7 @@ public class Driver {
 		
 	}
 
-	public int getUser_id() {
+	public short getUser_id() {
 		return user_id;
 	}
 
@@ -50,7 +50,7 @@ public class Driver {
 		this.user_id = user_id;
 	}
 
-	public int getTeam_id() {
+	public short getTeam_id() {
 		return team_id;
 	}
 
