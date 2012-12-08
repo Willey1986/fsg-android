@@ -7,6 +7,7 @@ import de.tubs.cs.ibr.fsg.db.DBAdapter;
 import de.tubs.cs.ibr.fsg.db.DBHelper;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.db.models.Team;
+import de.tubs.cs.ibr.fsg.service.DTNService;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -81,10 +82,23 @@ public class RegistrationTeamSelectionActivity extends Activity {
 			case R.id.miRegInsertDummyData:
 				writeSampleDataToDb();
 				return true;
+			case R.id.requestRegistrationDataUpdate:
+				requestRegistrationUpdate();
+				return true;
 		}
 		return false;
 	}
 	
+	
+	private void requestRegistrationUpdate() {
+		Intent mIntent = new Intent(this, DTNService.class);
+		mIntent.setAction(DTNService.SEND_INTENT);
+		mIntent.putExtra("singletonendpoint", "dtn://mulita-fsg.dtn/fsg");
+		mIntent.putExtra("jsondata", "reg_update");
+		startService(mIntent);
+	}
+	
+
 	public void refreshDB() {
 		Driver driver = new Driver((short) 12312, (short) 12312, "Horst", "Fuchs", (short) 0);
 		Team team = new Team((short) 1, "Test", "Test Team", "BS", "TU",(short) 12, (short) 14, (short) 0, (short) 1, "TU Racing");
@@ -109,7 +123,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		String writeDriver8 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(87,21,'Fernando','Alonso',0);";
 		String writeDriver9 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(88,21,'Nikki','Lauda',0);";
 		String writeDriver10 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(89,21,'Peter','Lustig',0);";
-		String writeDriver11 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(90,21,'Hein','Blšd',0);";
+		String writeDriver11 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(90,21,'Hein','Blöd',0);";
 		String writeDriver12 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(91,21,'Frauke','Ludowig',1);";
 		String writeDriver13 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(92,21,'Hans-Bernd-Sebastian-Ludwig-Martin-Hans','Meier von und zu Hohenzollern',0);";
 		
@@ -133,5 +147,6 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		dba.rawQuery(writeTeam1);
 		dba.rawQuery(writeTeam2);
 	}
+	
 	
 }

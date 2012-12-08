@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/menuItemRefresh" 
-        android:title="Refresh" />
-    <item android:id="@+id/miRegInsertDummyData" android:title="Sampledata in DB schreiben"></item>
-    
+    <item android:id="@+id/menuItemRefresh" android:title="@string/menu_reg_refresh" />
+    <item android:id="@+id/miRegInsertDummyData" android:title="@string/menu_reg_insertDummyData"/>
+    <item android:id="@+id/requestRegistrationDataUpdate" android:title="@string/menu_reg_requestDataUpdate"/>
 
 </menu>

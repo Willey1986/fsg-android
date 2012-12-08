@@ -8,6 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
@@ -98,17 +101,18 @@ public class DTNService extends IntentService {
         	
         }else if (SEND_INTENT.equals(action)){
         	
-    		SingletonEndpoint destination = intent.getParcelableExtra("singletonendpoint");
-    		String jsonData = intent.getParcelableExtra("jsondata");
+        	String destinationString = intent.getStringExtra("singletonendpoint");
+    		SingletonEndpoint destination = new SingletonEndpoint(destinationString);
+    		String jsonData = intent.getStringExtra("jsondata");
 
     		try {
 				if (!mClient.getSession().send(destination, 3600, jsonData.getBytes())){
 					throw new Exception("Can not send the JSON-Data");
 				}else{
-					Log.i(TAG, "JSON-Data sended.");
+					Log.i(TAG, "Data sended to backend.");
 				}
 			} catch (Exception e) {
-				Log.e(TAG, "Can not send the JSON-Data.", e);
+				Log.e(TAG, "Can not send the Data to backend.", e);
 			}
         	
         }else if (REGISTRATION_INTENT.equals(action)){
@@ -309,9 +313,8 @@ public class DTNService extends IntentService {
 			Log.e(TAG, "Can not create a file.", e );
 		}
 	}
-	
-	
-	
+
+
 	/**
 	 * Diese Methode wird nur zum Testen gebraucht, bis die interne Datenbank benutzt werden kann.
 	 * @return Gibt den Pfad zurück, wo empfangene Daten als Datei gespeichert werden sollen.
