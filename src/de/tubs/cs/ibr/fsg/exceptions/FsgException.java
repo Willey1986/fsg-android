@@ -3,11 +3,13 @@ package de.tubs.cs.ibr.fsg.exceptions;
 public class FsgException extends Exception{
 	private static final long serialVersionUID = -5809846041471649169L;
 	
-	public static final int GENERIC_EXCEPTION = 0;
-	public static final int TAG_MEMORY_FULL   = 1;
-	public static final int TAG_WRONG_KEY     = 2;
-	public static final int NOT_NFC_SUPPORT   = 3;
-	public static final int NON_VALID_ID	  = 10;
+	public static final int GENERIC_EXCEPTION 	= 0;
+	public static final int TAG_MEMORY_FULL   	= 1;
+	public static final int TAG_WRONG_KEY     	= 2;
+	public static final int NOT_NFC_SUPPORT   	= 3;
+	public static final int NON_VALID_ID	  	= 10;
+	public static final int CHAR_ENCODE_FAILED	= 11;
+	public static final int CHAR_DECODE_FAILED	= 12;
 	
 	public static final int END_OF_ROAD       = 2000; // Nur zum Testen....
 
