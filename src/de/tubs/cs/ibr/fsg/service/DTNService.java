@@ -8,13 +8,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import android.app.IntentService;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+import de.tubs.cs.ibr.fsg.R;
 import de.tubs.ibr.dtn.api.Block;
 import de.tubs.ibr.dtn.api.Bundle;
 import de.tubs.ibr.dtn.api.BundleID;
@@ -57,9 +62,32 @@ public class DTNService extends IntentService {
 		try {
 			mClient.initialize(this, mRegistration);
 		} catch (ServiceNotAvailableException e) {
-			Log.e(TAG, null, e);
+			Log.e(TAG, "IBR-DTN-Daemon not are running", e);
+			
+//			Toast.makeText(getApplicationContext(), R.string.error_not_ibr_dtn, Toast.LENGTH_LONG).show();
+			LayoutInflater inflater = (LayoutInflater) this.getApplicationContext().getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+			View layout = inflater.inflate(R.layout.toast_layout, null);
+			TextView text = (TextView) layout.findViewById(R.id.text);
+			text.setText(R.string.error_not_ibr_dtn);
+			Toast toast = new Toast(getApplicationContext());
+			toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+			toast.setDuration(Toast.LENGTH_LONG);
+			toast.setView(layout);
+			toast.show();
+			
 		} catch (SecurityException ex) {
-			Log.e(TAG, null, ex);
+			Log.e(TAG, "SecurityException", ex);
+			
+//			Toast.makeText(getApplicationContext(), R.string.error_security_exception, Toast.LENGTH_LONG).show();
+			LayoutInflater inflater = (LayoutInflater) this.getApplicationContext().getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+			View layout = inflater.inflate(R.layout.toast_layout, null);
+			TextView text = (TextView) layout.findViewById(R.id.text);
+			text.setText(R.string.error_security_exception);
+			Toast toast = new Toast(getApplicationContext());
+			toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+			toast.setDuration(Toast.LENGTH_LONG);
+			toast.setView(layout);
+			toast.show();
 		}
 	}
 

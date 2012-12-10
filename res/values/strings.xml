@@ -24,7 +24,10 @@
     <string name="error_tag_memory_full">Der Tag ist voll, bitte tauschen Sie ihn aus.</string>
     <string name="error_tag_wrong_key">Fehler beim Lesen des Tags, eventuell ist der Key falsch.</string>
     <string name="error_end_of_road">Tut uns Leid, hier wird noch gebaut. ;-)</string>
-    <string name="not_nfc_support">Keine NFC-Unterstützung auf dem Gerät.</string>
+    <string name="error_not_nfc_support">Keine NFC-Unterstützung auf dem Gerät.</string> 
+    <string name="error_not_ibr_dtn">IBR-DTN-Daemon inaktiv. Bitte starten Sie ihn (ggf. installieren).</string>
+    <string name="error_security_exception">"Permission"-Fehler. Deinstallieren und installieren Sie die App erneut!</string> 
+    
     <string name="ok">OK</string>
     
     <!-- Briefing (sowohl ein- als auch auschecken) Strings -->

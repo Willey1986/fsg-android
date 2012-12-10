@@ -13,9 +13,9 @@
     <uses-permission android:name="android.permission.NFC" />
     
      <!--
-     <uses-feature android:name="android.hardware.nfc" android:required="true" />
-     Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein soll
-     -->
+<uses-feature android:name="android.hardware.nfc" android:required="true" />
+Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein soll
+-->
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -29,10 +29,10 @@
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />      
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-            	<action android:name="android.nfc.action.TECH_DISCOVERED"/>
+             <action android:name="android.nfc.action.TECH_DISCOVERED"/>
             </intent-filter>
             <meta-data android:name="android.nfc.action.TECH_DISCOVERED" android:resource="@xml/filter_nfc"/>
         </activity>
@@ -43,45 +43,45 @@
         </activity>
 
         <activity android:name=".activities.RegistrationTeamSelectionActivity"
-            android:label="@string/main_activity_button_1" 
+            android:label="@string/main_activity_button_1"
             android:icon="@drawable/icon_register"></activity>
         
         <activity android:name=".activities.RegistrationDriverSelectionActivity"
-            android:label="@string/main_activity_button_1" 
+            android:label="@string/main_activity_button_1"
             android:icon="@drawable/icon_register"></activity>
         
         <activity android:name=".activities.BriefingCheckInActivity"
-            android:label="@string/main_activity_button_2" 
+            android:label="@string/main_activity_button_2"
             android:icon="@drawable/icon_briefing_in">
         </activity>
         
         <activity android:name=".activities.BriefingCheckOutActivity"
-            android:label="@string/main_activity_button_3" 
+            android:label="@string/main_activity_button_3"
             android:icon="@drawable/icon_briefing_out"></activity>
 
         <activity android:name=".activities.RunActivity"
-            android:label="@string/main_activity_button_4" 
+            android:label="@string/main_activity_button_4"
             android:icon="@drawable/icon_run"></activity>
                 
         <activity android:name=".activities.InfoTerminalActivity"
-            android:label="@string/main_activity_button_5" 
+            android:label="@string/main_activity_button_5"
             android:icon="@drawable/icon_infoterminal"></activity>
         
         <activity android:name=".activities.ErrorActivity"
-            android:label="@string/title_activity_error" 
+            android:label="@string/title_activity_error"
             android:icon="@drawable/icon_error"
             android:noHistory="true">
         </activity>
         
-        <service android:name=".service.DTNService"></service>
+        <service android:name=".service.DTNService" android:process=".fsg_service"></service>
         
         <receiver android:enabled="true" android:name=".service.DTNReceiver">
- 	        <intent-filter>
-	            <action android:name="de.tubs.ibr.dtn.intent.RECEIVE" />
-	            <category android:name="de.tubs.cs.ibr.fsg" />
-	        </intent-filter>
-	    </receiver>
-	    
+  <intent-filter>
+<action android:name="de.tubs.ibr.dtn.intent.RECEIVE" />
+<category android:name="de.tubs.cs.ibr.fsg" />
+</intent-filter>
+</receiver>
+
     </application>
 
 </manifest>

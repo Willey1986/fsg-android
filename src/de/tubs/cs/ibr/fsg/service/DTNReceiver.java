@@ -24,5 +24,4 @@ public class DTNReceiver extends BroadcastReceiver{
 		}
 	}
 
-	
 }
