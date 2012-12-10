@@ -7,6 +7,7 @@ public class FsgException extends Exception{
 	public static final int TAG_MEMORY_FULL   = 1;
 	public static final int TAG_WRONG_KEY     = 2;
 	public static final int NOT_NFC_SUPPORT   = 3;
+	public static final int NON_VALID_ID	  = 10;
 	
 	public static final int END_OF_ROAD       = 2000; // Nur zum Testen....
 

@@ -47,7 +47,17 @@ public class NfcData {
 	/*
 	 * generates the data blocks for the reg. data
 	 */
-	public static byte[][] generateDataRegistration(Driver theDriver) throws FsgException, IOException {
+	public static byte[][] generateDataRegistration(Driver theDriver) throws FsgException, IOException {	
+		//check for working driver object
+		try{
+			theDriver.getTeam();
+		} catch (Exception  e) {
+			throw new FsgException( e, "NfcData::generateDataRegistration", FsgException.NON_VALID_ID);
+		}
+
+		//generate binary code with explicit size
+		byte[][] outputBlock = new byte[2][16];
+		
 		//convert the IDs now
 		byte contentID 		= 10;
 				
@@ -56,8 +66,7 @@ public class NfcData {
 		short teamID 		= theDriver.getTeam_id();
 		short eventID 		= 1; //TODO: EventID über Einstellungen festlegbar ?
 
-		//generate binary code with explicit size
-		byte[][] outputBlock = new byte[2][16];
+
 		
 		//System.out.println("NfcData#generateDataRegistration failed");
 
