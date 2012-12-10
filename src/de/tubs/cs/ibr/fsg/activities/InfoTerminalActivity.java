@@ -22,7 +22,7 @@ public class InfoTerminalActivity extends Activity {
 		
 		try {
 			//NfcData.interpretData()
-			NfcData.generateDataRegistration(test.getDriver((short)18618));
+			NfcData.generateDataRegistration(test.getDriver((short)80));
 		} catch (FsgException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
