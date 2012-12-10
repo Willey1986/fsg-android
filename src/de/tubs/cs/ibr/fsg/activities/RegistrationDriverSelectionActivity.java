@@ -13,12 +13,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
+/**
+ * Beinhaltet den Ablauf der Fahrerauswahl und initalisiert die Speicherung der Initialisierungsdaten auf dem Armband
+ * @author Willem Almstedt
+ *
+ */
 public class RegistrationDriverSelectionActivity extends Activity{
 	
-	TableLayout tblRegDrivers;
 	DBAdapter dba;
 	String teamName;
 	short teamId;
@@ -30,7 +33,7 @@ public class RegistrationDriverSelectionActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_registration_driver_selection);
 		
-		Bundle extras = getIntent().getExtras();
+		Bundle extras = getIntent().getExtras();				//Von der TeamSelection Ÿbergebene Variablen abfragen
 		teamName = extras.getString("teamName");
 		teamId = extras.getShort("teamID");
 		llDriversList = (LinearLayout) findViewById(R.id.llDriversList);
@@ -38,7 +41,7 @@ public class RegistrationDriverSelectionActivity extends Activity{
 		txtSelectedTeam = (TextView) findViewById(R.id.txtSelectedTeam);
 		txtSelectedTeam.setText(" "+teamName);
 		
-		dba = new DBAdapter(this);
+		dba = new DBAdapter(this);								//Alle Fahrer eines Teams aus der Datenbank auslesen
 		ArrayList<Driver> drivers = dba.getAllDriversByTeamID(teamId);
 		
 		if(drivers.size()>0) {

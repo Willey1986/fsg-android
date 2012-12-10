@@ -1,3 +1,7 @@
+/**
+ * Beinhaltet sämtliche Logik zur Auswahl des Teams bei der Registrierung
+ */
+
 package de.tubs.cs.ibr.fsg.activities;
 
 import java.util.ArrayList;
@@ -13,25 +17,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.*;
 import android.view.View.OnClickListener;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.widget.*;
 
 public class RegistrationTeamSelectionActivity extends Activity {
 	
 	TableLayout regTable;
-	
 	DBAdapter dba = new DBAdapter(this);
 	
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_registration_team_selection);
 		regTable = (TableLayout) findViewById(R.id.regTable);
 		ArrayList<Team> teams = dba.getAllTeams();
-		for (int i = 0; i < teams.size(); i++) {
-			final Team team = teams.get(i);
+		for (int i = 0; i < teams.size(); i++) {					//Befüllt die Tabelle der Activity mit Inhalten (Teams) aus der DB
+			final Team team = teams.get(i);							//TODO: Erstellen eines eigenen Widgets das Team-Objekte empfängt und darstellt
 			TableRow row = new TableRow(this);
 			TextView teamId = new TextView(this);
 			TextView teamName = new TextView(this);
@@ -68,11 +68,18 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * Erstellt das Optionsmenü der Registrierungs-Activity
+	 */
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.registration, menu);
 	    return true;
 	}
 	
+	
+	/**
+	 * Weist den Einträgen im Optionsmenü die jeweiligen Funktionen zu
+	 */
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menuItemRefresh:
@@ -85,13 +92,18 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		return false;
 	}
 	
+	
+	/**
+	 * Fragt aktuelle Daten über das Netz an und schreibt sie in die Datenbank
+	 */
 	public void refreshDB() {
-		Driver driver = new Driver((short) 12312, (short) 12312, "Horst", "Fuchs", (short) 0);
-		Team team = new Team((short) 1, "Test", "Test Team", "BS", "TU",(short) 12, (short) 14, (short) 0, (short) 1, "TU Racing");
-		dba.writeDriverToDB(driver);	
-		dba.writeTeamToDB(team);
+		//TODO
 	}
 	
+	
+	/**
+	 * Schreibt Beispieldaten (13 Fahrer, 2 Teams) in die Datenbank
+	 */
 	public void writeSampleDataToDb() {
 		String deleteAllDrivers = "DELETE FROM " + DBHelper.TABLE_DRIVERS + ";";
 		String deleteAllTeams = "DELETE FROM " + DBHelper.TABLE_TEAMS + ";";
