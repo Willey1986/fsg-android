@@ -51,7 +51,8 @@ public class RegistrationDriverSelectionActivity extends Activity{
 				driverPanel.setOnClickListener(new OnClickListener() {
 					
 					public void onClick(View v) {
-							dialog.setMessage("Fahrer " + driver.getFirst_name() + " " + driver.getLast_name() + " ausgewählt\n\nIm nächsten Schritt erfolgt die Codierung");
+							dialog.setMessage("Fahrer " + driver.getFirst_name() + " " + driver.getLast_name() + " ausgewählt\n\n ID = " 
+									+ driver.getUser_id());
 							dialog.show();
 							//TODO driver Codieren um zu verschlüsseln und aufs Band zu schreiben
 					}
