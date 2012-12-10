@@ -50,9 +50,9 @@ public class NfcData {
 	public static byte[][] generateDataRegistration(Driver theDriver) throws FsgException, IOException {	
 		//check for working driver object
 		try{
-			theDriver.getTeam();
+			theDriver.getTeam_id();
 		} catch (Exception  e) {
-			throw new FsgException( e, "NfcData::generateDataRegistration", FsgException.NON_VALID_ID);
+			throw new FsgException( e, "NfcData", FsgException.NON_VALID_ID);
 		}
 
 		//generate binary code with explicit size
