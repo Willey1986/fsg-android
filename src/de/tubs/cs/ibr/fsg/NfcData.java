@@ -51,10 +51,10 @@ public class NfcData {
 		//convert the IDs now
 		byte contentID 		= 10;
 				
-		short fahrzeugID 	= 0; //TODO:theDriver.get;
-		short userID 		= (short) theDriver.getUser_id();
-		short teamID 		= (short) theDriver.getTeam_id();
-		short eventID 		= 1;
+		short fahrzeugID 	= theDriver.getTeam().getCarNr();
+		short userID 		= theDriver.getUser_id();
+		short teamID 		= theDriver.getTeam_id();
+		short eventID 		= 1; //TODO: EventID über Einstellungen festlegbar ?
 
 		//generate binary code with explicit size
 		byte[][] outputBlock = new byte[2][16];
@@ -80,7 +80,8 @@ public class NfcData {
 		String prename, lastname;
 		
 		try{
-			prename	= theDriver.getFirst_name().substring(0, 16);
+			prename	= theDriver.getFirst_name(); 
+				if(prename.length()>15) prename = prename.substring(0, 16);
 			lastname = theDriver.getLast_name().substring(0, 1)+".";
 		} catch (Exception  e) {
 			throw new FsgException( e, "NfcData", FsgException.GENERIC_EXCEPTION);
