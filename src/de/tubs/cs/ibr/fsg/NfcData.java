@@ -47,7 +47,7 @@ public class NfcData {
 	/*
 	 * generates the data blocks for the reg. data
 	 */
-	public static byte[][] generateDataRegistration(Driver theDriver) throws FsgException, IOException {	
+	public static byte[][] generateDataRegistration(Driver theDriver) throws FsgException {	
 		//check for working driver object
 		try{
 			theDriver.getTeam();
@@ -103,7 +103,11 @@ public class NfcData {
 		 * >= 2Byte pro Buchstabe bei UTF-16 (UTF-16LE)
 		 * 	Umlaute immer 2Byte
 		 */
-		outputBlock[1] = fullname.getBytes("UTF-8"); 
+		try {
+			outputBlock[1] = fullname.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new FsgException( e, "NfcData::generateDataRegistration", FsgException.GENERIC_EXCEPTION);
+		} 
 		
 		return outputBlock;
 	}
