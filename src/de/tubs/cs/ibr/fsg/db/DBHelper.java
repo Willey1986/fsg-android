@@ -38,8 +38,8 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String BLACKLISTED_DEVICES_COLUMN_TIMESTAMP = "timestamp";
 	
 
-	public static final String DATABASE_NAME = "fsg.db";
-	public static final int DATABASE_VERSION = 3;
+	public static final String DATABASE_NAME = "fsgdata.db";
+	public static final int DATABASE_VERSION = 5;
 
 	public static final String TABLE_CLASSES_CREATE = "CREATE TABLE " + TABLE_CLASSES + " (" 
 			+ CLASSES_COLUMN_CLASS + " TEXT NOT NULL,"

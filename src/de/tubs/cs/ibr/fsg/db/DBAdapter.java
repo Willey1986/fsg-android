@@ -103,6 +103,7 @@ public class DBAdapter {
 				+ ";";
 		open();
 		Cursor cursor = database.rawQuery(sqlDriver, null);
+		close();
 		
 		if(cursor.moveToFirst()) {
 			Driver driver = new Driver();

@@ -10,6 +10,6 @@
     
     <!-- Um die Knopfecken zu runden -->
     <corners
-        android:radius="4dip" />
+        android:radius="@dimen/grid01" />
 
 </shape>

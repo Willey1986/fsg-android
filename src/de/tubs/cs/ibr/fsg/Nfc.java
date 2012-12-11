@@ -56,6 +56,12 @@ public class Nfc {
 			(byte) '7', (byte) '8', (byte) '9', (byte) 'A', (byte) 'B',
 			(byte) 'C', (byte) 'D', (byte) 'E', (byte) 'F' };
 
+
+	/**
+	 * Passwort als Konstante
+	 */
+	final static String PASSWORD = "test";
+	
 	/**
 	 * Konstruktor
 	 * @param context
@@ -189,13 +195,16 @@ public class Nfc {
 		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
 			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			MifareClassic tag = MifareClassic.get(tagFromIntent);
+			
 			byte[] data;
 			try {
 				tag.connect();
 				String[] cardData = new String[tag.getSectorCount()];
 				for (int i = 0; i < tag.getBlockCount(); i++){
 					if (tag.authenticateSectorWithKeyA(tag.blockToSector(i), key)){
-						data = tag.readBlock(i);
+						
+						//decrypt data in read method
+						data = read(tag.readBlock(i));
 						cardData[tag.blockToSector(i)] += getHexString(data, data.length);
 					}
 				}
@@ -225,9 +234,12 @@ public class Nfc {
 		String cardData = null;
 		if (tag.isConnected()){
 			try{
+				
 				for (int i = tag.sectorToBlock(sectorIndex); i < (tag.sectorToBlock(sectorIndex)+tag.getBlockCountInSector(sectorIndex)); i++){
 					if (tag.authenticateSectorWithKeyA(sectorIndex, key)){
-						data = tag.readBlock(i);
+						
+						//decrypt blocks using read method
+						data = read(tag.readBlock(i));
 						cardData = cardData.concat(getHexString(data, data.length));
 					}
 				}
@@ -263,11 +275,15 @@ public class Nfc {
 				tag.connect();
 				int emptyBlock = getEmptyBlock(tag, key);//wirft Exception, warum?
 				int firstBlock = emptyBlock;
+				
 				for (int i = 0; i < content.length; i++){
 					if (tag.authenticateSectorWithKeyA(tag.blockToSector(emptyBlock), key)){
 						if (isEmpty(tag, key, emptyBlock)){//nur wenn Block tatsächlich leer wird geschrieben
 							System.out.println("block is empty");
-							tag.writeBlock(emptyBlock, content[i]);
+							
+							//write encrypted data
+							tag.writeBlock(emptyBlock, write(content[i]));
+							
 							System.out.println("done writing");
 							emptyBlock++;
 						} else {
@@ -477,6 +493,20 @@ public class Nfc {
 			string += stringArray[i]+" ";
 		}
 	    return string;
+	}
+	
+	private static byte[] write(byte[] raw) throws FsgException{
+		SecurityManager sManager = new SecurityManager(PASSWORD);
+		
+		return sManager.encryptString(raw);
+		//return raw;
+	}
+	
+	private static byte[] read(byte[]raw)throws FsgException{
+		SecurityManager sManager = new SecurityManager(PASSWORD);
+		
+		return sManager.decryptString(raw);
+		//return raw;
 	}
 
 }
