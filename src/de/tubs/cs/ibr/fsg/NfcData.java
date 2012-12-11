@@ -1,5 +1,4 @@
-/** 04.12.2012 - v2
- * 	t.luedtke@tu-bs.de
+/**	t.luedtke@tu-bs.de
  *  This class generates the raw data, which then is written on the tags or interpret inputBlock vice versa.
  */
 package de.tubs.cs.ibr.fsg;
@@ -71,7 +70,7 @@ public class NfcData {
 		//convert the IDs now
 		byte contentID 		= 10;
 				
-		short fahrzeugID 	= theDriver.getTeam().getCarNr();
+		short fahrzeugID 	= theDriver..getTeam().getCarNr();
 		short userID 		= theDriver.getUser_id();
 		short teamID 		= theDriver.getTeam_id();
 		short eventID 		= 1; //TODO: EventID über Einstellungen festlegbar ?
