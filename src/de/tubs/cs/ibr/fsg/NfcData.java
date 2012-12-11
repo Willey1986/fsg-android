@@ -1,12 +1,11 @@
-/** 04.12.2012 - v2
- * 	t.luedtke@tu-bs.de
+/**	t.luedtke@tu-bs.de
  *  This class generates the raw data, which then is written on the tags or interpret inputBlock vice versa.
  */
 package de.tubs.cs.ibr.fsg;
 
 import java.io.*;
 //import java.io.IOException;
-import java.security.SecureRandom;
+//import java.security.SecureRandom;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
@@ -14,45 +13,65 @@ public class NfcData {
 	//at the beginning of each sector there is a informationblock to get
 	
 	//constants for the encryption/decryption
-	private final static String SECUREKEY = "KEY";
+	//private final static String SECUREKEY = "KEY";
 	
 	/* reads out & converts the binary encoded data
 	 */
-	public static void interpretData(byte[][] inputBlock){
-		System.out.println("ContentID: "+Byte.toString(inputBlock[0][0]));
+	public static Driver interpretData(byte[][] inputBlock) throws FsgException{
+		Driver outputDriver = new Driver();
 		
-		//TODO: needs to decrypt data before returning
-		
-		switch(inputBlock[0][0]){
-        	case 10: //registrierungsdaten IDs
-        		short[] test = new short[8];
-        		for(int i=1;i<15;i+=2){
-        			test[i/2] = (short) (((inputBlock[0][i+1]&0xFF) << 8) | (inputBlock[0][i]&0xFF));
-        		}
-        		System.out.println("fahrzeugID: "+test[0]);
-        		System.out.println("userID: "+test[1]);
-        		System.out.println("teamID: "+test[2]);
-        		System.out.println("eventID: "+test[3]);
-        		break;
-        	case 11: //registrierungsdaten name
-        		break;
-        	case 20: //more
-        		break;
-        	default:
-        		System.out.println("Error: contentID not readable!");
-        		break;
-        }
+		//read out the complete inputArray
+		for(int i=0;i<inputBlock.length;i++){
+				//System.out.println("ContentID: "+Byte.toString(inputBlock[i][0]));
+			
+			switch(inputBlock[i][0]){
+				case 10: //registrierungsdaten IDs
+					short[] test = new short[8];
+					for(int j=1;j<15;j+=2){
+						test[j/2] = (short) (((inputBlock[i][j+1]&0xFF) << 8) | (inputBlock[i][j]&0xFF));
+					}					
+					outputDriver.setTeam_id(test[2]);
+					outputDriver.setUser_id(test[1]);
+					outputDriver.getTeam().setCarNr(test[0]);
+					//TODO: want to set eventID to Object
+					
+					System.out.println("fahrzeugID: "+test[0]);
+					System.out.println("userID: "+test[1]);
+					System.out.println("teamID: "+test[2]);
+					System.out.println("eventID: "+test[3]);
+					break;
+				case 11: //registrierungsdaten name        		
+					try{
+						String str = new String(inputBlock[i], "UTF-8");
+						str = str.substring(1, str.length());
+
+						// extract first and lastname from the string
+						outputDriver.setFirst_name(str.substring(0,str.lastIndexOf(" ")));
+						outputDriver.setLast_name(str.substring(str.lastIndexOf(" ")+1));
+						System.out.println("extraced Name: "+ outputDriver.getFirst_name()+" "+outputDriver.getLast_name());
+					} catch (Exception e) {
+						throw new FsgException( e, "NfcData", FsgException.CHAR_DECODE_FAILED);
+					}
+					break;
+				case 20: //more
+					break;
+				default:
+					System.out.println("Error: contentID "+inputBlock[i][0]+" not readable!");
+					break;
+			}
+		}
+		return outputDriver;
 	}
 
 	/*
 	 * generates the data blocks for the reg. data
 	 */
-	public static byte[][] generateDataRegistration(Driver theDriver) throws FsgException {	
+	public static byte[][] generateDataRegistration(Driver theDriver) throws FsgException, IOException {	
 		//check for working driver object
 		try{
-			theDriver.getTeam();
+			theDriver.getTeam_id();
 		} catch (Exception  e) {
-			throw new FsgException( e, "NfcData::generateDataRegistration", FsgException.NON_VALID_ID);
+			throw new FsgException( e, "NfcData", FsgException.NON_VALID_ID);
 		}
 
 		//generate binary code with explicit size
@@ -66,12 +85,7 @@ public class NfcData {
 		short teamID 		= theDriver.getTeam_id();
 		short eventID 		= 1; //TODO: EventID über Einstellungen festlegbar ?
 
-
-		
-		//System.out.println("NfcData#generateDataRegistration failed");
-
 		outputBlock[0][0] = contentID;
-		
 		outputBlock[0][1] = (byte)(fahrzeugID & 0xff);
 		outputBlock[0][2] = (byte)((fahrzeugID >> 8) & 0xff);
 		outputBlock[0][3] = (byte)(userID & 0xff);
@@ -96,18 +110,15 @@ public class NfcData {
 			throw new FsgException( e, "NfcData", FsgException.GENERIC_EXCEPTION);
 		}
 		
-		String fullname = prename+" "+lastname;		
-		System.out.println("NfcData#Name: "+fullname);
+		String fullname = " "+prename+" "+lastname;	// whitespace at first position is essential; space for the contentID	
+			//System.out.println("NfcData#Name: "+fullname);
 		
 		/* >= 1Byte pro Buchstabe bei UTF-8
 		 * >= 2Byte pro Buchstabe bei UTF-16 (UTF-16LE)
 		 * 	Umlaute immer 2Byte
-		 */
-		try {
-			outputBlock[1] = fullname.getBytes("UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			throw new FsgException( e, "NfcData::generateDataRegistration", FsgException.GENERIC_EXCEPTION);
-		} 
+		 */						
+		outputBlock[1] = fullname.getBytes("UTF-8");
+		outputBlock[1][0] = contentID; //write contentID AFTER text, to overwrite whitespace
 		
 		return outputBlock;
 	}
