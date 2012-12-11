@@ -103,7 +103,6 @@ public class DBAdapter {
 				+ ";";
 		open();
 		Cursor cursor = database.rawQuery(sqlDriver, null);
-		close();
 		
 		if(cursor.moveToFirst()) {
 			Driver driver = new Driver();
@@ -124,9 +123,11 @@ public class DBAdapter {
 			team.setEventClass(cursor.getShort(13));
 			team.setName_pits(cursor.getString(14));
 			driver.setTeam(team);
+			close();
 			return driver;
 		}
 		else
+			close();
 			return null;
 		
 	}
