@@ -5,7 +5,7 @@ package de.tubs.cs.ibr.fsg;
 
 import java.io.*;
 //import java.io.IOException;
-import java.security.SecureRandom;
+//import java.security.SecureRandom;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
@@ -13,12 +13,12 @@ public class NfcData {
 	//at the beginning of each sector there is a informationblock to get
 	
 	//constants for the encryption/decryption
-	private final static String SECUREKEY = "KEY";
+	//private final static String SECUREKEY = "KEY";
 	
 	/* reads out & converts the binary encoded data
 	 */
-	public static void interpretData(byte[][] inputBlock) throws FsgException{
-		//TODO: needs to decrypt data before returning
+	public static Driver interpretData(byte[][] inputBlock) throws FsgException{
+		Driver outputDriver = new Driver();
 		
 		//read out the complete inputArray
 		for(int i=0;i<inputBlock.length;i++){
@@ -29,7 +29,12 @@ public class NfcData {
 					short[] test = new short[8];
 					for(int j=1;j<15;j+=2){
 						test[j/2] = (short) (((inputBlock[i][j+1]&0xFF) << 8) | (inputBlock[i][j]&0xFF));
-					}
+					}					
+					outputDriver.setTeam_id(test[2]);
+					outputDriver.setUser_id(test[1]);
+					outputDriver.getTeam().setCarNr(test[0]);
+					//TODO: want to set eventID to Object
+					
 					System.out.println("fahrzeugID: "+test[0]);
 					System.out.println("userID: "+test[1]);
 					System.out.println("teamID: "+test[2]);
@@ -39,7 +44,11 @@ public class NfcData {
 					try{
 						String str = new String(inputBlock[i], "UTF-8");
 						str = str.substring(1, str.length());
-						System.out.println("extraced Name: "+ str);
+
+						// extract first and lastname from the string
+						outputDriver.setFirst_name(str.substring(0,str.lastIndexOf(" ")));
+						outputDriver.setLast_name(str.substring(str.lastIndexOf(" ")+1));
+						System.out.println("extraced Name: "+ outputDriver.getFirst_name()+" "+outputDriver.getLast_name());
 					} catch (Exception e) {
 						throw new FsgException( e, "NfcData", FsgException.CHAR_DECODE_FAILED);
 					}
@@ -51,6 +60,7 @@ public class NfcData {
 					break;
 			}
 		}
+		return outputDriver;
 	}
 
 	/*
@@ -70,7 +80,7 @@ public class NfcData {
 		//convert the IDs now
 		byte contentID 		= 10;
 				
-		short fahrzeugID 	= theDriver..getTeam().getCarNr();
+		short fahrzeugID 	= theDriver.getTeam().getCarNr();
 		short userID 		= theDriver.getUser_id();
 		short teamID 		= theDriver.getTeam_id();
 		short eventID 		= 1; //TODO: EventID über Einstellungen festlegbar ?
