@@ -11,10 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import de.tubs.cs.ibr.fsg.R;
-import de.tubs.cs.ibr.fsg.R.id;
-import de.tubs.cs.ibr.fsg.R.layout;
-import de.tubs.cs.ibr.fsg.R.menu;
-import de.tubs.cs.ibr.fsg.service.DTNService;
 
 
 public class MainActivity extends Activity {

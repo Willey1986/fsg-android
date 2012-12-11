@@ -17,10 +17,11 @@ public class DTNReceiver extends BroadcastReceiver{
 		String action = mIntent.getAction();
 		
 		if (action.equals(de.tubs.ibr.dtn.Intent.RECEIVE)){
-			Log.i(TAG, "receive intent");
+			Log.i(TAG, "incoming -receive intent-");
 			Intent newIntent = new Intent(mContext, DTNService.class);
 			newIntent.setAction(de.tubs.ibr.dtn.Intent.RECEIVE);
 			mContext.startService(newIntent);
+			
 		}
 	}
 

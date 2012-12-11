@@ -1,12 +1,11 @@
 package de.tubs.cs.ibr.fsg.activities;
 
-import de.tubs.cs.ibr.fsg.R;
-import de.tubs.cs.ibr.fsg.service.DTNService;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
+import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.service.DTNService;
 
 /**
  * Diese Activity ohne View brauchen wir, um die Registrierung des IBR-DTN-Service "nur" einmal
@@ -28,7 +27,7 @@ public class StartActivity extends Activity {
         // wird. Sonst werden weder der DTNService noch der DTNReceiver von IBR-DTN aktiviert, 
         // was zu Folge hat, dass keine Daten empfangen werden können.
 		Intent newIntent = new Intent(this, DTNService.class);
-		newIntent.setAction(DTNService.REGISTRATION_INTENT);
+		newIntent.setAction(de.tubs.cs.ibr.fsg.Intent.REGISTRATION);
 		startService(newIntent);
         
 		Log.i(TAG, "activity created.");

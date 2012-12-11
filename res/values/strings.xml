@@ -27,7 +27,6 @@
     <string name="error_not_nfc_support">Keine NFC-Unterstützung auf dem Gerät.</string> 
     <string name="error_not_ibr_dtn">IBR-DTN-Daemon inaktiv. Bitte starten Sie ihn (ggf. installieren).</string>
     <string name="error_security_exception">"Permission"-Fehler. Deinstallieren und installieren Sie die App erneut!</string> 
-    
     <string name="ok">OK</string>
     
     <!-- Briefing (sowohl ein- als auch auschecken) Strings -->
@@ -51,6 +50,11 @@
     <string name="btnRegSearch">Suchen</string>
     <string name="tblDriversName">Name</string>
     <string name="lbSelectedTeam">Team: </string>
+    
+    <!--  Notification Strings-->
+    <string name="noti_title">FSG - Update erhalten</string>
+    <string name="noti_text_register_data">Registrierungsdaten</string>
+    <string name="noti_text_blacklist">Blacklist</string>
 
 
 </resources>

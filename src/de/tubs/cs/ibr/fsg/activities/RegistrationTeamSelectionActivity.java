@@ -6,19 +6,21 @@ package de.tubs.cs.ibr.fsg.activities;
 
 import java.util.ArrayList;
 
-import de.tubs.cs.ibr.fsg.R;
-import de.tubs.cs.ibr.fsg.db.DBAdapter;
-import de.tubs.cs.ibr.fsg.db.DBHelper;
-import de.tubs.cs.ibr.fsg.db.models.Driver;
-import de.tubs.cs.ibr.fsg.db.models.Team;
-import de.tubs.cs.ibr.fsg.service.DTNService;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.db.DBAdapter;
+import de.tubs.cs.ibr.fsg.db.DBHelper;
+import de.tubs.cs.ibr.fsg.db.models.Team;
+import de.tubs.cs.ibr.fsg.service.DTNService;
 
 public class RegistrationTeamSelectionActivity extends Activity {
 	
@@ -104,7 +106,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 
 	private void requestRegistrationUpdate() {
 		Intent mIntent = new Intent(this, DTNService.class);
-		mIntent.setAction(DTNService.SEND_INTENT);
+		mIntent.setAction(de.tubs.cs.ibr.fsg.Intent.SEND_DATA);
 		mIntent.putExtra("singletonendpoint", "dtn://mulita-fsg.dtn/fsg");
 		mIntent.putExtra("jsondata", "reg_update");
 		startService(mIntent);

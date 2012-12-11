@@ -8,15 +8,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.tubs.cs.ibr.fsg.R;
@@ -35,11 +38,9 @@ import de.tubs.ibr.dtn.api.TransferMode;
 
 public class DTNService extends IntentService {
 
-	private static final String TAG                   = "DTNService";
-	private static final String MARK_DELIVERED_INTENT = "de.tubs.cs.ibr.fsg.MARK_DELIVERED";
-	public  static final String SEND_INTENT           = "de.tubs.cs.ibr.fsg.SEND_DATA";
-	public  static final String REGISTRATION_INTENT   = "de.tubs.cs.ibr.fsg.REGISTRATION";
+	private static final String TAG = "DTNService";
 	public  static final GroupEndpoint FSG_GROUP_EID  = new GroupEndpoint("dtn://fsg.dtn/broadcast");
+	
 	private DTNClient mClient = null;
 	private Registration mRegistration = null;
 
@@ -115,7 +116,7 @@ public class DTNService extends IntentService {
 				Log.e(TAG, "Can not query for bundle", ex);
 			}
 			
-		}else if (MARK_DELIVERED_INTENT.equals(action)){
+		}else if (de.tubs.cs.ibr.fsg.Intent.MARK_DELIVERED.equals(action)){
         	BundleID bundleid = intent.getParcelableExtra("bundleid");
         	if (bundleid == null) {
         		Log.e(TAG, "Intent to mark a bundle as delivered, but no bundle ID given");
@@ -127,7 +128,7 @@ public class DTNService extends IntentService {
         		}	
         	}
         	
-        }else if (SEND_INTENT.equals(action)){
+        }else if (de.tubs.cs.ibr.fsg.Intent.SEND_DATA.equals(action)){
         	
         	String destinationString = intent.getStringExtra("singletonendpoint");
     		SingletonEndpoint destination = new SingletonEndpoint(destinationString);
@@ -143,7 +144,7 @@ public class DTNService extends IntentService {
 				Log.e(TAG, "Can not send the Data to backend.", e);
 			}
         	
-        }else if (REGISTRATION_INTENT.equals(action)){
+        }else if (de.tubs.cs.ibr.fsg.Intent.REGISTRATION.equals(action)){
         	// Hier passiert nichts Zusätzliches. Die Registrierung in der Methode 
         	// onCreated() reicht aus (...mRegistration = new Registration("fsg");...)
         	// -->  onCreated() wird nämlich vorher schon ausgeführt.
@@ -169,7 +170,7 @@ public class DTNService extends IntentService {
 			BundleID receivedBundleID = new BundleID(this.currentBundle);
 
 			Intent mIntent = new Intent(DTNService.this, DTNService.class);
-			mIntent.setAction(MARK_DELIVERED_INTENT);
+			mIntent.setAction(de.tubs.cs.ibr.fsg.Intent.MARK_DELIVERED);
 			mIntent.putExtra("bundleid", receivedBundleID);
 			startService(mIntent);
 			this.currentBundle = null;
@@ -231,10 +232,9 @@ public class DTNService extends IntentService {
 
 		public void endBundle() {
 			if (payloadFile != null) {
-				Log.i(TAG, "New JSON-File received.");
+				//Log.i(TAG, "New JSON-File received.");
 
 				final Bundle receivedBundle = currentBundle;
-				//DTNService.storeTempfile(payloadFile);
 
 				try {
 					mClient.getSession().delivered(new BundleID(receivedBundle));
@@ -279,6 +279,9 @@ public class DTNService extends IntentService {
 
 			if (payloadFile != null) {
 				DTNService.storeTempFile(payloadFile);
+				Log.i(TAG, "New JSON-File received.");
+				createNotification();
+				
 				payloadFile.delete();
 				payloadFile = null;
 			}
@@ -311,6 +314,27 @@ public class DTNService extends IntentService {
 		}
 	};
 
+	
+	/**
+	 * 
+	 */
+	protected void createNotification() {
+
+		Resources res = getResources();
+		Notification noti = new Notification.Builder(this)
+				.setContentTitle(res.getString(R.string.noti_title))
+				.setContentText(res.getString(R.string.noti_text_register_data))
+				.setSmallIcon(R.drawable.icon_register)
+				.setLargeIcon(
+						BitmapFactory.decodeResource(res, R.drawable.ic_launcher)).getNotification();
+
+		noti.defaults |= Notification.DEFAULT_SOUND;
+		noti.defaults |= Notification.DEFAULT_VIBRATE;
+		noti.flags |= Notification.FLAG_AUTO_CANCEL;
+
+		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		notificationManager.notify(0, noti);
+	}
 	
 	
 	/**
