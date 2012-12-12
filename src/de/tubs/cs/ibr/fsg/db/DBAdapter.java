@@ -5,12 +5,14 @@ import java.util.*;
 import org.json.*;
 
 import de.tubs.cs.ibr.fsg.db.models.*;
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 public class DBAdapter {
 	
@@ -95,6 +97,11 @@ public class DBAdapter {
 		}
 	}
 	
+	/**
+	 * List einen einzelnen Fahrer anhand der seiner ID aus der Datenbank aus
+	 * @param driverID = FahrerID
+	 * @return = der gewünschte Fahrer
+	 */
 	public Driver getDriver(short driverID) {
 		String sqlDriver = "SELECT * FROM " + DBHelper.TABLE_DRIVERS
 				+ " CROSS JOIN " + DBHelper.TABLE_TEAMS 
@@ -128,10 +135,13 @@ public class DBAdapter {
 		}
 		else
 			close();
-			return null;
-		
+			return null;	
 	}
 	
+	/**
+	 * List alle Fahrer aus der Datenbank aus und gibt sie in einer ArrayList zurück
+	 * @return = ArrayList mit sämtlichen in der DB vorhandenen Teams
+	 */
 	public ArrayList<Driver> getAllDrivers() {
 		ArrayList<Driver> drivers = new ArrayList<Driver>();
 		
@@ -147,7 +157,7 @@ public class DBAdapter {
 				driver.setFirst_name(cursor.getString(2));
 				driver.setLast_name(cursor.getString(3));
 				driver.setFemale((short) cursor.getShort(4));	
-				
+				driver.setTeam(getTeam(driver.getTeam_id()));
 				drivers.add(driver);
 			} while(cursor.moveToNext());
 		}
@@ -156,6 +166,11 @@ public class DBAdapter {
 		return drivers;
 	}
 	
+	/**
+	 * Liest alle Fahrer eines bestimmten Teams aus der Datenbank aus und gibt eine entsprechende ArrayList zurück
+	 * @param teamID = Gewünschte TeamID
+	 * @return = ArrayList mit allen Fahrern eines Teams
+	 */
 	public ArrayList<Driver> getAllDriversByTeamID(short teamID) {
 		ArrayList<Driver> drivers = new ArrayList<Driver>();
 		
@@ -184,6 +199,11 @@ public class DBAdapter {
 		return drivers;
 	}
 	
+	/**
+	 * Liest ein einzelnes Team anhand der TeamID aus der Datenbank aus
+	 * @param teamID = ID des Teams
+	 * @return = Das gewünschte Team
+	 */
 	public Team getTeam(short teamID) {
 		Team team = new Team();
 		String sql = "SELECT * FROM " + DBHelper.TABLE_TEAMS
@@ -208,6 +228,10 @@ public class DBAdapter {
 		return team;
 	}
 	
+	/**
+	 * Liest alle Teams aus und speichert sie in einer ArrayList
+	 * @return = ArrayList die sämtliche Teams der Datenbank enthält
+	 */
 	public ArrayList<Team> getAllTeams() {
 		ArrayList<Team> teams = new ArrayList<Team>();
 		
@@ -223,7 +247,11 @@ public class DBAdapter {
 				team.setCn_short_en(cursor.getString(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_CN_SHORT_EN)));
 				team.setCity(cursor.getString(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_CITY)));
 				team.setUniversity(cursor.getString(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_U)));
-				
+				team.setCn(cursor.getString(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_CN)));
+				team.setEventClass(cursor.getShort(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_CLASS)));
+				team.setCarNr(cursor.getShort(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_CAR)));
+				team.setPitNr(cursor.getShort(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_PIT)));
+				team.setIsWaiting(cursor.getShort(cursor.getColumnIndex(DBHelper.TEAMS_COLUMN_ISWAITING)));
 				teams.add(team);
 			} while(cursor.moveToNext());
 		}
@@ -232,12 +260,20 @@ public class DBAdapter {
 		return teams;
 	}
 	
+	/**
+	 * Schreibt ein Team-Objekt in die Datenbank
+	 * @param team
+	 */
 	public void writeTeamToDB(Team team) {
 		open();
 		database.insertWithOnConflict(DBHelper.TABLE_TEAMS, null, team.getContentValues(), SQLiteDatabase.CONFLICT_IGNORE);
 		close();
 	}
 	
+	/**
+	 * Schreibt einen String der ein JSON-Array mit Teamdaten enthält in die Datenbank
+	 * @param jsonArray = String der JSON-Array enthält
+	 */
 	public void writeTeamsToDB(String jsonArray) {
 		try {
 			JSONArray jTeams = new JSONArray(jsonArray);
@@ -250,20 +286,48 @@ public class DBAdapter {
 		}
 	}
 	
+	/**
+	 * Schreibt ein Objekt BlacklistedDevice in die Datenbank
+	 * @param blDevice = Blacklisted Device
+	 */
 	public void writeBlacklistedDeviceToDB(BlacklistedDevice blDevice) {
 		ContentValues values = blDevice.getContentValues();
+		open();
 		database.insert(DBHelper.TABLE_BLACKLISTED_DEVICES, null, values);
+		close();
 	} 
 	
+	/**
+	 * Schreibt ein Objekt BlacklistedTag in die Datenbank
+	 * @param blTag = Blacklisted Tag
+	 */
 	public void writeBlacklistedTagToDB(BlacklistedTag blTag) {
 		ContentValues values = blTag.getContentValues();
+		open();
 		database.insert(DBHelper.TABLE_BLACKLISTED_TAGS, null, values);
+		close();
 	}
 	
-	public void rawQuery(String sql) {
+	/**
+	 * Dient dem direkten Ausführen von SQL-Ausdrücken
+	 * @param sql = SQL-String
+	 */
+	public void execSQL(String sql) {
 		open();
 		database.execSQL(sql);
 		close();
+	}
+	
+	/**
+	 * Dient dem direkten Ausführen von SQL-Abfragen 
+	 * @param sql = SQL-String
+	 * @return Ergebnis der Abfrage als Cursor
+	 */
+	public Cursor rawQuery(String sql) {
+		open();
+		Cursor cursor = database.rawQuery(sql, null);
+		close();
+		return cursor;
 	}
 	
 	

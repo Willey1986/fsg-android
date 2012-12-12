@@ -20,6 +20,7 @@ import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.db.DBAdapter;
 import de.tubs.cs.ibr.fsg.db.DBHelper;
 import de.tubs.cs.ibr.fsg.db.models.Team;
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import de.tubs.cs.ibr.fsg.service.DTNService;
 
 public class RegistrationTeamSelectionActivity extends Activity {
