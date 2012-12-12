@@ -8,6 +8,7 @@ import android.widget.ListView;
 import de.tubs.cs.ibr.fsg.NfcData;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.db.DBAdapter;
+import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class InfoTerminalActivity extends Activity {
@@ -15,11 +16,14 @@ public class InfoTerminalActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_info_terminal);		
+		setContentView(R.layout.activity_info_terminal);
+		
+		DBAdapter test = new DBAdapter(this);
+		Driver driver = test.getDriver((short)81);
 		
 		ListView listView1 = (ListView) findViewById (R.id.listView1);
 		
-		String[] items = { "Benutzername" , "ID",};
+		String[] items = { driver.getFirst_name() , driver.getLast_name(),};
 		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, items);
 		listView1.setAdapter(adapter);
@@ -42,4 +46,3 @@ public class InfoTerminalActivity extends Activity {
 	}
 		
 }
-
