@@ -36,7 +36,7 @@
     <!-- RunActivity Strings-->
     <string name="which_discipline">Welche Disziplin möchten Sie fahren?</string>
     <string name="acceleration">Acceleration</string>
-    <string name="skipad">Ski Pad</string>
+    <string name="skidpad">Skid Pad</string>
     <string name="autocross">Autocross</string>
     <string name="endurance">Endurance</string>
     
