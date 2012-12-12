@@ -40,7 +40,7 @@
         android:gravity="center" 
         android:textColor="@color/button_text_color"
         android:onClick="onButtonClick"
-        android:text="@string/skipad" />
+        android:text="@string/skidpad" />
 
     <Button
         android:id="@+id/button3"
