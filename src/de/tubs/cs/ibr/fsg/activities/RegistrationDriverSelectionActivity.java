@@ -1,14 +1,18 @@
 package de.tubs.cs.ibr.fsg.activities;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import de.tubs.cs.ibr.fsg.NfcData;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.db.DBAdapter;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import de.tubs.cs.ibr.fsg.views.DriverView;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -51,10 +55,30 @@ public class RegistrationDriverSelectionActivity extends Activity{
 				driverPanel.setOnClickListener(new OnClickListener() {
 					
 					public void onClick(View v) {
+						try {
+							byte[][] encodedDriver = NfcData.generateDataRegistration(driver);
+							StringBuffer encodedString = new StringBuffer();
+							for(int i = 0; i < encodedDriver.length; i++) {
+								for(int j=0; j<encodedDriver[i].length; j++) {
+									encodedString.append(encodedDriver[i][j]);
+								}
+							}
 							dialog.setMessage("Fahrer " + driver.getFirst_name() + " " + driver.getLast_name() + " ausgewŠhlt\n\n ID = " 
-									+ driver.getUser_id());
+									+ driver.getUser_id() + "\nFarhzeugnummer: " + driver.getTeam().getCarNr() 
+									+ "\nCodierter String " + encodedString);
 							dialog.show();
 							//TODO driver Codieren um zu verschlŸsseln und aufs Band zu schreiben
+						} catch (IOException e) {
+						Intent mIntent = new Intent(RegistrationDriverSelectionActivity.this, ErrorActivity.class);
+							mIntent.putExtra("Exception", e);
+							startActivity(mIntent);
+							finish();
+						} catch (FsgException e) {
+							Intent mIntent = new Intent(RegistrationDriverSelectionActivity.this, ErrorActivity.class);
+							mIntent.putExtra("Exception", e);
+							startActivity(mIntent);
+							finish();
+						} 
 					}
 				});
 				llDriversList.addView(driverPanel);

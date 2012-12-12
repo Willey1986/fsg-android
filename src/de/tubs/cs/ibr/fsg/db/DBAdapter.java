@@ -175,13 +175,37 @@ public class DBAdapter {
 				driver.setFirst_name(cursor.getString(2));
 				driver.setLast_name(cursor.getString(3));
 				driver.setFemale((short) cursor.getShort(4));	
-				
+				driver.setTeam(getTeam(teamID));
 				drivers.add(driver);
 			} while(cursor.moveToNext());
 		}
 
 		close();
 		return drivers;
+	}
+	
+	public Team getTeam(short teamID) {
+		Team team = new Team();
+		String sql = "SELECT * FROM " + DBHelper.TABLE_TEAMS
+				+ " WHERE team_id=" + teamID
+				+ ";";
+		
+		open();
+		Cursor cursor = database.rawQuery(sql, null);
+		
+		if(cursor.moveToFirst()) {
+			team.setTeamId(cursor.getShort(0));
+			team.setCn(cursor.getString(1));
+			team.setCn_short_en(cursor.getString(2));
+			team.setCity(cursor.getString(3));
+			team.setUniversity(cursor.getString(4));
+			team.setCarNr(cursor.getShort(5));
+			team.setPitNr(cursor.getShort(6));
+			team.setIsWaiting(cursor.getShort(7));
+			team.setEventClass(cursor.getShort(8));
+			team.setName_pits(cursor.getString(9));
+		}
+		return team;
 	}
 	
 	public ArrayList<Team> getAllTeams() {
