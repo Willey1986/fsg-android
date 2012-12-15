@@ -76,6 +76,37 @@ public class SecurityManager {
 		}
 	}
 	
+	private byte[][] encryptString(byte[][] raw) throws FsgException{
+
+		//abort if the key is null
+		if(this.key==null){
+			throw new FsgException( new Exception("SecurityManager#No Encryption Key available"), this.getClass().toString(), FsgException.GENERIC_EXCEPTION );
+		}
+		
+
+		//raw input is invalid
+		if(raw.length==0){
+			throw new FsgException( new Exception("SecurityManager#Input for Encryption is too short"), this.getClass().toString(), FsgException.GENERIC_EXCEPTION );
+		}
+		
+		byte [] [] encodedString= new byte [raw.length] [];
+		
+		for(int i=0;i<raw.length;i++){
+			
+			int length = raw[i].length;
+			
+			byte [] arrayCopyValues = new byte[length];
+			
+			for(int j=0;j<length;j++){
+				arrayCopyValues[j] = raw[i][j];
+			}
+			
+			encodedString[i] = this.encryptString(arrayCopyValues);
+		}
+		
+		return encodedString;
+	}
+	
 	/**
 	 * Method to decrypt string and return the decrypted string
 	 * @param encryptedInput is the encrypted data as byte array
@@ -107,6 +138,42 @@ public class SecurityManager {
 		}catch(Exception e){
 			throw new FsgException( new Exception("Security Exception in SecurityManager"), this.getClass().toString(), FsgException.GENERIC_EXCEPTION );
 		}
+	}
+	
+	/**
+	 * Method to decrypt 2 dimensional array
+	 * @param encryptedInput is the encrypted string input
+	 * @return return the decrypted byte array for reading
+	 * @throws FsgException if there are no password set or invalid password is used then it will throw this exception
+	 */
+	public byte[][] decryptString(byte[][] encryptedInput) throws FsgException{
+		
+		//abort if the key is null
+		if(this.key==null){
+			throw new FsgException( new Exception("SecurityManager#No Decryption Key available"), this.getClass().toString(), FsgException.GENERIC_EXCEPTION );
+		}
+		
+		//encryption input is invalid
+		if(encryptedInput.length==0){
+			throw new FsgException( new Exception("SecurityManager#Input for decrypting is too short"), this.getClass().toString(), FsgException.GENERIC_EXCEPTION );
+		}
+		
+		byte [] [] decodedString= new byte [encryptedInput.length] [];
+		
+		for(int i=0;i<encryptedInput.length;i++){
+			
+			int length = encryptedInput[i].length;
+			
+			byte [] arrayCopyValues = new byte[length];
+			
+			for(int j=0;j<length;j++){
+				arrayCopyValues[j] = encryptedInput[i][j];
+			}
+			
+			decodedString[i] = this.decryptString(arrayCopyValues);
+		}
+		
+		return decodedString;
 	}
 
 	/** 
