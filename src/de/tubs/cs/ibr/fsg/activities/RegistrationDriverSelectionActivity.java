@@ -26,7 +26,7 @@ import android.widget.TextView;
  */
 public class RegistrationDriverSelectionActivity extends Activity{
 	
-	DBAdapter dba;
+	DBAdapter dba = new DBAdapter(this);
 	String teamName;
 	short teamId;
 	LinearLayout llDriversList;
@@ -35,6 +35,7 @@ public class RegistrationDriverSelectionActivity extends Activity{
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		dba.open();
 		setContentView(R.layout.activity_registration_driver_selection);
 		
 		Bundle extras = getIntent().getExtras();				//Von der TeamSelection Ÿbergebene Variablen abfragen
@@ -45,7 +46,6 @@ public class RegistrationDriverSelectionActivity extends Activity{
 		txtSelectedTeam = (TextView) findViewById(R.id.txtSelectedTeam);
 		txtSelectedTeam.setText(" "+teamName);
 		
-		dba = new DBAdapter(this);								//Alle Fahrer eines Teams aus der Datenbank auslesen
 		ArrayList<Driver> drivers = dba.getAllDriversByTeamID(teamId);
 		
 		if(drivers.size()>0) {
@@ -85,6 +85,11 @@ public class RegistrationDriverSelectionActivity extends Activity{
 			}
 		}
 		
+	}
+	
+	protected void onStop() {
+		super.onStop();
+		dba.close();
 	}
 	
 }
