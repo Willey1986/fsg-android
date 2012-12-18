@@ -1,5 +1,5 @@
 /**
- * Beinhaltet sämtliche Logik zur Auswahl des Teams bei der Registrierung
+ * Beinhaltet s√§mtliche Logik zur Auswahl des Teams bei der Registrierung
  */
 
 package de.tubs.cs.ibr.fsg.activities;
@@ -34,8 +34,8 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		regTable = (TableLayout) findViewById(R.id.regTable);
 		dba.open();
 		ArrayList<Team> teams = dba.getAllTeams();
-		for (int i = 0; i < teams.size(); i++) {					//Befüllt die Tabelle der Activity mit Inhalten (Teams) aus der DB
-			final Team team = teams.get(i);							//TODO: Erstellen eines eigenen Widgets das Team-Objekte empfängt und darstellt
+		for (int i = 0; i < teams.size(); i++) {					//BefÔøΩllt die Tabelle der Activity mit Inhalten (Teams) aus der DB
+			final Team team = teams.get(i);							//TODO: Erstellen eines eigenen Widgets das Team-Objekte empfÔøΩngt und darstellt
 			TableRow row = new TableRow(this);
 			TextView teamId = new TextView(this);
 			TextView teamName = new TextView(this);
@@ -78,7 +78,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 	}
 	
 	/**
-	 * Erstellt das Optionsmenü der Registrierungs-Activity
+	 * Erstellt das Optionsmen√º der Registrierungs-Activity
 	 */
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.registration, menu);
@@ -87,7 +87,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 	
 	
 	/**
-	 * Weist den Einträgen im Optionsmenü die jeweiligen Funktionen zu
+	 * Weist den Eintr√§gen im Optionsmen√º die jeweiligen Funktionen zu
 	 */
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -107,7 +107,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 	
 
 	/**
-	 * Fragt aktuelle Daten über das Netz an und schreibt sie in die Datenbank
+	 * Fragt aktuelle Daten √ºber das Netz an und schreibt sie in die Datenbank
 	 */
 
 	private void requestRegistrationUpdate() {
@@ -145,7 +145,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		String writeDriver8 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(87,21,'Fernando','Alonso');";
 		String writeDriver9 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(88,21,'Nikki','Lauda');";
 		String writeDriver10 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(89,21,'Peter','Lustig');";
-		String writeDriver11 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(90,21,'Hein','Blˆd');";
+		String writeDriver11 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(90,21,'Hein','Bl√∂d');";
 		String writeDriver12 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(91,21,'Frauke','Ludowig');";
 		String writeDriver13 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(92,21,'Hans-Bernd-Sebastian-Ludwig-Martin-Hans','Meier von und zu Hohenzollern');";
 		
