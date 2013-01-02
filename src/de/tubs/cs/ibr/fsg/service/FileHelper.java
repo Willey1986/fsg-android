@@ -16,7 +16,6 @@ import java.util.zip.ZipFile;
 
 import android.os.Environment;
 import android.util.Log;
-
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class FileHelper {
@@ -34,7 +33,7 @@ public class FileHelper {
 	 * 
 	 * @param zipFile Komprimierte Datei, die entpackt werden soll.
 	 * @param destDir Zielverzeichnis, wo die entpackten Daten gespeichert werden
-	 * @throws FsgException Theoretisch könnten zwei Arten von Exceptions die Ursache für Probleme sein: eine ZipException oder eine IOException.
+	 * @throws FsgException Theoretisch kï¿½nnten zwei Arten von Exceptions die Ursache fï¿½r Probleme sein: eine ZipException oder eine IOException.
 	 */
 	public static void extractZipFile(File zipFile, File destDir) throws FsgException{
 		if (!destDir.exists()) {
@@ -50,7 +49,7 @@ public class FileHelper {
 			
 			while (mEntries.hasMoreElements()) {
 				ZipEntry mEntry = (ZipEntry) mEntries.nextElement();
-				String entryFileName = mEntry.getName(); //TODO Muss an dieser Stelle überprüfen, was passiert, wenn Unterverzeichnisse im zipfile angegeben sind!
+				String entryFileName = mEntry.getName(); //TODO Muss an dieser Stelle ï¿½berprï¿½fen, was passiert, wenn Unterverzeichnisse im zipfile angegeben sind!
 
 				if (!mEntry.isDirectory()) {
 					BufferedOutputStream bOutputStream = new BufferedOutputStream(
@@ -72,6 +71,8 @@ public class FileHelper {
 			throw new FsgException( e, new FileHelper().getClass().toString(), FsgException.ZIP_FILE_FAIL );
 		} catch (IOException e) {
 			throw new FsgException( e, new FileHelper().getClass().toString(), FsgException.ZIP_FILE_FAIL );
+		}catch (Exception e) {
+			throw new FsgException( e, new FileHelper().getClass().toString(), FsgException.ZIP_FILE_FAIL );
 		}
 
 	}
@@ -87,7 +88,7 @@ public class FileHelper {
 		File destDir = getStoragePath(DRIVER_PICS_DIR);
 		FileHelper.deleteDirectory(destDir);
 		
-		File tempZipFileDir   = getStoragePath(GENERIC_FSG_DIR);
+		File tempZipFileDir   = getStoragePath(TEMP_FSG_DIR);
 		String outputFileName = System.currentTimeMillis() + ".zip";
 		File tempZipFile    = new File(tempZipFileDir, outputFileName);
 
@@ -110,18 +111,18 @@ public class FileHelper {
 	
 	
 	/**
-	 * Mit dieser Methode können wir ein ganzes Verzeichnis löschen (rekursiv, alle
-	 * Unterverzeichnisse werden ebenfalls gelöscht).
+	 * Mit dieser Methode kï¿½nnen wir ein ganzes Verzeichnis lï¿½schen (rekursiv, alle
+	 * Unterverzeichnisse werden ebenfalls gelï¿½scht).
 	 * 
-	 * @param directory Verzeichnis, das gelöscht werden soll
-	 * @return true, wenn das Verzeichnis erfolgreich gelöscht werden konnte. Sonst false.
+	 * @param directory Verzeichnis, das gelï¿½scht werden soll
+	 * @return true, wenn das Verzeichnis erfolgreich gelï¿½scht werden konnte. Sonst false.
 	 */
 	private static boolean deleteDirectory(File directory) {
 		File[] fileArray = directory.listFiles();
 		if (fileArray != null) {
 			for (int i = 0; i < fileArray.length; i++) {
 				if (fileArray[i].isDirectory()) {
-					deleteDirectory(fileArray[i]); // Den Ordner leeren und anschließend loeschen 
+					deleteDirectory(fileArray[i]); // Den Ordner leeren und anschlieï¿½end loeschen 
 				} else {
 					fileArray[i].delete(); // Datei loeschen
 				}
@@ -134,10 +135,10 @@ public class FileHelper {
 	
 	
 	/**
-	 * Mit Hilfe dieser Methode finden wir die Verzeichnisse heraus, die für die Applikation
+	 * Mit Hilfe dieser Methode finden wir die Verzeichnisse heraus, die fï¿½r die Applikation
 	 * von Bedeutung sind (z.B. wo die Fahrerbilder gespeichert werden).
 	 * 
-	 * @return Gibt den Pfad des Vereichnisses zurück, das wir suchen (z.B. für temporäre Dateien, Fahrerbilder, usw.).
+	 * @return Gibt den Pfad des Vereichnisses zurï¿½ck, das wir suchen (z.B. fï¿½r temporï¿½re Dateien, Fahrerbilder, usw.).
 	 */
 	public static File getStoragePath(int typeOfDir) {
 		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -167,7 +168,7 @@ public class FileHelper {
 	
 	/**
 	 * Diese Methode wird nur zum Testen gebraucht, bis die interne Datenbank benutzt werden kann.
-	 * @param tempFile Temporäre Datei, die dauerhaft gespeichert werden soll.
+	 * @param tempFile Temporï¿½re Datei, die dauerhaft gespeichert werden soll.
 	 */
 	public static void storeTempFile(File tempFile, int typeOfDir) {
 		File root = FileHelper.getStoragePath(typeOfDir);

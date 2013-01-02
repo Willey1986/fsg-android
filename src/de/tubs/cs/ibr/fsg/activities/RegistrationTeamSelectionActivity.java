@@ -48,18 +48,22 @@ public class RegistrationTeamSelectionActivity extends Activity {
 			teamCountry.setText(team.getCn_short_en());
 			teamCity.setText(team.getCity());
 			teamUniversity.setText(team.getUniversity());
-			teamId.setTextColor(getResources().getColor(R.color.white));
-			teamName.setTextColor(getResources().getColor(R.color.white));
-			teamCountry.setTextColor(getResources().getColor(R.color.white));
-			teamCity.setTextColor(getResources().getColor(R.color.white));
-			teamUniversity.setTextColor(getResources().getColor(R.color.white));
+			teamId.setTextColor(getResources().getColor(R.color.dark_red));
+			teamName.setTextColor(getResources().getColor(R.color.black));
+			teamCountry.setTextColor(getResources().getColor(R.color.dark_red));
+			teamCity.setTextColor(getResources().getColor(R.color.black));
+			teamUniversity.setTextColor(getResources().getColor(R.color.dark_red));
+			teamName.setPadding(10, 0, 0, 0);
+			teamCountry.setPadding(20, 0, 0, 0);
+			teamCity.setPadding(20, 0, 0, 0);
+			teamUniversity.setPadding(20, 0, 0, 0);
 			row.addView(teamId);
 			row.addView(teamName);
 			row.addView(teamCountry);
 			row.addView(teamCity);
 			row.addView(teamUniversity);
 			row.setBackgroundResource(R.drawable.tablerow_gradient_light);
-			row.setPadding(8, 8, 8, 8);
+			row.setPadding(10, 22, 8, 8);
 			row.setOnClickListener(new OnClickListener() {
 				
 				public void onClick(View v) {
@@ -69,6 +73,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 					startActivity(intent);
 				}
 			});
+			row.setMinimumHeight(70);
 			regTable.addView(row);
 		}
 	}
@@ -167,7 +172,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		dba.execSQL(deleteAllDrivers);
 		dba.execSQL(deleteAllTeams);
 		
-		String writeDriver1 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(80,20,'Harald','Juhnke');";
+		String writeDriver1 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(1,20,'Harald','Juhnke');";
 		String writeDriver2 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(81,20,'Stefan','Raab');";
 		String writeDriver3 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(82,20,'Verona','Pooth');";
 		String writeDriver4 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(83,21,'Claudia','Roth');";

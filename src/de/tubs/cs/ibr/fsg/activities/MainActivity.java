@@ -24,11 +24,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-    	// Während der Entwicklung können wir mit Hilfe des StrictModes darauf aufmerksam gemacht werden,
-    	// wenn wir den UI-Thread/Main-Thread mit Sachen blockieren, die eigentlich nebenläufig gehören.
-    	// Sonst läuft die App nicht flüssig und es drohen sogar die berühmt-berüchtigte ANR Dialoge
+    	// Wï¿½hrend der Entwicklung kï¿½nnen wir mit Hilfe des StrictModes darauf aufmerksam gemacht werden,
+    	// wenn wir den UI-Thread/Main-Thread mit Sachen blockieren, die eigentlich nebenlï¿½ufig gehï¿½ren.
+    	// Sonst lï¿½uft die App nicht flï¿½ssig und es drohen sogar die berï¿½hmt-berï¿½chtigte ANR Dialoge
     	// (Application not Responding Dialog). Abhilfe: z.B. AsyncTask(einfach) oder zu Fuss mit einer
-    	// kompletten Multithreading-Lösung mit einem Standard-Java-Thread (schwieriger).
+    	// kompletten Multithreading-Lï¿½sung mit einem Standard-Java-Thread (schwieriger).
         if (DEVELOPER_MODE) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                     .detectDiskReads()

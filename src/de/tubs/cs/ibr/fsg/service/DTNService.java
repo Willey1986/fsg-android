@@ -20,6 +20,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.db.DBAdapter;
+import de.tubs.cs.ibr.fsg.db.DBHelper;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import de.tubs.ibr.dtn.api.Block;
 import de.tubs.ibr.dtn.api.Bundle;
@@ -52,7 +54,7 @@ public class DTNService extends IntentService {
 	public void onCreate() {
 		Log.i(TAG, "service created.");
 		super.onCreate();
-		// Notwendige Initialitierungen für IBR-DTN
+		// Notwendige Initialitierungen fï¿½r IBR-DTN
 		mClient = new DTNClient();
 		mRegistration = new Registration("fsg");
 		mRegistration.add(FSG_GROUP_EID);
@@ -129,16 +131,16 @@ public class DTNService extends IntentService {
 			}
 
         }else if (de.tubs.cs.ibr.fsg.Intent.REGISTRATION.equals(action)){
-        	// Hier passiert nichts Zusätzliches. Die Registrierung in der Methode 
+        	// Hier passiert nichts Zusï¿½tzliches. Die Registrierung in der Methode 
         	// onCreated() reicht aus (...mRegistration = new Registration("fsg");...)
-        	// -->  onCreated() wird nämlich vorher schon ausgeführt.
+        	// -->  onCreated() wird nï¿½mlich vorher schon ausgefï¿½hrt.
         	Log.i(TAG, "IBR-DTN-Registration done");
         }
 	}
 	
 
 //	/**
-//	 * Diese DataHandler-Implementierung mit dem SIMPLE-Modus ist korrekt und vollständig
+//	 * Diese DataHandler-Implementierung mit dem SIMPLE-Modus ist korrekt und vollstï¿½ndig
 //	 * programmiert, aber sie wird zurzeit nicht benutzt. Aktuell arbeiten wir mit dem 
 //	 * FILEDESCRIPTOR-Modus, der in der fdDataHandler-Implementierung angewendet wird.
 //	 */
@@ -163,7 +165,7 @@ public class DTNService extends IntentService {
 //		public TransferMode startBlock(Block block) {
 //			TransferMode mTranferMode  = TransferMode.SIMPLE;
 //			if (block.length > 32768){
-//				// Die Blöcke werden ignoriert, die grösser als 3MB sind.
+//				// Die Blï¿½cke werden ignoriert, die grï¿½sser als 3MB sind.
 //				mTranferMode  = TransferMode.NULL;
 //			}
 //			return mTranferMode;
@@ -201,7 +203,7 @@ public class DTNService extends IntentService {
 	
 	/**
 	 * Diese DataHandler-Implementierung nutzt zum Empfangen den FILEDESCRIPTOR-Modus,
-	 * der für Android-Geräten geeigneter als der SIMPLE-Modus ist, da im SIMPLE-Modus
+	 * der fï¿½r Android-Gerï¿½ten geeigneter als der SIMPLE-Modus ist, da im SIMPLE-Modus
 	 * alles im HEAP stattfindet. 
 	 * 
 	 */
@@ -237,8 +239,9 @@ public class DTNService extends IntentService {
 				File folder = FileHelper.getStoragePath(FileHelper.TEMP_FSG_DIR);
 		
 				try {
-					// Wir erzeugen eine temporäre Datei
-					payloadFile = File.createTempFile("tempBundleFile", ".fsg", folder);
+					// Wir erzeugen eine temporï¿½re Datei
+					String outputFileName = "tempfile_" + System.currentTimeMillis();
+					payloadFile = File.createTempFile(outputFileName, ".fsg", folder);
 					mTranferMode  = TransferMode.FILEDESCRIPTOR;
 				} catch (IOException e) {
 					Log.e(TAG, "Can not create temporary file.", e);
@@ -266,15 +269,14 @@ public class DTNService extends IntentService {
 				try {
 					FsgPackage mFsgBundle = FsgProtocol.getFsgPackage(payloadFile);
 					
-					// Um zu unterscheiden, wenn wir versehetlich Datenpakete bekommen, die nicht für
+					// Um zu unterscheiden, wenn wir versehetlich Datenpakete bekommen, die nicht fï¿½r
 					// die Clients gedacht sind, merken wir uns das in folgender Variable. Ausserdem
-					// überprüfen wir auch, ob es eine neue Version ist und damit für uns relevant.
-					// In dem Fall, wo der Bündel entweder alt oder eines für uns nicht relevanten Typs ist,
-					// ignorieren wir den Bündel, er wird nirgendwo gespeichert und es wird keine
+					// ï¿½berprï¿½fen wir auch, ob es eine neue Version ist und damit fï¿½r uns relevant.
+					// In dem Fall, wo der Bï¿½ndel entweder alt oder eines fï¿½r uns nicht relevanten Typs ist,
+					// ignorieren wir den Bï¿½ndel, er wird nirgendwo gespeichert und es wird keine
 					// Notification erzeugt.
 					boolean isABundleTypForClients = false;
 					boolean isANewVersion = false;
-					
 					
 					if (mFsgBundle.getPackageTyp() == FsgProtocol.DATA_DRIVER_PICS){
 						isABundleTypForClients = true;
@@ -291,6 +293,8 @@ public class DTNService extends IntentService {
 						isABundleTypForClients = true;
 						if (isANewVersion(mFsgBundle.getVersion(), FsgProtocol.DATA_DRIVERS )){
 							isANewVersion = true;
+							String jsonArray = new String(mFsgBundle.getPayload(), "UTF8");
+							writeDataToDB(FsgProtocol.DATA_DRIVERS, jsonArray);
 							
 							sendNewVersionConfirmation(mFsgBundle.getVersion(), FsgProtocol.DATA_DRIVERS);
 							saveToPreferencesTheNewVersion(mFsgBundle.getVersion(), FsgProtocol.DATA_DRIVERS);
@@ -301,6 +305,8 @@ public class DTNService extends IntentService {
 						isABundleTypForClients = true;
 						if (isANewVersion(mFsgBundle.getVersion(), FsgProtocol.DATA_TEAMS )){
 							isANewVersion = true;
+							String jsonArray = new String(mFsgBundle.getPayload(),"UTF8");
+							writeDataToDB(FsgProtocol.DATA_TEAMS, jsonArray );
 							
 							sendNewVersionConfirmation(mFsgBundle.getVersion(), FsgProtocol.DATA_TEAMS);
 							saveToPreferencesTheNewVersion(mFsgBundle.getVersion(), FsgProtocol.DATA_TEAMS);
@@ -311,6 +317,8 @@ public class DTNService extends IntentService {
 						isABundleTypForClients = true;
 						if (isANewVersion(mFsgBundle.getVersion(), FsgProtocol.DATA_BLACK_WRISTLETS )){
 							isANewVersion = true;
+							String jsonArray = new String(mFsgBundle.getPayload(),"UTF8");
+							writeDataToDB(FsgProtocol.DATA_BLACK_WRISTLETS, jsonArray );
 							
 							sendNewVersionConfirmation(mFsgBundle.getVersion(), FsgProtocol.DATA_BLACK_WRISTLETS);
 							saveToPreferencesTheNewVersion(mFsgBundle.getVersion(), FsgProtocol.DATA_BLACK_WRISTLETS);
@@ -321,6 +329,8 @@ public class DTNService extends IntentService {
 						isABundleTypForClients = true;
 						if (isANewVersion(mFsgBundle.getVersion(), FsgProtocol.DATA_BLACK_DEVICES )){
 							isANewVersion = true;
+							String jsonArray = new String(mFsgBundle.getPayload(),"UTF8");
+							writeDataToDB(FsgProtocol.DATA_BLACK_DEVICES, jsonArray );
 							
 							sendNewVersionConfirmation(mFsgBundle.getVersion(), FsgProtocol.DATA_BLACK_DEVICES);
 							saveToPreferencesTheNewVersion(mFsgBundle.getVersion(), FsgProtocol.DATA_BLACK_DEVICES);
@@ -334,7 +344,7 @@ public class DTNService extends IntentService {
 						createNotification( mFsgBundle.getPackageTyp(), mFsgBundle.getVersion() );
 					}
 
-				} catch (FsgException e) {
+				} catch (Exception e) {
 					toastError(new FsgException(e, new DTNService().getClass().toString(), FsgException.DTN_RECEIVING_FAIL) );
 				}
 
@@ -372,13 +382,46 @@ public class DTNService extends IntentService {
 	};
 
 	
+	
 	/**
-	 * Mit Hilfe dieser Methode prüfen wir, ob die empfangene Version eines Datensatzes
+	 * @param dataType
+	 */
+	protected void writeDataToDB(int dataType, String jsonArray) {
+		DBAdapter dba = new DBAdapter(this);
+		dba.open();
+		
+		if (dataType == FsgProtocol.DATA_DRIVERS) {
+			String deleteAllDrivers = "DELETE FROM " + DBHelper.TABLE_DRIVERS + ";";
+			dba.execSQL(deleteAllDrivers);
+			dba.writeDriversToDB(jsonArray);
+
+		} else if (dataType == FsgProtocol.DATA_TEAMS) {
+			String deleteAllTeams = "DELETE FROM " + DBHelper.TABLE_TEAMS + ";";
+			dba.execSQL(deleteAllTeams);
+			dba.writeTeamsToDB(jsonArray);
+
+		} else if (dataType == FsgProtocol.DATA_BLACK_WRISTLETS) {
+			String deleteAllBlackTags = "DELETE FROM " + DBHelper.TABLE_BLACKLISTED_TAGS + ";";
+			dba.execSQL(deleteAllBlackTags);
+			dba.writeBlacklistedTagsToDB(jsonArray);
+
+		} else if (dataType == FsgProtocol.DATA_BLACK_DEVICES) {
+			String deleteAllBlackDevices = "DELETE FROM " + DBHelper.TABLE_BLACKLISTED_DEVICES + ";";
+			dba.execSQL(deleteAllBlackDevices);
+			dba.writeBlacklistedDevicesToDB(jsonArray);
+
+		}
+		dba.close();
+	}
+	
+	
+	/**
+	 * Mit Hilfe dieser Methode prï¿½fen wir, ob die empfangene Version eines Datensatzes
 	 * neuer ist als die bereits auf dem Client vorhandenen Version.
 	 * 
 	 * @param receivedVersion Empfangene Version des Datensatzes.
-	 * @param dataType Datentyp (z.B. Fahrerdaten, Geräte-Blacklist, usw).
-	 * @return true, wenn die empfangene Version neuer ist als die auf dem Gerät bereits vorhandene.
+	 * @param dataType Datentyp (z.B. Fahrerdaten, Gerï¿½te-Blacklist, usw).
+	 * @return true, wenn die empfangene Version neuer ist als die auf dem Gerï¿½t bereits vorhandene.
 	 */
 	protected boolean isANewVersion(int receivedVersion, int dataType) {
 		boolean isANewVersion = false;
@@ -414,7 +457,7 @@ public class DTNService extends IntentService {
 	 * den wir empfangen und gespeichert haben.
 	 * 
 	 * @param receivedVersion Version des Datensatzes, den wir empfangen und gespeichert haben.
-	 * @param dataType Typ des Datensatzes, den wir empfangen und gespeichert haben (z.B. Fahrerdaten, Geräte-Blacklist, usw).
+	 * @param dataType Typ des Datensatzes, den wir empfangen und gespeichert haben (z.B. Fahrerdaten, Gerï¿½te-Blacklist, usw).
 	 */
 	protected void saveToPreferencesTheNewVersion(int receivedVersion, int dataType) {
 
@@ -449,12 +492,12 @@ public class DTNService extends IntentService {
 	
 	
 	/**
-	 * Nachdem wir eine neue Datensatzversion empfangen und gespeichert haben, können wir mit Hilfe dieser Methode
-	 * eine Empfangsbestätigung zum Backend schicken. Damit kann im Backend kontrolliert werden, auf welchem
-	 * tatsächlichen Stand die Clients sind.
+	 * Nachdem wir eine neue Datensatzversion empfangen und gespeichert haben, kï¿½nnen wir mit Hilfe dieser Methode
+	 * eine Empfangsbestï¿½tigung zum Backend schicken. Damit kann im Backend kontrolliert werden, auf welchem
+	 * tatsï¿½chlichen Stand die Clients sind.
 	 * 
-	 * @param receivedVersion Empfangene Version, dessen Empfang bestätigt wird.
-	 * @param dataType Typ des Datensatzes, den wir empfangen und gespeichert haben (z.B. Fahrerdaten, Geräte-Blacklist, usw).
+	 * @param receivedVersion Empfangene Version, dessen Empfang bestï¿½tigt wird.
+	 * @param dataType Typ des Datensatzes, den wir empfangen und gespeichert haben (z.B. Fahrerdaten, Gerï¿½te-Blacklist, usw).
 	 */
 	protected void sendNewVersionConfirmation(int receivedVersion, int dataType) {
 		Intent mIntent = new Intent(this, DTNService.class);
@@ -496,19 +539,19 @@ public class DTNService extends IntentService {
 		
        	switch (mException.getType() ){
     	case FsgException.DTN_SENDING_FAIL:
-    		Log.e(TAG, "Fehler beim Senden eines IBR-DTN-Bündels.", mException);
+    		Log.e(TAG, "Fehler beim Senden eines IBR-DTN-Bï¿½ndels.", mException);
     		text.setText(R.string.error_sending_bundle);
     		break;
     	case FsgException.DTN_RECEIVING_FAIL:
-    		Log.e(TAG, "Fehler beim Empfangen eines IBR-DTN-Bündels.", mException);
+    		Log.e(TAG, "Fehler beim Empfangen eines IBR-DTN-Bï¿½ndels.", mException);
     		text.setText(R.string.error_receiving_bundle);
     		break;
     	case FsgException.NOT_NFC_SUPPORT:
-    		Log.e(TAG, "Fehler beim Senden eines IBR-DTN-Bündels.", mException);
+    		Log.e(TAG, "Fehler beim Senden eines IBR-DTN-Bï¿½ndels.", mException);
     		text.setText(R.string.error_not_ibr_dtn);
     		break;
     	case FsgException.SECURITY_FAIL:
-    		Log.e(TAG, "Fehler beim Empfangen eines IBR-DTN-Bündels.", mException);
+    		Log.e(TAG, "Fehler beim Empfangen eines IBR-DTN-Bï¿½ndels.", mException);
     		text.setText(R.string.error_security_exception);
     		break;
     	}

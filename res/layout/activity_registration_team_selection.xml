@@ -97,6 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
+                    android:paddingLeft="10dp"
                     android:text="@string/tblRegTitleCountry"
                     android:textColor="@color/button_text_color"
                     android:textSize="@dimen/table_header"
@@ -108,6 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
+                    android:paddingLeft="10dp"
                     android:text="@string/tblRegTitleCity"
                     android:textColor="@color/button_text_color"
                     android:textSize="@dimen/table_header"
@@ -119,6 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
+                    android:paddingLeft="10dp"
                     android:text="@string/tblRegTitleUniversity"
                     android:textColor="@color/button_text_color"
                     android:textSize="@dimen/table_header"
@@ -132,7 +135,7 @@
 
             	<View
             	    android:layout_weight="1"
-            	    android:layout_height="2dip"
+            	    android:layout_height="@dimen/grid02"
             	    android:background="@color/button_text_color" />
 
             </TableRow>

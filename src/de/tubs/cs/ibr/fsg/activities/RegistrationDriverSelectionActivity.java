@@ -38,7 +38,7 @@ public class RegistrationDriverSelectionActivity extends Activity{
 		dba.open();
 		setContentView(R.layout.activity_registration_driver_selection);
 		
-		Bundle extras = getIntent().getExtras();				//Von der TeamSelection Ÿbergebene Variablen abfragen
+		Bundle extras = getIntent().getExtras();				//Von der TeamSelection ï¿½bergebene Variablen abfragen
 		teamName = extras.getString("teamName");
 		teamId = extras.getShort("teamID");
 		llDriversList = (LinearLayout) findViewById(R.id.llDriversList);
@@ -63,11 +63,11 @@ public class RegistrationDriverSelectionActivity extends Activity{
 									encodedString.append(encodedDriver[i][j]);
 								}
 							}
-							dialog.setMessage("Fahrer " + driver.getFirst_name() + " " + driver.getLast_name() + " ausgewŠhlt\n\n ID = " 
+							dialog.setMessage("Fahrer " + driver.getFirst_name() + " " + driver.getLast_name() + " ausgewÃ¤hlt\n\nID = " 
 									+ driver.getUser_id() + "\nFarhzeugnummer: " + driver.getTeam().getCarNr() 
 									+ "\nCodierter String " + encodedString);
 							dialog.show();
-							//TODO driver Codieren um zu verschlŸsseln und aufs Band zu schreiben
+							//TODO driver Codieren um zu verschlï¿½sseln und aufs Band zu schreiben
 						} catch (IOException e) {
 						Intent mIntent = new Intent(RegistrationDriverSelectionActivity.this, ErrorActivity.class);
 							mIntent.putExtra("Exception", e);
