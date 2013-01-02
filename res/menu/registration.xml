@@ -2,6 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/menuItemRefresh" android:title="@string/menu_reg_refresh" />
     <item android:id="@+id/miRegInsertDummyData" android:title="@string/menu_reg_insertDummyData"/>
-    <item android:id="@+id/requestRegistrationDataUpdate" android:title="@string/menu_reg_requestDataUpdate"/>
+    <item android:id="@+id/showDataVersion" android:title="@string/menu_reg_showDataVersion"/>
+    <item android:id="@+id/requestDriverPics" android:title="@string/menu_reg_requestDriverPics"/>
+	<item android:id="@+id/requestDrivers" android:title="@string/menu_reg_requestDrivers"/>
+	<item android:id="@+id/requestTeams" android:title="@string/menu_reg_requestTeams"/>
+	<item android:id="@+id/requestBlackWristlets" android:title="@string/menu_reg_requestBlackWristlets"/>
+	<item android:id="@+id/requestBlackDevices" android:title="@string/menu_reg_requestBlackDevices"/>
+	<item android:id="@+id/requestDriversTeams" android:title="@string/menu_reg_requestDriversTeams"/>
+	<item android:id="@+id/requestDriversTeamsDriverPics" android:title="@string/menu_reg_requestDriversTeamsDriverPics"/>
+	<item android:id="@+id/requestBothBlack" android:title="@string/menu_reg_requestBothBlack"/>
+	<item android:id="@+id/requestDriverTeamsBothBlack" android:title="@string/menu_reg_requestDriverTeamsBothBlack"/>
+                    
 
 </menu>

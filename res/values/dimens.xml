@@ -4,7 +4,9 @@
     <dimen name="grid02">8dp</dimen>
     <dimen name="grid03">12dp</dimen>
     <dimen name="grid04">16dp</dimen>
+    <dimen name="grid05">20dp</dimen>
     <dimen name="grid06">24dp</dimen>
+    <dimen name="grid07">28dp</dimen>
     <dimen name="grid08">32dp</dimen>
     <dimen name="grid09">36dp</dimen>
     <dimen name="grid10">40dp</dimen>

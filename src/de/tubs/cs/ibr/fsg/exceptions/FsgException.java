@@ -7,11 +7,17 @@ public class FsgException extends Exception{
 	public static final int TAG_MEMORY_FULL   	= 1;
 	public static final int TAG_WRONG_KEY     	= 2;
 	public static final int NOT_NFC_SUPPORT   	= 3;
+	public static final int IBR_DTN_NOT_RUNNING = 4;
+	public static final int SECURITY_FAIL   	= 5;
+	public static final int ZIP_FILE_FAIL       = 6;
+	public static final int DRIVER_PICS_FAIL    = 7;
+	public static final int DTN_SENDING_FAIL    = 8;
+	public static final int DTN_RECEIVING_FAIL  = 9;
 	public static final int NON_VALID_ID	  	= 10;
 	public static final int CHAR_ENCODE_FAILED	= 11;
 	public static final int CHAR_DECODE_FAILED	= 12;
 	
-	public static final int END_OF_ROAD       = 2000; // Nur zum Testen....
+	public static final int END_OF_ROAD       = 2000; // Nur zum Testen...
 
 	/**
 	 * Typ der Exception. Dieses Feld ist daf�r da, um mit seiner Hilfe auf der GUI-Ebene entscheiden zu k�nnen,

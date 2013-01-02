@@ -29,7 +29,7 @@ public class ErrorActivity extends Activity {
     	case FsgException.GENERIC_EXCEPTION:
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
     		res = getResources();
-        	userText.setText(res.getString(R.string.error_generic));
+        	userText.setText(res.getString(R.string.error_generic_exception));
     		break;
     	case FsgException.TAG_MEMORY_FULL:
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);

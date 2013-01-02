@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:padding="@dimen/grid02"
+    android:background="@drawable/background_grey" >
+
+	<TextView
+	    android:id="@+id/textView21"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+        android:layout_above="@+id/textView1"
+        android:layout_marginBottom="@dimen/grid10"
+	    android:layout_centerHorizontal="true"
+	    android:textColor="@color/button_text_color"
+	    android:textSize="@dimen/grid07"
+	    android:text="@string/version_title" />
+    	
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView21"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid06"
+        android:layout_marginLeft="@dimen/grid05"
+        android:text="@string/version_blacklist_wristlets" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView3"
+        android:layout_alignLeft="@+id/textView21"
+        android:layout_marginBottom="@dimen/grid06"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid06"
+        android:layout_marginLeft="@dimen/grid05"
+        android:text="@string/version_teams" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView2"
+        android:layout_alignLeft="@+id/textView21"
+        android:layout_marginBottom="@dimen/grid06"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid06"
+        android:layout_marginLeft="@dimen/grid05"
+        android:text="@string/version_drivers" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView21"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="@dimen/grid06"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid06"
+        android:layout_marginLeft="@dimen/grid05"
+        android:text="@string/version_blacklist_devices" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView21"
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="@dimen/grid06"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid06"
+        android:layout_marginLeft="@dimen/grid05"
+        android:text="@string/version_driver_pics" />
+
+    <TextView
+        android:id="@+id/textViewDrivers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignLeft="@+id/textViewBlacklistWristlets"
+        android:layout_toRightOf="@+id/textView1"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid06"
+        android:text="0" />
+    
+	<TextView
+        android:id="@+id/textViewTeams"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_alignLeft="@+id/textViewBlacklistWristlets"
+        android:layout_toRightOf="@+id/textView2"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid06"
+        android:text="0" />
+        
+	<TextView
+        android:id="@+id/textViewBlacklistWristlets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_marginLeft="@dimen/grid06"
+        android:layout_toRightOf="@+id/textView3"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid06"
+        android:text="0" />
+            
+	<TextView
+        android:id="@+id/textViewBlacklistDevices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView4"
+        android:layout_alignLeft="@+id/textViewBlacklistWristlets"
+        android:layout_toRightOf="@+id/textView4"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid06"
+        android:text="0" />
+                
+	<TextView
+        android:id="@+id/textViewDriverPics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView5"
+        android:layout_alignLeft="@+id/textViewBlacklistWristlets"
+        android:layout_toRightOf="@+id/textView5"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid06"
+        android:text="0" />
+
+
+
+</RelativeLayout>

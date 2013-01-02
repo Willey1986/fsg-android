@@ -22,6 +22,7 @@ import de.tubs.cs.ibr.fsg.db.DBHelper;
 import de.tubs.cs.ibr.fsg.db.models.Team;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import de.tubs.cs.ibr.fsg.service.DTNService;
+import de.tubs.cs.ibr.fsg.service.FsgProtocol;
 
 public class RegistrationTeamSelectionActivity extends Activity {
 	
@@ -72,6 +73,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		}
 	}
 	
+	
 	/**
 	 * Erstellt das OptionsmenŸ der Registrierungs-Activity
 	 */
@@ -92,8 +94,35 @@ public class RegistrationTeamSelectionActivity extends Activity {
 			case R.id.miRegInsertDummyData:
 				writeSampleDataToDb();
 				return true;
-			case R.id.requestRegistrationDataUpdate:
-				requestRegistrationUpdate();
+			case R.id.showDataVersion:
+				startActivity(new Intent(this, DataVersionActivity.class));
+				return true;
+			case R.id.requestDriverPics:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIVER_PICS);
+				return true;
+			case R.id.requestDrivers:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIVERS);
+				return true;
+			case R.id.requestTeams:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_TEAMS);
+				return true;
+			case R.id.requestBlackWristlets:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_BLACK_WRISTLETS);
+				return true;
+			case R.id.requestBlackDevices:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_BLACK_DEVICES);
+				return true;
+			case R.id.requestDriversTeams:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIVERS_TEAMS);
+				return true;
+			case R.id.requestDriversTeamsDriverPics:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIVERS_TEAMS_DP);
+				return true;
+			case R.id.requestBothBlack:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_BOTH_BLACK);
+				return true;
+			case R.id.requestDriverTeamsBothBlack:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIV_TE_BLWR_BLDE);
 				return true;
 		}
 		return false;
@@ -102,14 +131,16 @@ public class RegistrationTeamSelectionActivity extends Activity {
 	
 
 	/**
-	 * Fragt aktuelle Daten Ÿber das Netz an und schreibt sie in die Datenbank
+	 * Fragt aktuelle Daten über das Netz an und schreibt sie in die Datenbank
 	 */
 
-	private void requestRegistrationUpdate() {
+	private void requestRegistrationUpdate(int requestType) {
 		Intent mIntent = new Intent(this, DTNService.class);
 		mIntent.setAction(de.tubs.cs.ibr.fsg.Intent.SEND_DATA);
-		mIntent.putExtra("singletonendpoint", "dtn://mulita-fsg.dtn/fsg");
-		mIntent.putExtra("jsondata", "reg_update");
+		mIntent.putExtra("destination", "dtn://mulita-fsg.dtn/fsg"  );
+		mIntent.putExtra("type",        String.valueOf(requestType) );
+		mIntent.putExtra("version",     "0");
+		mIntent.putExtra("payload",     "nichts");
 		startService(mIntent);
 	}
 	
