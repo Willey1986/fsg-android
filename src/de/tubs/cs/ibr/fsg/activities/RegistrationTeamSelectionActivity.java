@@ -1,5 +1,5 @@
 /**
- * Beinhaltet sämtliche Logik zur Auswahl des Teams bei der Registrierung
+ * Beinhaltet s√§mtliche Logik zur Auswahl des Teams bei der Registrierung
  */
 
 package de.tubs.cs.ibr.fsg.activities;
@@ -20,7 +20,6 @@ import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.db.DBAdapter;
 import de.tubs.cs.ibr.fsg.db.DBHelper;
 import de.tubs.cs.ibr.fsg.db.models.Team;
-import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import de.tubs.cs.ibr.fsg.service.DTNService;
 import de.tubs.cs.ibr.fsg.service.FsgProtocol;
 
@@ -34,9 +33,10 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_registration_team_selection);
 		regTable = (TableLayout) findViewById(R.id.regTable);
+		dba.open();
 		ArrayList<Team> teams = dba.getAllTeams();
-		for (int i = 0; i < teams.size(); i++) {					//Befüllt die Tabelle der Activity mit Inhalten (Teams) aus der DB
-			final Team team = teams.get(i);							//TODO: Erstellen eines eigenen Widgets das Team-Objekte empfängt und darstellt
+		for (int i = 0; i < teams.size(); i++) {					//BefÔøΩllt die Tabelle der Activity mit Inhalten (Teams) aus der DB
+			final Team team = teams.get(i);							//TODO: Erstellen eines eigenen Widgets das Team-Objekte empfÔøΩngt und darstellt
 			TableRow row = new TableRow(this);
 			TextView teamId = new TextView(this);
 			TextView teamName = new TextView(this);
@@ -73,9 +73,15 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		}
 	}
 	
+
+	protected void onStop() {
+		super.onStop();
+		dba.close();
+	}
+
 	
 	/**
-	 * Erstellt das Optionsmenü der Registrierungs-Activity
+	 * Erstellt das Optionsmen√º der Registrierungs-Activity
 	 */
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.registration, menu);
@@ -84,7 +90,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 	
 	
 	/**
-	 * Weist den Einträgen im Optionsmenü die jeweiligen Funktionen zu
+	 * Weist den Eintr√§gen im Optionsmen√º die jeweiligen Funktionen zu
 	 */
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -131,7 +137,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 	
 
 	/**
-	 * Fragt aktuelle Daten ¸ber das Netz an und schreibt sie in die Datenbank
+	 * Fragt aktuelle Daten √ºber das Netz an und schreibt sie in die Datenbank
 	 */
 
 	private void requestRegistrationUpdate(int requestType) {
@@ -158,42 +164,42 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		String deleteAllDrivers = "DELETE FROM " + DBHelper.TABLE_DRIVERS + ";";
 		String deleteAllTeams = "DELETE FROM " + DBHelper.TABLE_TEAMS + ";";
 		
-		dba.rawQuery(deleteAllDrivers);
-		dba.rawQuery(deleteAllTeams);
+		dba.execSQL(deleteAllDrivers);
+		dba.execSQL(deleteAllTeams);
 		
-		String writeDriver1 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(80,20,'Harald','Juhnke',0);";
-		String writeDriver2 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(81,20,'Stefan','Raab',0);";
-		String writeDriver3 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(82,20,'Verona','Pooth',1);";
-		String writeDriver4 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(83,21,'Claudia','Roth',1);";
-		String writeDriver5 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(84,21,'Ralf','Schumacher',0);";
-		String writeDriver6 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(85,21,'Sebastian','Vettel',0);";
-		String writeDriver7 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(86,21,'Lewis','Hamilton',0);";
-		String writeDriver8 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(87,21,'Fernando','Alonso',0);";
-		String writeDriver9 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(88,21,'Nikki','Lauda',0);";
-		String writeDriver10 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(89,21,'Peter','Lustig',0);";
-		String writeDriver11 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(90,21,'Hein','Blˆd',0);";
-		String writeDriver12 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(91,21,'Frauke','Ludowig',1);";
-		String writeDriver13 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(92,21,'Hans-Bernd-Sebastian-Ludwig-Martin-Hans','Meier von und zu Hohenzollern',0);";
+		String writeDriver1 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(80,20,'Harald','Juhnke');";
+		String writeDriver2 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(81,20,'Stefan','Raab');";
+		String writeDriver3 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(82,20,'Verona','Pooth');";
+		String writeDriver4 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(83,21,'Claudia','Roth');";
+		String writeDriver5 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(84,21,'Ralf','Schumacher');";
+		String writeDriver6 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(85,21,'Sebastian','Vettel');";
+		String writeDriver7 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(86,21,'Lewis','Hamilton');";
+		String writeDriver8 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(87,21,'Fernando','Alonso');";
+		String writeDriver9 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(88,21,'Nikki','Lauda');";
+		String writeDriver10 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(89,21,'Peter','Lustig');";
+		String writeDriver11 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(90,21,'Hein','Bl√∂d');";
+		String writeDriver12 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(91,21,'Frauke','Ludowig');";
+		String writeDriver13 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(92,21,'Hans-Bernd-Sebastian-Ludwig-Martin-Hans','Meier von und zu Hohenzollern');";
 		
 		String writeTeam1 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_TEAMS + " VALUES(20,'DE','Germany','Braunschweig','TU',11,3,0,1,'Lions Racing Team');";
 		String writeTeam2 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_TEAMS + " VALUES(21,'E','Spain','Barcelona','U',20,4,0,1,'Fernando Alonso Racing');";
 		
-		dba.rawQuery(writeDriver1);
-		dba.rawQuery(writeDriver2);
-		dba.rawQuery(writeDriver3);
-		dba.rawQuery(writeDriver4);
-		dba.rawQuery(writeDriver5);
-		dba.rawQuery(writeDriver6);
-		dba.rawQuery(writeDriver7);
-		dba.rawQuery(writeDriver8);
-		dba.rawQuery(writeDriver9);
-		dba.rawQuery(writeDriver10);
-		dba.rawQuery(writeDriver11);
-		dba.rawQuery(writeDriver12);
-		dba.rawQuery(writeDriver13);
+		dba.execSQL(writeDriver1);
+		dba.execSQL(writeDriver2);
+		dba.execSQL(writeDriver3);
+		dba.execSQL(writeDriver4);
+		dba.execSQL(writeDriver5);
+		dba.execSQL(writeDriver6);
+		dba.execSQL(writeDriver7);
+		dba.execSQL(writeDriver8);
+		dba.execSQL(writeDriver9);
+		dba.execSQL(writeDriver10);
+		dba.execSQL(writeDriver11);
+		dba.execSQL(writeDriver12);
+		dba.execSQL(writeDriver13);
 		
-		dba.rawQuery(writeTeam1);
-		dba.rawQuery(writeTeam2);
+		dba.execSQL(writeTeam1);
+		dba.execSQL(writeTeam2);
 	}
 	
 	

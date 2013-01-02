@@ -157,7 +157,7 @@ public class Team {
 		values.put(DBHelper.TEAMS_COLUMN_CAR, this.carNr);
 		values.put(DBHelper.TEAMS_COLUMN_PIT, this.pitNr);
 		values.put(DBHelper.TEAMS_COLUMN_ISWAITING, this.isWaiting);
-		values.put(DBHelper.TEAMS_COLUMN_CLASS, this.eventClass_id);
+		values.put(DBHelper.TEAMS_COLUMN_EVENT_CLASS_ID, this.eventClass_id);
 		values.put(DBHelper.TEAMS_COLUMN_NAME_PITS, this.name_pits);
 
 		return values;
