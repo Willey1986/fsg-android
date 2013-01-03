@@ -74,7 +74,13 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:noHistory="true">
         </activity>
         
-        <service android:name=".service.DTNService" android:process=".fsg_service"></service>
+        <activity android:name=".activities.DataVersionActivity"
+            android:label="@string/title_activity_data_version"
+            android:icon="@drawable/ic_launcher"
+            android:noHistory="true">
+        </activity>
+        
+        <service android:name=".service.DTNService" ></service> <!-- android:process=".fsg_service" -->
         
         <receiver android:enabled="true" android:name=".service.DTNReceiver">
   <intent-filter>

@@ -5,7 +5,7 @@
         android:background="@drawable/tablerow_gradient_light" >
 
         <View
-            android:id="@+id/view1"
+            android:id="@+id/driverPic"
             android:layout_width="80dp"
             android:layout_height="fill_parent"
             android:layout_alignParentLeft="true"
@@ -16,8 +16,8 @@
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/view1"
-            android:layout_toRightOf="@+id/view1"
+            android:layout_alignTop="@+id/driverPic"
+            android:layout_toRightOf="@+id/driverPic"
             android:text="@string/tblDriversName"
             android:textSize="@dimen/grid08"
             android:textStyle="bold" />

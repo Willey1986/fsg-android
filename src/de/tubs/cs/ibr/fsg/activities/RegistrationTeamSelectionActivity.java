@@ -21,6 +21,7 @@ import de.tubs.cs.ibr.fsg.db.DBAdapter;
 import de.tubs.cs.ibr.fsg.db.DBHelper;
 import de.tubs.cs.ibr.fsg.db.models.Team;
 import de.tubs.cs.ibr.fsg.service.DTNService;
+import de.tubs.cs.ibr.fsg.service.FsgProtocol;
 
 public class RegistrationTeamSelectionActivity extends Activity {
 	
@@ -47,18 +48,22 @@ public class RegistrationTeamSelectionActivity extends Activity {
 			teamCountry.setText(team.getCn_short_en());
 			teamCity.setText(team.getCity());
 			teamUniversity.setText(team.getUniversity());
-			teamId.setTextColor(getResources().getColor(R.color.white));
-			teamName.setTextColor(getResources().getColor(R.color.white));
-			teamCountry.setTextColor(getResources().getColor(R.color.white));
-			teamCity.setTextColor(getResources().getColor(R.color.white));
-			teamUniversity.setTextColor(getResources().getColor(R.color.white));
+			teamId.setTextColor(getResources().getColor(R.color.dark_red));
+			teamName.setTextColor(getResources().getColor(R.color.black));
+			teamCountry.setTextColor(getResources().getColor(R.color.dark_red));
+			teamCity.setTextColor(getResources().getColor(R.color.black));
+			teamUniversity.setTextColor(getResources().getColor(R.color.dark_red));
+			teamName.setPadding(10, 0, 0, 0);
+			teamCountry.setPadding(20, 0, 0, 0);
+			teamCity.setPadding(20, 0, 0, 0);
+			teamUniversity.setPadding(20, 0, 0, 0);
 			row.addView(teamId);
 			row.addView(teamName);
 			row.addView(teamCountry);
 			row.addView(teamCity);
 			row.addView(teamUniversity);
 			row.setBackgroundResource(R.drawable.tablerow_gradient_light);
-			row.setPadding(8, 8, 8, 8);
+			row.setPadding(10, 22, 8, 8);
 			row.setOnClickListener(new OnClickListener() {
 				
 				public void onClick(View v) {
@@ -68,14 +73,17 @@ public class RegistrationTeamSelectionActivity extends Activity {
 					startActivity(intent);
 				}
 			});
+			row.setMinimumHeight(70);
 			regTable.addView(row);
 		}
 	}
 	
+
 	protected void onStop() {
 		super.onStop();
 		dba.close();
 	}
+
 	
 	/**
 	 * Erstellt das Optionsmenü der Registrierungs-Activity
@@ -97,8 +105,35 @@ public class RegistrationTeamSelectionActivity extends Activity {
 			case R.id.miRegInsertDummyData:
 				writeSampleDataToDb();
 				return true;
-			case R.id.requestRegistrationDataUpdate:
-				requestRegistrationUpdate();
+			case R.id.showDataVersion:
+				startActivity(new Intent(this, DataVersionActivity.class));
+				return true;
+			case R.id.requestDriverPics:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIVER_PICS);
+				return true;
+			case R.id.requestDrivers:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIVERS);
+				return true;
+			case R.id.requestTeams:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_TEAMS);
+				return true;
+			case R.id.requestBlackWristlets:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_BLACK_WRISTLETS);
+				return true;
+			case R.id.requestBlackDevices:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_BLACK_DEVICES);
+				return true;
+			case R.id.requestDriversTeams:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIVERS_TEAMS);
+				return true;
+			case R.id.requestDriversTeamsDriverPics:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIVERS_TEAMS_DP);
+				return true;
+			case R.id.requestBothBlack:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_BOTH_BLACK);
+				return true;
+			case R.id.requestDriverTeamsBothBlack:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIV_TE_BLWR_BLDE);
 				return true;
 		}
 		return false;
@@ -110,11 +145,13 @@ public class RegistrationTeamSelectionActivity extends Activity {
 	 * Fragt aktuelle Daten über das Netz an und schreibt sie in die Datenbank
 	 */
 
-	private void requestRegistrationUpdate() {
+	private void requestRegistrationUpdate(int requestType) {
 		Intent mIntent = new Intent(this, DTNService.class);
 		mIntent.setAction(de.tubs.cs.ibr.fsg.Intent.SEND_DATA);
-		mIntent.putExtra("singletonendpoint", "dtn://mulita-fsg.dtn/fsg");
-		mIntent.putExtra("jsondata", "reg_update");
+		mIntent.putExtra("destination", "dtn://mulita-fsg.dtn/fsg"  );
+		mIntent.putExtra("type",        String.valueOf(requestType) );
+		mIntent.putExtra("version",     "0");
+		mIntent.putExtra("payload",     "nichts");
 		startService(mIntent);
 	}
 	
@@ -135,7 +172,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		dba.execSQL(deleteAllDrivers);
 		dba.execSQL(deleteAllTeams);
 		
-		String writeDriver1 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(80,20,'Harald','Juhnke');";
+		String writeDriver1 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(1,20,'Harald','Juhnke');";
 		String writeDriver2 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(81,20,'Stefan','Raab');";
 		String writeDriver3 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(82,20,'Verona','Pooth');";
 		String writeDriver4 = "INSERT OR IGNORE INTO " + DBHelper.TABLE_DRIVERS + " VALUES(83,21,'Claudia','Roth');";

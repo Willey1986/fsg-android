@@ -1,11 +1,11 @@
 package de.tubs.cs.ibr.fsg.activities;
 
-import de.tubs.cs.ibr.fsg.R;
-import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class RunActivity extends Activity {
 
