@@ -20,8 +20,8 @@ import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.db.DBAdapter;
 import de.tubs.cs.ibr.fsg.db.DBHelper;
 import de.tubs.cs.ibr.fsg.db.models.Team;
-import de.tubs.cs.ibr.fsg.service.DTNService;
-import de.tubs.cs.ibr.fsg.service.FsgProtocol;
+import de.tubs.cs.ibr.fsg.dtn.DTNService;
+import de.tubs.cs.ibr.fsg.dtn.FsgProtocol;
 
 public class RegistrationTeamSelectionActivity extends Activity {
 	

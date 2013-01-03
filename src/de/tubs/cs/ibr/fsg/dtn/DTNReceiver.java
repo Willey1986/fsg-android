@@ -1,4 +1,4 @@
-package de.tubs.cs.ibr.fsg.service;
+package de.tubs.cs.ibr.fsg.dtn;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.util.Log;
 
 /**
  * Mit diesem BroadcastReceiver bemerken wir ankommenden Daten und starten
- * den dazugehörigen Service, der die Daten entsprechend empfängt.
+ * den dazugehoerigen Service, der die Daten entsprechend empfaengt.
  */
 public class DTNReceiver extends BroadcastReceiver{
 	private static final String TAG = "DTNReceiver";

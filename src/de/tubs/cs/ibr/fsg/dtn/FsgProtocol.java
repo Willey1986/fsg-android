@@ -1,4 +1,4 @@
-package de.tubs.cs.ibr.fsg.service;
+package de.tubs.cs.ibr.fsg.dtn;
 
 import java.io.BufferedInputStream;
 import java.io.File;

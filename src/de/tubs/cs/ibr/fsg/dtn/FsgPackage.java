@@ -1,4 +1,4 @@
-package de.tubs.cs.ibr.fsg.service;
+package de.tubs.cs.ibr.fsg.dtn;
 
 
 public class FsgPackage {

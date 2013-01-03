@@ -80,9 +80,9 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:noHistory="true">
         </activity>
         
-        <service android:name=".service.DTNService" ></service> <!-- android:process=".fsg_service" -->
+        <service android:name=".dtn.DTNService" ></service> <!-- android:process=".fsg_service" -->
         
-        <receiver android:enabled="true" android:name=".service.DTNReceiver">
+        <receiver android:enabled="true" android:name=".dtn.DTNReceiver">
   <intent-filter>
 <action android:name="de.tubs.ibr.dtn.intent.RECEIVE" />
 <category android:name="de.tubs.cs.ibr.fsg" />
