@@ -4,6 +4,8 @@
 package de.tubs.cs.ibr.fsg;
 
 import java.io.*;
+import java.sql.Timestamp;
+import java.util.Date;
 import de.tubs.cs.ibr.fsg.NfcObject;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
@@ -24,7 +26,7 @@ public class NfcData {
 				//System.out.println("ContentID: "+Byte.toString(inputBlock[i][0]));
 			
 			switch(inputBlock[i][0]){
-				case 10: //registrierungsdaten IDs
+				case 10: //Registrierungsdaten IDs
 					short[] test = new short[8];
 					for(int j=1;j<15;j+=2){
 						test[j/2] = (short) (((inputBlock[i][j+1]&0xFF) << 8) | (inputBlock[i][j]&0xFF));
@@ -32,14 +34,15 @@ public class NfcData {
 					outputObject.DriverObject.setTeam_id(test[2]);
 					outputObject.DriverObject.setUser_id(test[1]);
 					outputObject.DriverObject.getTeam().setCarNr(test[0]);
-					//TODO: want to set eventID to Object
+					outputObject.setEventID(test[3]);
 					
 					System.out.println("fahrzeugID: "+test[0]);
 					System.out.println("userID: "+test[1]);
 					System.out.println("teamID: "+test[2]);
 					System.out.println("eventID: "+test[3]);
 					break;
-				case 11: //registrierungsdaten name        		
+					
+				case 11: //Registrierungsdaten name        		
 					try{
 						String str = new String(inputBlock[i], "UTF-8");
 						str = str.substring(1, str.length());
@@ -52,8 +55,23 @@ public class NfcData {
 						throw new FsgException( e, "NfcData", FsgException.CHAR_DECODE_FAILED);
 					}
 					break;
-				case 20: //more
+					
+				case 20: //Check IN
+					//getTIME System.out.println(new Timestamp(date.getTime()));
+					short briefingID = (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
+					int tstamp = (int) (((inputBlock[i][6]&0xFF) << 32) | ((inputBlock[i][5]&0xFF) << 16) | ((inputBlock[i][4]&0xFF) << 8) | (inputBlock[i][3]&0xFF));
+					long tstamp2 = ((long)tstamp)+1357174835445L;
+					
+					System.out.println("briefingID: "+briefingID);
+					System.out.println("TimestampOut: "+tstamp2);
 					break;
+					
+				case 21: //Check OUT
+					break;
+					
+				case 40: //RUNS DONE
+					break;
+					
 				default:
 					System.out.println("Error: contentID "+inputBlock[i][0]+" not readable!");
 					break;
@@ -82,7 +100,7 @@ public class NfcData {
 		short fahrzeugID 	= theDriver.getTeam().getCarNr();
 		short userID 		= theDriver.getUser_id();
 		short teamID 		= theDriver.getTeam_id();
-		short eventID 		= 1; //TODO: EventID �ber Einstellungen festlegbar ?
+		short eventID 		= 1; //TODO: EventID ueber Einstellungen festlegbar ?
 
 		outputBlock[0][0] = contentID;
 		outputBlock[0][1] = (byte)(fahrzeugID & 0xff);
@@ -120,6 +138,30 @@ public class NfcData {
 		outputBlock[1][0] = contentID; //write contentID AFTER text, to overwrite whitespace
 		
 		return outputBlock;
+	}
+	
+	public static byte[][] generateCheckIN(short briefingID){
+		byte[][] outputBlock = new byte[1][16];
+		byte contentID = 20;
+		int timestamp = makeBetterTimestampNOW();
+		
+		outputBlock[0][0] = contentID;
+		outputBlock[0][1] = (byte)(briefingID & 0xff);
+		outputBlock[0][2] = (byte)((briefingID >> 8) & 0xff);
+		outputBlock[0][3] = (byte)(timestamp & 0xff);
+		outputBlock[0][4] = (byte)((timestamp >> 8) & 0xff);
+		outputBlock[0][5] = (byte)((timestamp >> 16) & 0xff);
+		outputBlock[0][6] = (byte)((timestamp >> 32) & 0xff);		
+		
+		return outputBlock;
+	}
+	
+	private static int makeBetterTimestampNOW(){
+		//get the Time	| converted output: 2010-03-08 14:59:30.252
+		java.util.Date date = new java.util.Date();		
+		System.out.println("TimestampIN: "+date.getTime());
+		//convert to UnixTimestamp: / 1000L
+		return (int)(date.getTime()-1357174835445L);
 	}
 	
 	public static byte[] toBytes(short s) {
