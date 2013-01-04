@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutionException;
 import org.json.*;
 
 import de.tubs.cs.ibr.fsg.db.models.*;
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -32,7 +33,7 @@ public class DBAdapter {
 	
 	
 	/**
-	 * Schreibt ein JSON-Array [{"DeviceID":int,"Timestamp":"String"},...] mit geblacklisteten GerŠten in die interne SQLite-Datenbank
+	 * Schreibt ein JSON-Array [{"DeviceID":int,"Timestamp":"String"},...] mit geblacklisteten Gerï¿½ten in die interne SQLite-Datenbank
 	 * @param jsonArray
 	 */
 	public void writeBlacklistedDevicesToDB(String jsonArray) {
@@ -50,7 +51,7 @@ public class DBAdapter {
 	
 	
 	/**
-	 * Schreibt ein JSON-Array [{...},{...}] mit geblacklisteten ArmbŠndern in die interne SQLite-Datenbank
+	 * Schreibt ein JSON-Array [{...},{...}] mit geblacklisteten Armbï¿½ndern in die interne SQLite-Datenbank
 	 * @param jsonArray
 	 */
 	public void writeBlacklistedTagsToDB(String jsonArray) {
@@ -93,7 +94,7 @@ public class DBAdapter {
 	/**
 	 * List einen einzelnen Fahrer anhand der seiner ID aus der Datenbank aus
 	 * @param driverID = FahrerID
-	 * @return = der gewŸnschte Fahrer
+	 * @return = der gewï¿½nschte Fahrer
 	 */
 	public Driver getDriver(short driverID) {
 		String sqlDriver = "SELECT * FROM " + DBHelper.TABLE_DRIVERS
@@ -115,8 +116,8 @@ public class DBAdapter {
 	}
 	
 	/**
-	 * List alle Fahrer aus der Datenbank aus und gibt sie in einer ArrayList zurŸck
-	 * @return = ArrayList mit sŠmtlichen in der DB vorhandenen Teams
+	 * List alle Fahrer aus der Datenbank aus und gibt sie in einer ArrayList zurï¿½ck
+	 * @return = ArrayList mit sï¿½mtlichen in der DB vorhandenen Teams
 	 */
 	public ArrayList<Driver> getAllDrivers() {
 		ArrayList<Driver> drivers = new ArrayList<Driver>();
@@ -133,8 +134,8 @@ public class DBAdapter {
 	}
 	
 	/**
-	 * Liest alle Fahrer eines bestimmten Teams aus der Datenbank aus und gibt eine entsprechende ArrayList zurŸck
-	 * @param teamID = GewŸnschte TeamID
+	 * Liest alle Fahrer eines bestimmten Teams aus der Datenbank aus und gibt eine entsprechende ArrayList zurï¿½ck
+	 * @param teamID = Gewï¿½nschte TeamID
 	 * @return = ArrayList mit allen Fahrern eines Teams
 	 */
 	public ArrayList<Driver> getAllDriversByTeamID(short teamID) {
@@ -158,7 +159,7 @@ public class DBAdapter {
 	/**
 	 * Liest ein einzelnes Team anhand der TeamID aus der Datenbank aus
 	 * @param teamID = ID des Teams
-	 * @return = Das gewŸnschte Team
+	 * @return = Das gewï¿½nschte Team
 	 */
 	public Team getTeam(short teamID) {
 		Team team = new Team();
@@ -186,7 +187,7 @@ public class DBAdapter {
 	
 	/**
 	 * Liest alle Teams aus und speichert sie in einer ArrayList
-	 * @return = ArrayList die sŠmtliche Teams der Datenbank enthŠlt
+	 * @return = ArrayList die sï¿½mtliche Teams der Datenbank enthï¿½lt
 	 */
 	public ArrayList<Team> getAllTeams() {
 		ArrayList<Team> teams = new ArrayList<Team>();
@@ -211,8 +212,8 @@ public class DBAdapter {
 	}
 	
 	/**
-	 * Schreibt einen String der ein JSON-Array mit Teamdaten enthŠlt in die Datenbank
-	 * @param jsonArray = String der JSON-Array enthŠlt
+	 * Schreibt einen String der ein JSON-Array mit Teamdaten enthï¿½lt in die Datenbank
+	 * @param jsonArray = String der JSON-Array enthï¿½lt
 	 */
 	public void writeTeamsToDB(String jsonArray) {
 		try {
@@ -224,6 +225,55 @@ public class DBAdapter {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void writeCheckIn(short driverId, short briefingId) throws FsgException {
+		Date now = new Date();
+		String timestamp = "" + (now.getTime() / 1000L);
+		String sql = "INSERT OR IGNORE INTO " + DBHelper.TABLE_CHECKED_IN + " (" 
+				+ DBHelper.CHECKED_IN_COLUMN_DRIVER_ID + ", "
+				+ DBHelper.CHECKED_IN_COLUMN_BRIEFING_ID + ", "
+				+ DBHelper.CHECKED_IN_COLUMN_VALID + ", "
+				+ DBHelper.CHECKED_IN_COLUMN_TIMESTAMP + ") VALUES ("
+				+ driverId + ", "
+				+ briefingId + ", "
+				+ "1,"
+				+ timestamp +")";
+		if (!isCheckedIn(driverId, briefingId))
+			execSQL(sql);
+		else {
+			throw new FsgException(null, "DBAdapter", FsgException.DRIVER_ALREADY_CHECKED_IN);
+		}
+	}
+	
+	public boolean isCheckedIn(short driverId, short briefingId) {
+		String sql = "SELECT * FROM " + DBHelper.TABLE_CHECKED_IN 
+				+ " WHERE " 
+				+ DBHelper.CHECKED_IN_COLUMN_DRIVER_ID + "=" + driverId + " AND "
+				+ DBHelper.CHECKED_IN_COLUMN_BRIEFING_ID + "=" + briefingId + " AND "
+				+ DBHelper.CHECKED_IN_COLUMN_VALID + "=1";
+		Cursor cursor = rawQuery(sql);
+		if (cursor.moveToFirst()) {
+			cursor.close();
+			return true;
+		}
+		else {
+			cursor.close();
+			return false;
+		}
+	}
+	
+	public void writeCheckOut(short driverId, short briefingId) {
+		Date now = new Date();
+		String timestamp = "" + (now.getTime() / 1000L);
+		String sql = "INSERT OR IGNORE INTO " + DBHelper.TABLE_CHECKED_OUT + " (" 
+				+ DBHelper.CHECKED_OUT_COLUMN_DRIVER_ID + ", "
+				+ DBHelper.CHECKED_OUT_COLUMN_BRIEFING_ID + ", "
+				+ DBHelper.CHECKED_OUT_COLUMN_TIMESTAMP + ") VALUES ("
+				+ driverId + ", "
+				+ briefingId + ", "
+				+ timestamp +")";
+		execSQL(sql);
 	}
 	
 	/**
@@ -245,7 +295,7 @@ public class DBAdapter {
 	}
 	
 	/**
-	 * Dient dem direkten AusfŸhren von SQL-AusdrŸcken
+	 * Dient dem direkten Ausfï¿½hren von SQL-Ausdrï¿½cken
 	 * @param sql = SQL-String
 	 */
 	public void execSQL(String sql) {
@@ -253,7 +303,7 @@ public class DBAdapter {
 	}
 	
 	/**
-	 * Dient dem direkten AusfŸhren von SQL-Abfragen 
+	 * Dient dem direkten Ausfï¿½hren von SQL-Abfragen 
 	 * @param sql = SQL-String
 	 * @return Ergebnis der Abfrage als Cursor
 	 * @throws ExecutionException 

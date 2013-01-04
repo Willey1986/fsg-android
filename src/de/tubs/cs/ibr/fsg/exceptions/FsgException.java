@@ -17,6 +17,14 @@ public class FsgException extends Exception{
 	public static final int CHAR_ENCODE_FAILED	= 11;
 	public static final int CHAR_DECODE_FAILED	= 12;
 	
+	
+	
+	
+	/*
+	 * DB-Exceptions 
+	 */
+	public static final int DRIVER_ALREADY_CHECKED_IN = 100;
+	
 	public static final int END_OF_ROAD       = 2000; // Nur zum Testen...
 
 	/**

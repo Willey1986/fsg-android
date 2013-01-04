@@ -80,6 +80,7 @@
     <string name="noti_text_teams">Teams-Daten</string>
     <string name="noti_text_blacklist_wirstlets">Bänder-Blacklist</string>
     <string name="noti_text_blacklist_devices">Geräte-Blacklist</string>
+    <string name="error_driver_already_checked_in">Driver already checked in to this briefing</string>
 
 
 </resources>

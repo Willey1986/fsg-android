@@ -22,6 +22,7 @@ import de.tubs.cs.ibr.fsg.db.DBHelper;
 import de.tubs.cs.ibr.fsg.db.models.Team;
 import de.tubs.cs.ibr.fsg.dtn.DTNService;
 import de.tubs.cs.ibr.fsg.dtn.FsgProtocol;
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class RegistrationTeamSelectionActivity extends Activity {
 	
@@ -205,6 +206,16 @@ public class RegistrationTeamSelectionActivity extends Activity {
 		
 		dba.execSQL(writeTeam1);
 		dba.execSQL(writeTeam2);
+		
+		try {
+			dba.writeCheckIn((short)13, (short)12);
+		} catch (FsgException e) {
+			// TODO Auto-generated catch block
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e);
+			startActivity(mIntent);
+			finish();
+		}
 	}
 	
 	
