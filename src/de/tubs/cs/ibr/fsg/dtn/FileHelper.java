@@ -1,4 +1,4 @@
-package de.tubs.cs.ibr.fsg.service;
+package de.tubs.cs.ibr.fsg.dtn;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -43,7 +43,7 @@ public class FileHelper {
 		ZipFile javaZipFile;
 		try {
 			javaZipFile = new ZipFile(zipFile);
-			Enumeration mEntries = javaZipFile.entries();
+			Enumeration<? extends ZipEntry> mEntries = javaZipFile.entries();
 			byte[] bytesBuffer = new byte[8192];
 			int length;
 			
@@ -80,8 +80,9 @@ public class FileHelper {
 	
 	
 	/**
-	 * @param mFsgBundle
-	 * @throws FsgException
+	 * Diese Methode speichert empfangene Fahrerbilder an der richtigen Stelle im Dateisystem der Clients.
+	 * @param mFsgBundle Empfangener Buendel mit dem Fahrerbilder.
+	 * @throws FsgException Wird bei einem Fehler ausgeworfen.
 	 */
 	public static void saveDriverPics(FsgPackage mFsgBundle) throws FsgException {
 		

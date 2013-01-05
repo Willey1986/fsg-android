@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
-import de.tubs.cs.ibr.fsg.service.FileHelper;
+import de.tubs.cs.ibr.fsg.dtn.FileHelper;
 
 public class DriverView extends RelativeLayout{
 	

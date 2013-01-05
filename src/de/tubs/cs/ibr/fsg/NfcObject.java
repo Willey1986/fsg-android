@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package de.tubs.cs.ibr.fsg;
 
 import de.tubs.cs.ibr.fsg.db.models.Driver;
@@ -35,4 +36,27 @@ public class NfcObject {
 	public void setEventID(short temp){
 		eventID = temp;
 	}
+=======
+package de.tubs.cs.ibr.fsg;
+
+import de.tubs.cs.ibr.fsg.db.models.Driver;
+//import org.json.JSONException;
+//import org.json.JSONObject;
+
+public class NfcObject {
+	public Driver DriverObject;
+	private short eventID;
+	
+	
+	public NfcObject(){
+		DriverObject = new Driver();
+	}
+	
+	public short getEventID(){
+		return eventID;
+	}
+	public void setEventID(short temp){
+		eventID = temp;
+	}
+>>>>>>> branch 'master' of https://github.com/Willey1986/fsg-android.git
 }

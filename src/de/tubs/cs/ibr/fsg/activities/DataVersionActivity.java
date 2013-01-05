@@ -3,8 +3,10 @@ package de.tubs.cs.ibr.fsg.activities;
 import de.tubs.cs.ibr.fsg.R;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class DataVersionActivity extends Activity {
@@ -37,5 +39,9 @@ public class DataVersionActivity extends Activity {
 		driverPicsTextView.setText(String.valueOf(version)  );
 		
 	}
+	
+    public void onButtonClick(View view){
+    	onBackPressed();
+    }
 	
 }

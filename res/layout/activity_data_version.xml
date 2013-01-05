@@ -131,6 +131,17 @@
         android:textSize="@dimen/grid06"
         android:text="0" />
 
-
+	<Button
+	    android:id="@+id/okButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+	    android:layout_below="@+id/textView5"
+	    android:background="@layout/button_selector"
+        android:gravity="center" 
+        android:textColor="@color/button_text_color"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginTop="@dimen/grid07"
+	    android:onClick="onButtonClick"
+	    android:text="@string/ok"/>
 
 </RelativeLayout>
