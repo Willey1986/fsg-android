@@ -1,16 +1,32 @@
 package de.tubs.cs.ibr.fsg;
 
 import de.tubs.cs.ibr.fsg.db.models.Driver;
-//import org.json.JSONException;
-//import org.json.JSONObject;
+import de.tubs.cs.ibr.fsg.NfcObjectBriefing;
+import java.util.*;
 
 public class NfcObject {
 	public Driver DriverObject;
-	private short eventID;
-	
+	private ArrayList<NfcObjectBriefing> Briefings = new ArrayList<NfcObjectBriefing>();
+	private short eventID;	
 	
 	public NfcObject(){
 		DriverObject = new Driver();
+	}
+	
+	public void addBriefing(NfcObjectBriefing temp){
+		Briefings.add(temp);
+	}
+	public void removeBriefingByID(short id){
+		Iterator<NfcObjectBriefing> it = Briefings.iterator();
+		while (it.hasNext()) {
+		  if(it.next().getBriefingID() == id){
+			  Briefings.remove(it.next());
+		  }
+		}
+
+	}
+	public ArrayList<NfcObjectBriefing> getBriefings(){
+		return Briefings;
 	}
 	
 	public short getEventID(){

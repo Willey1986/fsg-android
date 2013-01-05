@@ -4,13 +4,14 @@
 package de.tubs.cs.ibr.fsg;
 
 import java.io.*;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.util.Date.*;
 import de.tubs.cs.ibr.fsg.NfcObject;
+import de.tubs.cs.ibr.fsg.NfcObjectBriefing;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class NfcData {
+	private static long tstampConstant = 1357174835;//1357174835445L; 
 	//at the beginning of each sector there is a informationblock to get
 	
 	//constants for the encryption/decryption
@@ -19,7 +20,7 @@ public class NfcData {
 	/* reads out & converts the binary encoded data
 	 */
 	public static NfcObject interpretData(byte[][] inputBlock) throws FsgException{
-		NfcObject outputObject = new NfcObject();
+		NfcObject outputObject = new NfcObject();		
 		
 		//read out the complete inputArray
 		for(int i=0;i<inputBlock.length;i++){
@@ -35,11 +36,11 @@ public class NfcData {
 					outputObject.DriverObject.setUser_id(test[1]);
 					outputObject.DriverObject.getTeam().setCarNr(test[0]);
 					outputObject.setEventID(test[3]);
-					
-					System.out.println("fahrzeugID: "+test[0]);
-					System.out.println("userID: "+test[1]);
-					System.out.println("teamID: "+test[2]);
-					System.out.println("eventID: "+test[3]);
+						/*
+						System.out.println("fahrzeugID: "+test[0]);
+						System.out.println("userID: "+test[1]);
+						System.out.println("teamID: "+test[2]);
+						System.out.println("eventID: "+test[3]);*/
 					break;
 					
 				case 11: //Registrierungsdaten name        		
@@ -50,7 +51,7 @@ public class NfcData {
 						// extract first and lastname from the string
 						outputObject.DriverObject.setFirst_name(str.substring(0,str.lastIndexOf(" ")));
 						outputObject.DriverObject.setLast_name(str.substring(str.lastIndexOf(" ")+1));
-						System.out.println("extraced Name: "+ outputObject.DriverObject.getFirst_name()+" "+outputObject.DriverObject.getLast_name());
+							//System.out.println("extraced Name: "+ outputObject.DriverObject.getFirst_name()+" "+outputObject.DriverObject.getLast_name());
 					} catch (Exception e) {
 						throw new FsgException( e, "NfcData", FsgException.CHAR_DECODE_FAILED);
 					}
@@ -58,15 +59,27 @@ public class NfcData {
 					
 				case 20: //Check IN
 					//getTIME System.out.println(new Timestamp(date.getTime()));
-					short briefingID = (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
-					int tstamp = (int) (((inputBlock[i][6]&0xFF) << 32) | ((inputBlock[i][5]&0xFF) << 16) | ((inputBlock[i][4]&0xFF) << 8) | (inputBlock[i][3]&0xFF));
-					long tstamp2 = ((long)tstamp)+1357174835445L;
+					short briefingID	= (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
+					int tstamp 			= (int) (((inputBlock[i][6]&0xFF) << 32) | ((inputBlock[i][5]&0xFF) << 16) | ((inputBlock[i][4]&0xFF) << 8) | (inputBlock[i][3]&0xFF));
+					long tstamp2 		= (Long.parseLong(String.valueOf(tstamp))+tstampConstant)*1000;			
+
+					NfcObjectBriefing newBriefing = new NfcObjectBriefing();
+					newBriefing.setBriefingID(briefingID);
+					newBriefing.setTimestamp(tstamp2);
 					
-					System.out.println("briefingID: "+briefingID);
-					System.out.println("TimestampOut: "+tstamp2);
+					outputObject.addBriefing(newBriefing);
+					
+						//System.out.println("briefingID: "+briefingID);
+						//System.out.println("TimestampOut: "+tstamp2);
+						//System.out.println("TimeIN: "+new java.util.Date(tstamp2));
 					break;
 					
 				case 21: //Check OUT
+					short briefingIDo 	= (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
+					int tstampo 		= (int) (((inputBlock[i][6]&0xFF) << 32) | ((inputBlock[i][5]&0xFF) << 16) | ((inputBlock[i][4]&0xFF) << 8) | (inputBlock[i][3]&0xFF));
+					long tstamp2o 		= (Long.parseLong(String.valueOf(tstampo))+tstampConstant)*1000;
+					
+					outputObject.removeBriefingByID(briefingIDo);
 					break;
 					
 				case 40: //RUNS DONE
@@ -156,12 +169,30 @@ public class NfcData {
 		return outputBlock;
 	}
 	
+	public static byte[][] generateCheckOUT(short briefingID){
+		byte[][] outputBlock = new byte[1][16];
+		byte contentID = 21;
+		int timestamp = makeBetterTimestampNOW();
+		
+		outputBlock[0][0] = contentID;
+		outputBlock[0][1] = (byte)(briefingID & 0xff);
+		outputBlock[0][2] = (byte)((briefingID >> 8) & 0xff);
+		outputBlock[0][3] = (byte)(timestamp & 0xff);
+		outputBlock[0][4] = (byte)((timestamp >> 8) & 0xff);
+		outputBlock[0][5] = (byte)((timestamp >> 16) & 0xff);
+		outputBlock[0][6] = (byte)((timestamp >> 32) & 0xff);	
+		
+		return outputBlock;
+	}
+	
 	private static int makeBetterTimestampNOW(){
 		//get the Time	| converted output: 2010-03-08 14:59:30.252
 		java.util.Date date = new java.util.Date();		
-		System.out.println("TimestampIN: "+date.getTime());
-		//convert to UnixTimestamp: / 1000L
-		return (int)(date.getTime()-1357174835445L);
+			//System.out.println("TimestampIN: "+date.getTime());
+			//System.out.println("TimestampINc:"+(int)((date.getTime()/1000)-tstampConstant));
+			System.out.println("TimeIN: "+date);
+		//to convert to UnixTimestamp use: / 1000L
+		return (int)((date.getTime()/1000)-tstampConstant);
 	}
 	
 	public static byte[] toBytes(short s) {
