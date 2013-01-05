@@ -1,13 +1,12 @@
 package de.tubs.cs.ibr.fsg.activities;
 
-import de.tubs.cs.ibr.fsg.R;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import de.tubs.cs.ibr.fsg.R;
 
 public class DataVersionActivity extends Activity {
 
@@ -18,23 +17,23 @@ public class DataVersionActivity extends Activity {
 		
 		SharedPreferences prefs = this.getSharedPreferences("de.tubs.cs.ibr.fsg", Context.MODE_PRIVATE);
 		
-		TextView driversVesionTextView = (TextView) findViewById(R.id.textViewDrivers);
+		TextView driversVesionTextView = (TextView) findViewById(R.id.textViewDriversVersion);
 		int version = prefs.getInt("version_drivers", 0);
 		driversVesionTextView.setText( String.valueOf(version) );
 		
-		TextView teamsVesionTextView = (TextView) findViewById(R.id.textViewTeams);
+		TextView teamsVesionTextView = (TextView) findViewById(R.id.textViewTeamsVersion);
 		version = prefs.getInt("version_teams", 0);
 		teamsVesionTextView.setText( String.valueOf(version) );
 		
-		TextView blacklistWristletsVesionTextView = (TextView) findViewById(R.id.textViewBlacklistWristlets);
+		TextView blacklistWristletsVesionTextView = (TextView) findViewById(R.id.textViewBlacklistTagsVersion);
 		version = prefs.getInt("version_black_wristlets", 0);
 		blacklistWristletsVesionTextView.setText( String.valueOf(version) );
 		
-		TextView blacklistDevicesTextView = (TextView) findViewById(R.id.textViewBlacklistDevices);
+		TextView blacklistDevicesTextView = (TextView) findViewById(R.id.textViewBlacklistDevicesVersion);
 		version = prefs.getInt("version_black_devices", 0);
 		blacklistDevicesTextView.setText( String.valueOf(version) );
 		
-		TextView driverPicsTextView = (TextView) findViewById(R.id.textViewDriverPics);
+		TextView driverPicsTextView = (TextView) findViewById(R.id.textViewDriverPicsVersion);
 		version = prefs.getInt("version_driver_pics", 0);
 		driverPicsTextView.setText(String.valueOf(version)  );
 		

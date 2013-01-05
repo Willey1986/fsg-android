@@ -149,7 +149,7 @@ public class RegistrationTeamSelectionActivity extends Activity {
 	private void requestRegistrationUpdate(int requestType) {
 		Intent mIntent = new Intent(this, DTNService.class);
 		mIntent.setAction(de.tubs.cs.ibr.fsg.Intent.SEND_DATA);
-		mIntent.putExtra("destination", "dtn://mulita-fsg.dtn/fsg"  );
+		mIntent.putExtra("destination", "dtn://fsg-backend.dtn/fsg"  );
 		mIntent.putExtra("type",        String.valueOf(requestType) );
 		mIntent.putExtra("version",     "0");
 		mIntent.putExtra("payload",     "nichts");

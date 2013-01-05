@@ -14,7 +14,6 @@
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:layout_marginTop="30dp"
         android:layout_weight="0.71"
         android:text="@string/version_title"
         android:textColor="@color/button_text_color"
@@ -26,7 +25,7 @@
         android:layout_width="300dp"
         android:layout_height="fill_parent"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="5dp"
         android:layout_weight="0.71"
         android:orientation="horizontal" >
 
@@ -151,8 +150,8 @@
     <Button
         android:id="@+id/okButton"
         android:layout_width="100dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.51"
         android:background="@layout/button_selector"

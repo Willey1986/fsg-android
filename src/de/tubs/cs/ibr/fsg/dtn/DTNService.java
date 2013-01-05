@@ -502,7 +502,7 @@ public class DTNService extends IntentService {
 	protected void sendNewVersionConfirmation(int receivedVersion, int dataType) {
 		Intent mIntent = new Intent(this, DTNService.class);
 		mIntent.setAction(de.tubs.cs.ibr.fsg.Intent.SEND_DATA);
-		mIntent.putExtra("destination", "dtn://mulita-fsg.dtn/fsg"  );
+		mIntent.putExtra("destination", "dtn://fsg-backend.dtn/fsg"  );
 		mIntent.putExtra("version",     String.valueOf(receivedVersion) );
 		mIntent.putExtra("payload",     "nichts");
 
