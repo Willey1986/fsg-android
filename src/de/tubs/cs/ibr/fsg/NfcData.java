@@ -83,6 +83,16 @@ public class NfcData {
 					break;
 					
 				case 40: //RUNS DONE
+					short runID	= (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
+					int tstampr 		= (int) (((inputBlock[i][6]&0xFF) << 32) | ((inputBlock[i][5]&0xFF) << 16) | ((inputBlock[i][4]&0xFF) << 8) | (inputBlock[i][3]&0xFF));
+					long tstamp2r 		= (Long.parseLong(String.valueOf(tstampr))+tstampConstant)*1000;		
+					
+					NfcObjectBriefing newRun = new NfcObjectBriefing();
+					newRun.setBriefingID(runID);
+					newRun.setTimestamp(tstamp2r);
+					
+					outputObject.addBriefing(newRun);
+					
 					break;
 					
 				default:
@@ -185,12 +195,34 @@ public class NfcData {
 		return outputBlock;
 	}
 	
+	/* RaceIDs:
+	 * 	1 = Acceleration
+	 * 	2 = SkidPad
+	 * 	3 = Autocross
+	 *  4 = Endurance
+	 */
+	public static byte[][] generateDataRace(short raceID){
+		byte[][] outputBlock = new byte[1][16];
+		byte contentID = 40;
+		int timestamp = makeBetterTimestampNOW();
+		
+		outputBlock[0][0] = contentID;
+		outputBlock[0][1] = (byte)(raceID & 0xff);
+		outputBlock[0][2] = (byte)((raceID >> 8) & 0xff);
+		outputBlock[0][3] = (byte)(timestamp & 0xff);
+		outputBlock[0][4] = (byte)((timestamp >> 8) & 0xff);
+		outputBlock[0][5] = (byte)((timestamp >> 16) & 0xff);
+		outputBlock[0][6] = (byte)((timestamp >> 32) & 0xff);	
+		
+		return outputBlock;
+	}
+	
 	private static int makeBetterTimestampNOW(){
 		//get the Time	| converted output: 2010-03-08 14:59:30.252
 		java.util.Date date = new java.util.Date();		
 			//System.out.println("TimestampIN: "+date.getTime());
 			//System.out.println("TimestampINc:"+(int)((date.getTime()/1000)-tstampConstant));
-			System.out.println("TimeIN: "+date);
+			//System.out.println("TimeIN: "+date);
 		//to convert to UnixTimestamp use: / 1000L
 		return (int)((date.getTime()/1000)-tstampConstant);
 	}

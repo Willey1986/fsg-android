@@ -7,6 +7,8 @@ import java.util.*;
 public class NfcObject {
 	public Driver DriverObject;
 	private ArrayList<NfcObjectBriefing> Briefings = new ArrayList<NfcObjectBriefing>();
+	private ArrayList<NfcObjectBriefing> Runs = new ArrayList<NfcObjectBriefing>();
+	
 	private short eventID;	
 	
 	public NfcObject(){
@@ -21,6 +23,22 @@ public class NfcObject {
 		while (it.hasNext()) {
 		  if(it.next().getBriefingID() == id){
 			  Briefings.remove(it.next());
+		  }
+		}
+
+	}
+	public ArrayList<NfcObjectBriefing> getRuns(){
+		return Runs;
+	}
+	
+	public void addRun(NfcObjectBriefing temp){
+		Runs.add(temp);
+	}
+	public void removeRunByID(short id){
+		Iterator<NfcObjectBriefing> it = Runs.iterator();
+		while (it.hasNext()) {
+		  if(it.next().getBriefingID() == id){
+			  Runs.remove(it.next());
 		  }
 		}
 
