@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name">FSG</string>
-    
+
     <!-- Menus -->
     <string name="menu_settings">Settings</string>
     <string name="menu_reg_refresh">Refresh</string>
@@ -16,45 +16,45 @@
     <string name="menu_reg_requestDriversTeamsDriverPics">Fahrerbilder, Fahrer- und Teams-Daten updaten</string>
     <string name="menu_reg_requestBothBlack">Beide Blacklists updaten</string>
     <string name="menu_reg_requestDriverTeamsBothBlack">Beide Blacklists, Fahrer- und Teams-Daten updaten</string>
-    
+
     <!-- Titelzeile von Activities -->
     <string name="title_activity_main">FSG</string>
     <string name="title_activity_error">Fehlermeldung</string>
     <string name="title_activity_data_version">Datenversionsübersicht</string>
-    
-    <!-- MainActivity Strings-->
+
+    <!-- MainActivity Strings -->
     <string name="main_activity_button_1">Fahrerregistrierung</string>
     <string name="main_activity_button_2">Briefing (Einchecken)</string>
     <string name="main_activity_button_3">Briefing (Auschecken)</string>
     <string name="main_activity_button_4">Rennen</string>
     <string name="main_activity_button_5">Infoterminal</string>
-    
-	<!-- Fehlermeldung Strings -->
+
+    <!-- Fehlermeldung Strings -->
     <string name="error_generic_exception">Ein unerwarteter Fehler ist aufgetreten.</string>
     <string name="error_tag_memory_full">Der Tag ist voll, bitte tauschen Sie ihn aus.</string>
     <string name="error_tag_wrong_key">Fehler beim Lesen des Tags, eventuell ist der Key falsch.</string>
     <string name="error_not_nfc_support">Keine NFC-Unterstützung auf dem Gerät.</string>
     <string name="error_zip_file_fail">Fehler beim Entpacken der Zip-Datei (Fahrerbilder).</string>
     <string name="error_driver_pics_fail">Fehler beim Speichern der Fahrerbilder.</string>
-    <string name="error_receiving_bundle">Fehler beim Empfangen eines IBR-DTN-Bündels.</string>                                <!-- Wird beim IBR-DTN-Service benutzt -->
-    <string name="error_sending_bundle">Fehler beim Senden eines IBR-DTN-Bündels.</string>                                     <!-- Wird beim IBR-DTN-Service benutzt -->
-    <string name="error_not_ibr_dtn">IBR-DTN-Daemon inaktiv. Bitte starten Sie ihn (ggf. installieren).</string>               <!-- Wird beim IBR-DTN-Service benutzt -->
-    <string name="error_security_exception">"Permission"-Fehler. Deinstallieren und installieren Sie die App erneut!</string>  <!-- Wird beim IBR-DTN-Service benutzt -->
+    <string name="error_receiving_bundle">Fehler beim Empfangen eines IBR-DTN-Bündels.</string> <!-- Wird beim IBR-DTN-Service benutzt -->
+    <string name="error_sending_bundle">Fehler beim Senden eines IBR-DTN-Bündels.</string> <!-- Wird beim IBR-DTN-Service benutzt -->
+    <string name="error_not_ibr_dtn">IBR-DTN-Daemon inaktiv. Bitte starten Sie ihn (ggf. installieren).</string> <!-- Wird beim IBR-DTN-Service benutzt -->
+    <string name="error_security_exception">"Permission"-Fehler. Deinstallieren und installieren Sie die App erneut!</string> <!-- Wird beim IBR-DTN-Service benutzt -->
     <string name="error_end_of_road">Tut uns Leid, hier wird noch gebaut. ;-)</string>
     <string name="ok">OK</string>
-    
+
     <!-- Briefing (sowohl ein- als auch auschecken) Strings -->
     <string name="init_driver">Initialisierung des Fahrers</string>
     <string name="wristband_near">Fahrerarmband an Gerät halten</string>
-    
-    <!-- RunActivity Strings-->
+
+    <!-- RunActivity Strings -->
     <string name="which_discipline">Welche Disziplin möchten Sie fahren?</string>
     <string name="acceleration">Acceleration</string>
     <string name="skidpad">Skid Pad</string>
     <string name="autocross">Autocross</string>
     <string name="endurance">Endurance</string>
-    
-    <!--  Fahrerregistrierung Strings-->
+
+    <!-- Fahrerregistrierung Strings -->
     <string name="select_team">Wählen Sie ihr Team aus:</string>
     <string name="tblRegTitleID">#</string>
     <string name="tblRegTitleCountry">Country</string>
@@ -64,16 +64,16 @@
     <string name="btnRegSearch">Suchen</string>
     <string name="tblDriversName">Name</string>
     <string name="lbSelectedTeam">Team: </string>
-    
-    <!--  Version-Activity Strings-->
+
+    <!-- Version-Activity Strings -->
     <string name="version_title">Datenversionsübersicht</string>
     <string name="version_drivers">Fahrer:</string>
     <string name="version_teams">Teams:</string>
     <string name="version_blacklist_wristlets">Bänder-Blacklist:</string>
     <string name="version_blacklist_devices">Geräte-Blacklist:</string>
     <string name="version_driver_pics">Fahrerbilder:</string>
-    
-    <!--  Notification Strings-->
+
+    <!-- Notification Strings -->
     <string name="noti_title">FSG - Update erhalten</string>
     <string name="noti_text_driver_pics">Fahrerbilder</string>
     <string name="noti_text_drivers">Fahrerdaten</string>
@@ -81,6 +81,8 @@
     <string name="noti_text_blacklist_wirstlets">Bänder-Blacklist</string>
     <string name="noti_text_blacklist_devices">Geräte-Blacklist</string>
     <string name="error_driver_already_checked_in">Driver already checked in to this briefing</string>
-
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_info_terminalinitialisierung">InfoTerminalinitialisierungActivity</string>
+    <string name="title_activity_info_terminal_initialisierung">InfoTerminalInitialisierung</string>
 
 </resources>

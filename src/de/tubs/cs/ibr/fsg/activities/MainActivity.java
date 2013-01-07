@@ -115,7 +115,7 @@ public class MainActivity extends Activity {
     		startActivity(new Intent(this, RunActivity.class));
     		break;
     	case R.id.button5:
-    		startActivity(new Intent(this, InfoTerminalActivity.class));
+    		startActivity(new Intent(this, InfoTerminalInitialisierung.class));
     		break;
     	}
     }
