@@ -25,7 +25,7 @@ public class InfoTerminalActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		
-
+                /*
 		setContentView(R.layout.activity_info_terminal);
 		
 		DBAdapter test = new DBAdapter(this);
@@ -51,7 +51,7 @@ public class InfoTerminalActivity extends Activity {
 		String[] items11 = { "Briefingstatus"};
 		
 		ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, items11);
-		listView3.setAdapter(adapter2);		
+		listView3.setAdapter(adapter2);	*/	
 
 	}
 		
