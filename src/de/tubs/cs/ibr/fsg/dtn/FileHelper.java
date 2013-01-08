@@ -144,16 +144,22 @@ public class FileHelper {
 	public static File getStoragePath(int typeOfDir) {
 		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 			File externalStorage = Environment.getExternalStorageDirectory();
-			// Wenn es noch nicht vorhanden ist, wird an dieser Stelle ein Arbeitsverzeichnis erstellt.
-			File sharefolder = null;
-			if(typeOfDir == GENERIC_FSG_DIR){
-				sharefolder = new File(externalStorage.getPath() + File.separatorChar + "fsg");
-				
-			}else if(typeOfDir == TEMP_FSG_DIR){
+			
+			// Wenn es noch nicht vorhanden ist, wird an dieser Stelle ein Arbeitsverzeichnis 
+			// fuer die App insgesamt erstellt. Darunter liegen dann alle weitere
+			// Unterverzichnisse und Daten.
+			File sharefolder = new File(externalStorage.getPath() + File.separatorChar + "fsg");
+			if (!sharefolder.exists()) {
+				sharefolder.mkdir();
+			}
+			
+			// Anmerkung: fuer GENERIC_FSG_DIR brauchen wir keine Extra if-Anweisung, da oben sharefolder
+			// den dazugehoerigen Wert (externalStorage.getPath() + File.separatorChar + "fsg") annimmt und behaelt, 
+			// falls es sich um den Fall GENERIC_FSG_DIR handelt.
+			if(typeOfDir == TEMP_FSG_DIR){
 				sharefolder = new File(externalStorage.getPath() + File.separatorChar + "fsg"+ File.separatorChar + "temp");
 				
-			}else{
-				//DRIVER_PICS_DIR
+			}else if(typeOfDir == DRIVER_PICS_DIR){
 				sharefolder = new File(externalStorage.getPath() + File.separatorChar + "fsg" + File.separatorChar + "driver_pics");
 			}
 
