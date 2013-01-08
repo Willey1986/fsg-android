@@ -24,6 +24,7 @@ public class FsgException extends Exception{
 	 * DB-Exceptions 
 	 */
 	public static final int DRIVER_ALREADY_CHECKED_IN = 100;
+	public static final int DRIVER_NOT_CHECKED_IN = 101;
 	
 	public static final int END_OF_ROAD       = 2000; // Nur zum Testen...
 

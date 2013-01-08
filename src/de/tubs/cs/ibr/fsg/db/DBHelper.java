@@ -31,7 +31,6 @@ public class DBHelper extends SQLiteOpenHelper{
 	
 	public static final String TABLE_BRIEFINGS = "briefings";
 	public static final String BRIEFINGS_COLUMN_ID = "_id";
-	public static final String BRIEFINGS_COLUMN_DATE = "date";
 	public static final String BRIEFINGS_COLUMN_START_TIME = "start_time";
 	public static final String BRIEFINGS_COLUMN_END_TIME = "end_time";
 	public static final String BRIEFINGS_COLUMN_RACE_DISCIPLINE_ID = "race_discipline_id";
@@ -69,9 +68,13 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String BLACKLISTED_DEVICES_COLUMN_TAG_ID = "tag_id";
 	public static final String BLACKLISTED_DEVICES_COLUMN_TIMESTAMP = "timestamp";
 	
+	public static final String TABLE_VALUES = "keyvalues";
+	public static final String VALUES_COLUMN_ID = "_id";
+	public static final String VALUES_COLUMN_KEY = "key";
+	public static final String VALUES_COLUMN_VALUE = "value";
 
 	public static final String DATABASE_NAME = "fsg.db";
-	public static final int DATABASE_VERSION = 16;
+	public static final int DATABASE_VERSION = 24;
 
 	public static final String TABLE_CLASSES_CREATE = "CREATE TABLE " + TABLE_CLASSES + " (" 
 			+ CLASSES_COLUMN_CLASS + " TEXT NOT NULL,"
@@ -98,9 +101,8 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String TABLE_BRIEFINGS_CREATE = "CREATE TABLE " + TABLE_BRIEFINGS + " ("
 			+ BRIEFINGS_COLUMN_ID + " INTEGER PRIMARY KEY, "
 			+ BRIEFINGS_COLUMN_RACE_DISCIPLINE_ID + " INTEGER NOT NULL, "
-			+ BRIEFINGS_COLUMN_DATE + " TEXT NOT NULL, "
-			+ BRIEFINGS_COLUMN_START_TIME + " TEXT NOT NULL, "
-			+ BRIEFINGS_COLUMN_END_TIME + " TEXT NOT NULL);";
+			+ BRIEFINGS_COLUMN_START_TIME + " INTEGER NOT NULL, "
+			+ BRIEFINGS_COLUMN_END_TIME + " INTEGER NOT NULL);";
 	
 	public static final String TABLE_CHECKED_IN_CREATE = "CREATE TABLE " + TABLE_CHECKED_IN + " ("
 			+ CHECKED_IN_COLUMN_ID + " INTEGER PRIMARY KEY, "
@@ -134,6 +136,11 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String TABLE_BLACKLISTED_DEVICES_CREATE = "CREATE TABLE " + TABLE_BLACKLISTED_DEVICES + " ("
 			+ BLACKLISTED_DEVICES_COLUMN_TAG_ID + " INTEGER PRIMARY KEY NOT NULL UNIQUE,"
 			+ BLACKLISTED_DEVICES_COLUMN_TIMESTAMP + " TEXT NOT NULL);";
+	
+	public static final String TABLE_VALUES_CREATE = "CREATE TABLE " + TABLE_VALUES + " ("
+			+ VALUES_COLUMN_ID + " INTEGER PRIMARY KEY NOT NULL UNIQUE,"
+			+ VALUES_COLUMN_KEY + " TEXT NOT NULL,"
+			+ VALUES_COLUMN_VALUE + " TEXT NOT NULL);";
 
 	public DBHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -150,6 +157,7 @@ public class DBHelper extends SQLiteOpenHelper{
 		database.execSQL(TABLE_CHECKED_OUT_CREATE);
 		database.execSQL(TABLE_DRIVEN_RUNS_CREATE);
 		database.execSQL(TABLE_RACE_DISCIPLINES_CREATE);
+		database.execSQL(TABLE_VALUES_CREATE);
 		database.execSQL("INSERT INTO " +TABLE_RACE_DISCIPLINES + " ('name') VALUES('Acceleration');");
 		database.execSQL("INSERT INTO " +TABLE_RACE_DISCIPLINES + " ('name') VALUES('Skid Pad');");
 		database.execSQL("INSERT INTO " +TABLE_RACE_DISCIPLINES + " ('name') VALUES('Autocross');");
@@ -170,6 +178,7 @@ public class DBHelper extends SQLiteOpenHelper{
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHECKED_OUT);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DRIVEN_RUNS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_RACE_DISCIPLINES);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_VALUES);
 		onCreate(db);
 	}
 
