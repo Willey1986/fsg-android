@@ -37,15 +37,15 @@ public class DBAdapter {
 		database.delete(DBHelper.TABLE_BRIEFINGS, null, null);
 		database.delete(DBHelper.TABLE_RACE_DISCIPLINES, null, null);
 		
-		Driver driver1 = new Driver((short)81, (short)20, "Harald", "Juhnke");
-		Driver driver2 = new Driver((short)82, (short)20, "Stefan", "Raab");
-		Driver driver3 = new Driver((short)83, (short)20, "Claudia", "Roth");
-		Driver driver4 = new Driver((short)84, (short)21, "Sebastian", "Vettel");
-		Driver driver5 = new Driver((short)85, (short)21, "Nikki", "Lauda");
-		Driver driver6 = new Driver((short)86, (short)21, "Fernando", "Alonso");
+		Driver driver1 = new Driver((short)100, (short)100, "Harald", "Juhnke");
+		Driver driver2 = new Driver((short)101, (short)100, "Stefan", "Raab");
+		Driver driver3 = new Driver((short)102, (short)100, "Claudia", "Roth");
+		Driver driver4 = new Driver((short)103, (short)101, "Sebastian", "Vettel");
+		Driver driver5 = new Driver((short)104, (short)101, "Nikki", "Lauda");
+		Driver driver6 = new Driver((short)105, (short)101, "Fernando", "Alonso");
 		
-		Team team1 = new Team((short)20, "DE", "Germany", "Braunschweig", "TU", (short)11,(short) 3,(short) 0,(short) 1, "Lions Racing Team");
-		Team team2 = new Team((short)21, "E", "Spain", "Barcelona", "U", (short)20,(short) 4,(short) 0,(short) 1, "Fernando Alonso Racing");
+		Team team1 = new Team((short)100, "DE", "Germany", "Braunschweig", "TU", (short)11,(short) 3,(short) 0,(short) 1, "Lions Racing Team");
+		Team team2 = new Team((short)101, "E", "Spain", "Barcelona", "U", (short)20,(short) 4,(short) 0,(short) 1, "Fernando Alonso Racing");
 		
 		RaceDiscipline discipline1 = new RaceDiscipline((short)100, "Acceleration");
 		RaceDiscipline discipline2 = new RaceDiscipline((short)101, "Skid Pad");
