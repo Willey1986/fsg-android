@@ -76,7 +76,7 @@ public class SecurityManager {
 		}
 	}
 	
-	private byte[][] encryptString(byte[][] raw) throws FsgException{
+	public byte[][] encryptString(byte[][] raw) throws FsgException{
 
 		//abort if the key is null
 		if(this.key==null){
@@ -147,7 +147,6 @@ public class SecurityManager {
 	 * @throws FsgException if there are no password set or invalid password is used then it will throw this exception
 	 */
 	public byte[][] decryptString(byte[][] encryptedInput) throws FsgException{
-		
 		//abort if the key is null
 		if(this.key==null){
 			throw new FsgException( new Exception("SecurityManager#No Decryption Key available"), this.getClass().toString(), FsgException.GENERIC_EXCEPTION );

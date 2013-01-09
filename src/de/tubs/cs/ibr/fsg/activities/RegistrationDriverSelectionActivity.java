@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import de.tubs.cs.ibr.fsg.NfcData;
 import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.SecurityManager;
 import de.tubs.cs.ibr.fsg.db.DBAdapter;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 public class RegistrationDriverSelectionActivity extends Activity{
 	
 	DBAdapter dba = new DBAdapter(this);
+	SecurityManager scm = new SecurityManager("geheim");
 	String teamName;
 	short teamId;
 	LinearLayout llDriversList;
@@ -63,11 +65,33 @@ public class RegistrationDriverSelectionActivity extends Activity{
 									encodedString.append(encodedDriver[i][j]);
 								}
 							}
-							dialog.setMessage("Fahrer " + driver.getFirst_name() + " " + driver.getLast_name() + " ausgewählt\n\nID = " 
-									+ driver.getUser_id() + "\nFarhzeugnummer: " + driver.getTeam().getCarNr() 
-									+ "\nCodierter String " + encodedString);
-							dialog.show();
-							//TODO driver Codieren um zu verschl�sseln und aufs Band zu schreiben
+							
+							byte[][] encryptedDriver = scm.encryptString(encodedDriver);
+							StringBuffer encryptedString = new StringBuffer();
+							for(int i = 0; i < encryptedDriver.length; i++) {
+								for(int j = 0; j < encryptedDriver[i].length; j++) {
+									encryptedString.append(encryptedDriver[i][j]);
+								}
+							}
+							
+							
+							/*
+							byte[][] decryptedDriver = scm.decryptString(encryptedDriver);
+							StringBuffer decryptedString = new StringBuffer();
+							for(int i = 0; i < decryptedDriver.length; i++) {
+								for(int j = 0; j < decryptedDriver[i].length; j++) {
+									decryptedString.append(decryptedDriver[i][j]);
+								}
+							}
+							*/
+							
+							Intent intent = new Intent(getBaseContext(), RegistrationWriteToTagActivity.class);
+							Bundle bundle = new Bundle();
+							bundle.putSerializable("driver", driver);
+							intent.putExtra("bundle", bundle);
+							startActivity(intent);
+							
+							
 						} catch (IOException e) {
 						Intent mIntent = new Intent(RegistrationDriverSelectionActivity.this, ErrorActivity.class);
 							mIntent.putExtra("Exception", e);
