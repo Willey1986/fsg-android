@@ -76,7 +76,7 @@ public class SecurityManager {
 		}
 	}
 	
-	private byte[][] encryptString(byte[][] raw) throws FsgException{
+	public byte[][] encryptString(byte[][] raw) throws FsgException{
 
 		//abort if the key is null
 		if(this.key==null){
