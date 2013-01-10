@@ -62,11 +62,14 @@ public class Nfc {
 	 */
 	final static String PASSWORD = "test";
 	
+	private String key = null;
+	
 	/**
 	 * Konstruktor
 	 * @param context
 	 */
 	public Nfc(Context context){
+		//Key auslesen und in Variable key speichern!
 
 	}
 	
@@ -82,7 +85,7 @@ public class Nfc {
 	 * Auslesen des zuletzt gespeicherten Tag-Inhalts
 	 * @return
 	 */
-	private String[] getData(){
+	public String[] getData(){
 		if (memoryContent != null)
 			return memoryContent;
 		else
@@ -260,7 +263,7 @@ public class Nfc {
 	}
 	
 	/**
-	 * Schreibe gegebenen Inhalt (in Größe eines Sektors?) auf Tag, ab nächstem freien Block, der nicht freigehalten werden muss
+	 * Schreibe gegebenen Inhalt auf Tag, ab nächstem freien Block
 	 * @param intent
 	 * @param key
 	 * @param content
@@ -273,7 +276,7 @@ public class Nfc {
 			System.out.println("writing");
 			try {
 				tag.connect();
-				int emptyBlock = getEmptyBlock(tag, key);//was bei -1?
+				int emptyBlock = getEmptyBlock(tag, key);
 				if ((emptyBlock != -1) && (emptyBlock < tag.getBlockCount())){
 					int[] writtenBlocks = new int[content.length]; //Array mit den Blocknummern der geschriebenen Blöcke für spätere Verifizierung
 					writtenBlocks[0] = emptyBlock;
@@ -338,14 +341,14 @@ public class Nfc {
 					if (writtenBlocks[i] != 0){
 						lastBlock = i;
 						if(tag.authenticateSectorWithKeyA(tag.blockToSector(writtenBlocks[i]), key)){					
-							if (!Arrays.equals(tag.readBlock(writtenBlocks[i]), content[i])){//Bei Unterschied -> false
+							if (!Arrays.equals(tag.readBlock(writtenBlocks[i]), write(content[i]))){//Bei Unterschied -> false
 								return false;
 							}
 						}
 					} else { //wenn nichts ins Array geschrieben wurde, wurde einfach hochgezählt
 						int nextBlock = (i - lastBlock) + writtenBlocks[lastBlock];
 						if(tag.authenticateSectorWithKeyA(tag.blockToSector(nextBlock), key)){					
-							if (!Arrays.equals(tag.readBlock(nextBlock), content[i])){//Bei Unterschied -> false
+							if (!Arrays.equals(tag.readBlock(nextBlock), write(content[i]))){//Bei Unterschied -> false
 								return false;
 							}
 						}
@@ -486,7 +489,7 @@ public class Nfc {
 		byte[] emptyBlock = new byte[16];
 		if (tag.isConnected()){
 			try {
-//				tag.authenticateSectorWithKeyA(tag.blockToSector(blockIndex), key);
+				tag.authenticateSectorWithKeyA(tag.blockToSector(blockIndex), key);
 				if (Arrays.equals(tag.readBlock(blockIndex), emptyBlock)){
 					return true;
 				} else {
@@ -519,7 +522,7 @@ public class Nfc {
 	}
 	
 	/**
-	 * Mehtode zur Umwandlung eines Byte-Arrays in einen String.
+	 * Methode zur Umwandlung eines Byte-Arrays in einen String.
 	 * @param raw
 	 * @param len
 	 * @return
