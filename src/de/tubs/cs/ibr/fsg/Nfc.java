@@ -454,8 +454,9 @@ public class Nfc {
 					System.out.println("Authentication Failure");
 				}
 				while ((!Arrays.equals(data, emptyBlock)) && (emptyBlockIndex < tag.getBlockCount()-1)){ //Solange Block nicht frei, letzter Block wird nicht geschaut, der soll frei bleiben
+					++emptyBlockIndex;
 					if (tag.authenticateSectorWithKeyA(tag.blockToSector(emptyBlockIndex), key)){ 
-						data = tag.readBlock(++emptyBlockIndex); //nächsten lesen
+						data = tag.readBlock(emptyBlockIndex); //nächsten lesen
 					} else {
 						System.out.println("Authentication Failure");
 					}
