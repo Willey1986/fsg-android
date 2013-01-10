@@ -65,7 +65,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 			
 			
 			String infoText = "Folgender Fahrer wird aufs Band geschrieben:\n" +
-	        		driver.getFirst_name() + " " + driver.getLast_name() +
+	        		driver.toString() +
 	        		"\n\nCodiert:\n" + encodedString +
 	        		"\n\nVerschlüsselt:\n" + encryptedString + 
 	        		"\n\nEntschlüsselt:\n" + decryptedString + 

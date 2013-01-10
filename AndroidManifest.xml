@@ -86,6 +86,11 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:label="@string/title_activity_data_version"
             android:noHistory="true" >
         </activity>
+        <activity
+            android:name=".activities.RegistrationWriteToTagActivity"
+            android:icon="@drawable/icon_register"
+            android:label="@string/title_activity_registration_write_to_tag" >
+        </activity>
 
         <service android:name=".dtn.DTNService" >
         </service> <!-- android:process=".fsg_service" -->
@@ -100,13 +105,7 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".activities.RegistrationWriteToTagActivity"
-            android:label="@string/title_activity_registration_write_to_tag" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="RegistrationDriverSelectionActivity" />
-        </activity>
+        
     </application>
 
 </manifest>
