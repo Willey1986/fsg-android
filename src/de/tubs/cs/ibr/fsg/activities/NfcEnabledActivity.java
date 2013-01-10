@@ -21,11 +21,13 @@ abstract public class NfcEnabledActivity extends Activity{
 		try {
 			super.onCreate(savedInstanceState);
 			nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-			pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-			ndef = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
-			ndef.addDataType("*/*");
-			filters = new IntentFilter[] {ndef,};
-			techLists = new String[][] { new String[] { MifareClassic.class.getName() } };
+			if (nfcAdapter != null) {
+				pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+				ndef = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
+				ndef.addDataType("*/*");
+				filters = new IntentFilter[] {ndef,};
+				techLists = new String[][] { new String[] { MifareClassic.class.getName() } };
+			}
 		} catch (MalformedMimeTypeException e) {
 			throw new RuntimeException("fail",e);
 		} 
@@ -37,21 +39,27 @@ abstract public class NfcEnabledActivity extends Activity{
     }
 	
 	public void resolveIntent(Intent intent) {
-		String action = intent.getAction();
-		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
-			executeNfcAction();
-        }	
+		if (nfcAdapter != null) {
+			String action = intent.getAction();
+			if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
+				executeNfcAction();
+	        }	
+		}
+		
 	}
 	
 	abstract public void executeNfcAction();
 
 	public void onPause() {
-		nfcAdapter.disableForegroundDispatch(this);
 		super.onPause();
+		if (nfcAdapter != null)
+			nfcAdapter.disableForegroundDispatch(this);
+		
 	}
 	
 	public void onResume() {
-		nfcAdapter.enableForegroundDispatch(this, pendingIntent, filters, techLists);
 		super.onResume();
+		if (nfcAdapter != null)
+			nfcAdapter.enableForegroundDispatch(this, pendingIntent, filters, techLists);
 	}
 }
