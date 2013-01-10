@@ -39,7 +39,7 @@ public class Driver implements Serializable{
 	}
 	
 	public Driver() {
-		
+		this.team = new Team();
 	}
 
 	public short getUser_id() {

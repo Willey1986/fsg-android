@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import de.tubs.cs.ibr.fsg.Nfc;
 import de.tubs.cs.ibr.fsg.NfcData;
+import de.tubs.cs.ibr.fsg.NfcObject;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.SecurityManager;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
@@ -60,12 +61,15 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 				}
 			}
 			
+			NfcObject nfcContent = NfcData.interpretData(decryptedDriver);
+			
 			
 			String infoText = "Folgender Fahrer wird aufs Band geschrieben:\n" +
 	        		driver.getFirst_name() + " " + driver.getLast_name() +
 	        		"\n\nCodiert:\n" + encodedString +
 	        		"\n\nVerschlüsselt:\n" + encryptedString + 
-	        		"\n\nEntschlüsselt:\n" + decryptedString;
+	        		"\n\nEntschlüsselt:\n" + decryptedString + 
+	        		"\n\nAus ByteArray generierter Fahrer:\n" + nfcContent.DriverObject.toString();
 	        txtInfo.setText(infoText);
 	        
 
