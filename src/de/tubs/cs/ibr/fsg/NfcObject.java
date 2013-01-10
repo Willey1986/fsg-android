@@ -53,4 +53,11 @@ public class NfcObject {
 	public void setEventID(short temp){
 		eventID = temp;
 	}
+
+	public void clear() {
+		DriverObject = new Driver();
+		Briefings.removeAll(Briefings);
+		Runs.removeAll(Runs);	
+		eventID = 0;
+	}
 }
