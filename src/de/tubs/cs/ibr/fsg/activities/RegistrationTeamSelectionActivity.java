@@ -114,8 +114,8 @@ public class RegistrationTeamSelectionActivity extends Activity {
 			case R.id.requestTeams:
 				requestRegistrationUpdate(FsgProtocol.UP_REQ_TEAMS);
 				return true;
-			case R.id.requestBlackWristlets:
-				requestRegistrationUpdate(FsgProtocol.UP_REQ_BLACK_WRISTLETS);
+			case R.id.requestBlackTags:
+				requestRegistrationUpdate(FsgProtocol.UP_REQ_BLACK_TAGS);
 				return true;
 			case R.id.requestBlackDevices:
 				requestRegistrationUpdate(FsgProtocol.UP_REQ_BLACK_DEVICES);
