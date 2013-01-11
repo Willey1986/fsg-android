@@ -287,7 +287,10 @@ public class Nfc {
 								System.out.println("block is empty");
 							
 								//write encrypted data
-								tag.writeBlock(emptyBlock, write(content[i]));
+								for (int j = 0; j < content[i].length; j++) {
+									Log.i("info", ""+content[i][j]);
+								}
+								tag.writeBlock(emptyBlock, content[i]);
 							
 								System.out.println("done writing");
 								emptyBlock++;
