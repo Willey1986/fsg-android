@@ -288,6 +288,7 @@ public class Nfc {
 							
 								//write encrypted data
 								for (int j = 0; j < content[i].length; j++) {
+									Log.i("length", ""+content[i].length);
 									Log.i("info", ""+content[i][j]);
 								}
 								tag.writeBlock(emptyBlock, content[i]);
