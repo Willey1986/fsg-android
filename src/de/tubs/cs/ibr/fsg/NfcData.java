@@ -139,9 +139,9 @@ public class NfcData {
 		outputBlock[0][6] = (byte)((teamID >> 8) & 0xff);
 		outputBlock[0][7] = (byte)(eventID & 0xff);
 		outputBlock[0][8] = (byte)((eventID >> 8) & 0xff);
-		/*for(int i=9;i<16;i++){
-			outputBlock[0][i] = (byte) 0xff;
-		}*/
+		for(int i=9;i<16;i++){
+			outputBlock[0][i] = (byte) 0x00;
+		}
 		
 		//read out and convert the name now
 		contentID = 11;
