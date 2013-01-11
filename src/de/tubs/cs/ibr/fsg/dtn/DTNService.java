@@ -239,7 +239,7 @@ public class DTNService extends IntentService {
 				File folder = FileHelper.getStoragePath(FileHelper.TEMP_FSG_DIR);
 		
 				try {
-					// Wir erzeugen eine tempor�re Datei
+					// Wir erzeugen eine temporaere Datei
 					String outputFileName = "tempfile_" + System.currentTimeMillis();
 					payloadFile = File.createTempFile(outputFileName, ".fsg", folder);
 					mTranferMode  = TransferMode.FILEDESCRIPTOR;
