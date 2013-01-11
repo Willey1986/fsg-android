@@ -109,6 +109,10 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 			dba.open();
 			Driver driver1 = dba.getDriver((short)100);
 			nfc.writeTag(intent, MifareClassic.KEY_DEFAULT, NfcData.generateDataRegistration(driver1));
+			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+			MifareClassic mfc = MifareClassic.get(tagFromIntent);
+			mfc.connect();
+			Log.i("info", bytesToHexString(mfc.getTag().getId()) );
 		} catch (FsgException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,5 +120,22 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 			e.printStackTrace();
 		}
 	}
+    
+    private String bytesToHexString(byte[] src) {
+        StringBuilder stringBuilder = new StringBuilder("0x");
+        if (src == null || src.length <= 0) {
+            return null;
+        }
+
+        char[] buffer = new char[2];
+        for (int i = 0; i < src.length; i++) {
+            buffer[0] = Character.forDigit((src[i] >>> 4) & 0x0F, 16);  
+            buffer[1] = Character.forDigit(src[i] & 0x0F, 16);  
+            System.out.println(buffer);
+            stringBuilder.append(buffer);
+        }
+
+        return stringBuilder.toString();
+    }
     
 }

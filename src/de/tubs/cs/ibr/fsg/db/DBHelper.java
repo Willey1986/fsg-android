@@ -61,7 +61,12 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String RACE_DISCIPLINES_COLUMN_ID = "_id";
 	public static final String RACE_DISCIPLINES_COLUMN_NAME = "name";
 	
+	public static final String TABLE_REGISTERED_TAGS = "tags";
+	public static final String REGISTERED_TAGS_COLUMN_ID = "_id";
+	public static final String REGISTERED_TAGS_COLUMN_TAG_ID = "tag_id";
+	
 	public static final String TABLE_BLACKLISTED_TAGS = "blTags";
+	public static final String BLACKLISTED_TAGS_COLUMN_ID = "_id";
 	public static final String BLACKLISTED_TAGS_COLUMN_TAG_ID = "tag_id";
 	
 	public static final String TABLE_BLACKLISTED_DEVICES = "blDevices";
@@ -74,7 +79,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String VALUES_COLUMN_VALUE = "value";
 
 	public static final String DATABASE_NAME = "fsg.db";
-	public static final int DATABASE_VERSION = 26;
+	public static final int DATABASE_VERSION = 30;
 
 	public static final String TABLE_CLASSES_CREATE = "CREATE TABLE " + TABLE_CLASSES + " (" 
 			+ CLASSES_COLUMN_CLASS + " TEXT NOT NULL,"
@@ -130,8 +135,13 @@ public class DBHelper extends SQLiteOpenHelper{
 			+ RACE_DISCIPLINES_COLUMN_ID + " INTEGER PRIMARY KEY, "
 			+ RACE_DISCIPLINES_COLUMN_NAME + " TEXT NOT NULL);";
 	
+	public static final String TABLE_REGISTERED_TAGS_CREATE = "CREATE TABLE " + TABLE_REGISTERED_TAGS + " ("
+			+ REGISTERED_TAGS_COLUMN_ID + " INTEGER PRIMARY KEY NOT NULL UNIQUE, "
+			+ REGISTERED_TAGS_COLUMN_TAG_ID + " TEXT NOT NULL);";
+	
 	public static final String TABLE_BLACKLISTED_TAGS_CREATE = "CREATE TABLE " + TABLE_BLACKLISTED_TAGS + " ("
-			+ BLACKLISTED_TAGS_COLUMN_TAG_ID + " INTEGER PRIMARY KEY NOT NULL UNIQUE);";
+			+ BLACKLISTED_TAGS_COLUMN_ID + " INTEGER PRIMARY KEY NOT NULL UNIQUE, "
+			+ BLACKLISTED_TAGS_COLUMN_TAG_ID + " TEXT NOT NULL);";
 	
 	public static final String TABLE_BLACKLISTED_DEVICES_CREATE = "CREATE TABLE " + TABLE_BLACKLISTED_DEVICES + " ("
 			+ BLACKLISTED_DEVICES_COLUMN_TAG_ID + " INTEGER PRIMARY KEY NOT NULL UNIQUE,"
@@ -158,6 +168,7 @@ public class DBHelper extends SQLiteOpenHelper{
 		database.execSQL(TABLE_DRIVEN_RUNS_CREATE);
 		database.execSQL(TABLE_RACE_DISCIPLINES_CREATE);
 		database.execSQL(TABLE_VALUES_CREATE);
+		database.execSQL(TABLE_REGISTERED_TAGS_CREATE);
 		database.execSQL("INSERT INTO " +TABLE_RACE_DISCIPLINES + " ('name') VALUES('Acceleration');");
 		database.execSQL("INSERT INTO " +TABLE_RACE_DISCIPLINES + " ('name') VALUES('Skid Pad');");
 		database.execSQL("INSERT INTO " +TABLE_RACE_DISCIPLINES + " ('name') VALUES('Autocross');");
@@ -179,6 +190,7 @@ public class DBHelper extends SQLiteOpenHelper{
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DRIVEN_RUNS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_RACE_DISCIPLINES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_VALUES);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_REGISTERED_TAGS);
 		onCreate(db);
 	}
 
