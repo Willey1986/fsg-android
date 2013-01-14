@@ -230,15 +230,17 @@ public class Nfc {
 					}
 				}
 				if (content != null){
+					System.out.println("not null");
 					byte[][] decryptedContent = read(content);
 					for (int i = 0; i < decryptedContent.length; i++){
-						cardData.concat(getHexString(decryptedContent[i], decryptedContent[i].length));
+						cardData = cardData.concat(getHexString(decryptedContent[i], decryptedContent[i].length));
 					}
 				}
-				if (cardData != null){
-					System.out.println(cardData);
+				if (!cardData.isEmpty()){
+					System.out.println("CardData: "+cardData);
 					setData(cardData);
 				}
+				System.out.println("end reading.");
 				tag.close();
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
@@ -593,15 +595,15 @@ public class Nfc {
 	private static byte[][] write(byte[][] raw) throws FsgException{
 		SecurityManager sManager = new SecurityManager(PASSWORD);
 		
-		return sManager.encryptString(raw);
-		//return raw;
+		//return sManager.encryptString(raw);
+		return raw;
 	}
 	
 	private static byte[][] read(byte[][] raw)throws FsgException{
 		SecurityManager sManager = new SecurityManager(PASSWORD);
 		
-		return sManager.decryptString(raw);
-		//return raw;
+		//return sManager.decryptString(raw);
+		return raw;
 	}
 
 }
