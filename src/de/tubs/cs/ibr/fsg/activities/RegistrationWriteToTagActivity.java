@@ -108,7 +108,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 			DBAdapter dba = new DBAdapter(this);
 			dba.open();
 			Driver driver1 = dba.getDriver((short)100);
-			nfc.writeTag(intent, MifareClassic.KEY_DEFAULT, NfcData.generateDataRegistration(driver1));
+			nfc.writeTag(intent, NfcData.generateDataRegistration(driver1));
 			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			MifareClassic mfc = MifareClassic.get(tagFromIntent);
 			mfc.connect();
