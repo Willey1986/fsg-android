@@ -113,12 +113,13 @@ public class DTNService extends IntentService {
         	String destinationString      = intent.getStringExtra("destination");
     		SingletonEndpoint destination = new SingletonEndpoint(destinationString);
     		String type                   = intent.getStringExtra("type");
+    		UpdateRequest updateRequest   = intent.getParcelableExtra("request");
     		String version                = intent.getStringExtra("version");
     		String payload                = intent.getStringExtra("payload");
     		
     		byte[] payloadByteArray = null;
 			try {
-				payloadByteArray = FsgProtocol.getByteArrayToSend(Integer.valueOf(type), Integer.valueOf(version), payload);
+				payloadByteArray = FsgProtocol.getByteArrayToSend(Integer.valueOf(type), updateRequest, Integer.valueOf(version), payload);
 				if (!mClient.getSession().send(destination, 3600, payloadByteArray )){
 					throw new FsgException(new Exception("Can not send the Data to backend."), new DTNService().getClass().toString(), FsgException.DTN_SENDING_FAIL);
 				}else{
@@ -501,10 +502,12 @@ public class DTNService extends IntentService {
 	 */
 	protected void sendNewVersionConfirmation(int receivedVersion, int dataType) {
 		Intent mIntent = new Intent(this, DTNService.class);
+		UpdateRequest updateRequest = new UpdateRequest(true,true,true,true,true);
 		mIntent.setAction(de.tubs.cs.ibr.fsg.Intent.SEND_DATA);
 		mIntent.putExtra("destination", "dtn://fsg-backend.dtn/fsg"  );
+		mIntent.putExtra("request",     updateRequest );    // Fuer Empfangsbestaretigungen nicht wichtig, kann leer sein.
 		mIntent.putExtra("version",     String.valueOf(receivedVersion) );
-		mIntent.putExtra("payload",     "nichts");
+		mIntent.putExtra("payload",     "nichts");          // Fuer Empfangsbestaretigungen nicht wichtig, kann leer sein.
 
 		if(dataType==FsgProtocol.DATA_DRIVER_PICS){
 			mIntent.putExtra("type", String.valueOf(FsgProtocol.CONFIRM_DRIVER_PICS) );

@@ -16,7 +16,7 @@ import de.tubs.cs.ibr.fsg.R;
 public class MainActivity extends Activity {
 
 	private static final String TAG = "MainActivity";
-	private static final boolean DEVELOPER_MODE = true;
+	private static final boolean DEVELOPER_MODE = false;
 
 	
     @Override

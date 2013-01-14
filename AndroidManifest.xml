@@ -87,6 +87,12 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:noHistory="true" >
         </activity>
         <activity
+            android:name=".activities.UpdateRequestActivity"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/title_activity_update_request"
+            android:noHistory="true" >
+        </activity>
+        <activity
             android:name=".activities.RegistrationWriteToTagActivity"
             android:icon="@drawable/icon_register"
             android:label="@string/title_activity_registration_write_to_tag" >

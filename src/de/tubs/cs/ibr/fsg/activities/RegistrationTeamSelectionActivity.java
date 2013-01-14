@@ -105,32 +105,8 @@ public class RegistrationTeamSelectionActivity extends Activity {
 			case R.id.showDataVersion:
 				startActivity(new Intent(this, DataVersionActivity.class));
 				return true;
-			case R.id.requestDriverPics:
-				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIVER_PICS);
-				return true;
-			case R.id.requestDrivers:
-				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIVERS);
-				return true;
-			case R.id.requestTeams:
-				requestRegistrationUpdate(FsgProtocol.UP_REQ_TEAMS);
-				return true;
-			case R.id.requestBlackTags:
-				requestRegistrationUpdate(FsgProtocol.UP_REQ_BLACK_TAGS);
-				return true;
-			case R.id.requestBlackDevices:
-				requestRegistrationUpdate(FsgProtocol.UP_REQ_BLACK_DEVICES);
-				return true;
-			case R.id.requestDriversTeams:
-				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIVERS_TEAMS);
-				return true;
-			case R.id.requestDriversTeamsDriverPics:
-				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIVERS_TEAMS_DP);
-				return true;
-			case R.id.requestBothBlack:
-				requestRegistrationUpdate(FsgProtocol.UP_REQ_BOTH_BLACK);
-				return true;
-			case R.id.requestDriverTeamsBothBlack:
-				requestRegistrationUpdate(FsgProtocol.UP_REQ_DRIV_TE_BLWR_BLDE);
+			case R.id.updateRequest:
+				startActivity(new Intent(this, UpdateRequestActivity.class));
 				return true;
 		}
 		return false;
@@ -138,17 +114,5 @@ public class RegistrationTeamSelectionActivity extends Activity {
 	
 	
 
-	/**
-	 * Fragt aktuelle Daten über das Netz an und schreibt sie in die Datenbank
-	 */
-
-	private void requestRegistrationUpdate(int requestType) {
-		Intent mIntent = new Intent(this, DTNService.class);
-		mIntent.setAction(de.tubs.cs.ibr.fsg.Intent.SEND_DATA);
-		mIntent.putExtra("destination", "dtn://fsg-backend.dtn/fsg"  );
-		mIntent.putExtra("type",        String.valueOf(requestType) );
-		mIntent.putExtra("version",     "0");
-		mIntent.putExtra("payload",     "nichts");
-		startService(mIntent);
-	}	
+	
 }

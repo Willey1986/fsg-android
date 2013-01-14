@@ -7,20 +7,13 @@
     <string name="menu_reg_refresh">Refresh</string>
     <string name="menu_reg_insertDummyData">Sampledata in DB schreiben</string>
     <string name="menu_reg_showDataVersion">Datenversionsübersicht</string>
-    <string name="menu_reg_requestDriverPics">Fahrerbilder updaten</string>
-    <string name="menu_reg_requestDrivers">Fahrerdaten updaten</string>
-    <string name="menu_reg_requestTeams">Teams-Daten updaten</string>
-    <string name="menu_reg_requestBlackTags">Bänder-Blacklist updaten</string>
-    <string name="menu_reg_requestBlackDevices">Geräte-Blacklist updaten</string>
-    <string name="menu_reg_requestDriversTeams">Fahrer- und Teams-Daten updaten</string>
-    <string name="menu_reg_requestDriversTeamsDriverPics">Fahrerbilder, Fahrer- und Teams-Daten updaten</string>
-    <string name="menu_reg_requestBothBlack">Beide Blacklists updaten</string>
-    <string name="menu_reg_requestDriverTeamsBothBlack">Beide Blacklists, Fahrer- und Teams-Daten updaten</string>
+    <string name="menu_reg_updateRequest">Updates anfordern</string>
 
     <!-- Titelzeile von Activities -->
     <string name="title_activity_main">FSG</string>
     <string name="title_activity_error">Fehlermeldung</string>
     <string name="title_activity_data_version">Datenversionsübersicht</string>
+    <string name="title_activity_update_request">Updates anfordern</string>
     <string name="title_activity_registration_write_to_tag">RegistrationWriteToTagActivity</string>
 
     <!-- MainActivity Strings -->
@@ -37,6 +30,7 @@
     <string name="error_not_nfc_support">Keine NFC-Unterstützung auf dem Gerät.</string>
     <string name="error_zip_file_fail">Fehler beim Entpacken der Zip-Datei (Fahrerbilder).</string>
     <string name="error_driver_pics_fail">Fehler beim Speichern der Fahrerbilder.</string>
+    <string name="error_empy_choice">Bitte wählen Sie mindestens einen Datensatz aus!</string>
     <string name="error_receiving_bundle">Fehler beim Empfangen eines IBR-DTN-Bündels.</string> <!-- Wird beim IBR-DTN-Service benutzt -->
     <string name="error_sending_bundle">Fehler beim Senden eines IBR-DTN-Bündels.</string> <!-- Wird beim IBR-DTN-Service benutzt -->
     <string name="error_not_ibr_dtn">IBR-DTN-Daemon inaktiv. Bitte starten Sie ihn (ggf. installieren).</string> <!-- Wird beim IBR-DTN-Service benutzt -->
@@ -73,7 +67,12 @@
     <string name="version_blacklist_tags">Bänder-Blacklist:</string>
     <string name="version_blacklist_devices">Geräte-Blacklist:</string>
     <string name="version_driver_pics">Fahrerbilder:</string>
-
+    
+    <!-- Version-Activity Strings -->
+    <string name="update_request_title">Updates anfordern</string>
+    <string name="request_button">Anfordern</string>
+    <string name="cancel">Abbrechen</string>
+    
     <!-- Notification Strings -->
     <string name="noti_title">FSG - Update erhalten</string>
     <string name="noti_text_driver_pics">Fahrerbilder</string>

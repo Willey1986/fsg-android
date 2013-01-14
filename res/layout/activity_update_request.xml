@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_grey"
+    android:orientation="vertical"
+    android:weightSum="7" >
+
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="300dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.71"
+        android:text="@string/update_request_title"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid07" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayoutTeams"
+        android:layout_width="300dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.71"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textViewTeamsTitle"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="@string/version_teams"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+
+        <CheckBox
+            android:id="@+id/checkBoxTeams"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@layout/checkbox_background" />
+        	
+    </LinearLayout>
+
+        
+    <LinearLayout
+        android:id="@+id/linearLayoutDrivers"
+        android:layout_width="300dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.71"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textViewDriversTitle"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="@string/version_drivers"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+
+        <CheckBox
+            android:id="@+id/checkBoxDrivers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@layout/checkbox_background" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutDriverPics"
+        android:layout_width="300dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.71"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textViewDriverPicsTitle"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="@string/version_driver_pics"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+
+        <CheckBox
+            android:id="@+id/checkBoxDriverPics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@layout/checkbox_background" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutBlackTags"
+        android:layout_width="300dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.71"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textViewBlalistTagsTitle"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="@string/version_blacklist_tags"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+
+        <CheckBox
+            android:id="@+id/checkBoxBlacklistTags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@layout/checkbox_background" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutBlackDevice"
+        android:layout_width="300dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.71"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textViewBlackDeviceTitle"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="@string/version_blacklist_devices"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+
+        <CheckBox
+            android:id="@+id/checkBoxBlackDevice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@layout/checkbox_background" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutButtons"
+        android:layout_width="300dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.51"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/requestButton"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_weight="1"
+            android:background="@layout/button_selector"
+            android:gravity="center"
+            android:onClick="onRequestButtonClick"
+            android:text="@string/request_button"
+            android:textColor="@color/button_text_color" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_weight="1"
+            android:background="@layout/button_selector"
+            android:gravity="center"
+            android:onClick="onCancelButtonClick"
+            android:text="@string/cancel"
+            android:textColor="@color/button_text_color" />
+    </LinearLayout>
+
+</LinearLayout>
