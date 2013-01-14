@@ -116,34 +116,51 @@ public class Nfc {
 //			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 //			if (toString(tagFromIntent.getTechList()).contains("MifareClassic")){
 //				MifareClassic tag = MifareClassic.get(tagFromIntent);
-//				try{
+				try{
 //					tag.connect();
 					readTag(intent, MifareClassic.KEY_DEFAULT); //Key irgendwo extern static speichern?
-					//byte[][] byteArray = new byte[1][16];
+					byte[][] byteArray = new byte[2][16];
 					//H=0x48, e=0x65, l=0x6C, l=0x6C, o=0x6F, W=0x57, o=0x6F, r=0x72, l=0x6C, d=0x64
-//					byteArray[0][0] = 0x48;
-//					byteArray[0][1] = 0x65;
-//					byteArray[0][2] = 0x6C;
-//					byteArray[0][3] = 0x6C;
-//					byteArray[0][4] = 0x6F;
-//					byteArray[0][5] = 0x00;
-//					byteArray[0][6] = 0x57;
-//					byteArray[0][7] = 0x6F;
-//					byteArray[0][8] = 0x72;
-//					byteArray[0][9] = 0x6C;
-//					byteArray[0][10] = 0x64;
-//					byteArray[0][11] = 0x00;
-//					byteArray[0][12] = 0x00;
-//					byteArray[0][13] = 0x00;
-//					byteArray[0][14] = 0x00;
-//					byteArray[0][15] = 0x00;
-//					writeTag(intent, MifareClassic.KEY_DEFAULT, byteArray);
+					byteArray[0][0] = 0x48;
+					byteArray[0][1] = 0x65;
+					byteArray[0][2] = 0x6C;
+					byteArray[0][3] = 0x6C;
+					byteArray[0][4] = 0x6F;
+					byteArray[0][5] = 0x00;
+					byteArray[0][6] = 0x57;
+					byteArray[0][7] = 0x6F;
+					byteArray[0][8] = 0x72;
+					byteArray[0][9] = 0x6C;
+					byteArray[0][10] = 0x64;
+					byteArray[0][11] = 0x02;
+					byteArray[0][12] = 0x00;
+					byteArray[0][13] = 0x00;
+					byteArray[0][14] = 0x00;
+					byteArray[0][15] = 0x00;
+					byteArray[1][0] = 0x48;
+					byteArray[1][1] = 0x65;
+					byteArray[1][2] = 0x6C;
+					byteArray[1][3] = 0x6C;
+					byteArray[1][4] = 0x6F;
+					byteArray[1][5] = 0x00;
+					byteArray[1][6] = 0x57;
+					byteArray[1][7] = 0x6F;
+					byteArray[1][8] = 0x72;
+					byteArray[1][9] = 0x6C;
+					byteArray[1][10] = 0x64;
+					byteArray[1][11] = 0x03;
+					byteArray[1][12] = 0x00;
+					byteArray[1][13] = 0x00;
+					byteArray[1][14] = 0x00;
+					byteArray[1][15] = 0x00;
+					System.out.println("writing now bytearray");
+					writeTag(intent, MifareClassic.KEY_DEFAULT, byteArray);
 //					tag.close();
-//				} catch (IOException e) {
-//					Log.e(TAG, e.getLocalizedMessage());
-//					System.out.println("Tag reading error!");
-//					throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
-//				}
+				} catch (Exception e) {
+					Log.e(TAG, e.getLocalizedMessage());
+					System.out.println("Tag error!");
+					throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
+				}
 //			}
 		} else {
 			
@@ -207,7 +224,8 @@ public class Nfc {
 					if (tag.authenticateSectorWithKeyA(tag.blockToSector(i), key)){
 						
 						//decrypt data in read method
-						data = read(tag.readBlock(i));
+						//data = read(tag.readBlock(i));
+						data = tag.readBlock(i);
 						cardData[tag.blockToSector(i)] += getHexString(data, data.length);
 					}
 				}
@@ -220,6 +238,10 @@ public class Nfc {
 				Log.e(TAG, e.getLocalizedMessage());
 				System.out.println("Tag reading error!");
 				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
+			} catch (Exception e) {
+				Log.e(TAG, e.getLocalizedMessage());
+				System.out.println("Unknown Tag error!");
+				throw new FsgException( e, this.getClass().toString(), FsgException.SECURITY_FAIL);
 			}
 		}
 	}
@@ -278,6 +300,7 @@ public class Nfc {
 				tag.connect();
 				int emptyBlock = getEmptyBlock(tag, key);
 				if ((emptyBlock != -1) && (emptyBlock < tag.getBlockCount())){
+					System.out.println("content.length: "+content.length);
 					int[] writtenBlocks = new int[content.length]; //Array mit den Blocknummern der geschriebenen Blöcke für spätere Verifizierung
 					writtenBlocks[0] = emptyBlock;
 				
@@ -287,7 +310,8 @@ public class Nfc {
 								System.out.println("block is empty");
 							
 								//write encrypted data
-								tag.writeBlock(emptyBlock, write(content[i]));
+								//tag.writeBlock(emptyBlock, write(content[i]));
+								tag.writeBlock(emptyBlock, content[i]);
 							
 								System.out.println("done writing");
 								emptyBlock++;
@@ -454,9 +478,9 @@ public class Nfc {
 					System.out.println("Authentication Failure");
 				}
 				while ((!Arrays.equals(data, emptyBlock)) && (emptyBlockIndex < tag.getBlockCount()-1)){ //Solange Block nicht frei, letzter Block wird nicht geschaut, der soll frei bleiben
-					++emptyBlockIndex;
+					++emptyBlockIndex; //nächsten lesen
 					if (tag.authenticateSectorWithKeyA(tag.blockToSector(emptyBlockIndex), key)){ 
-						data = tag.readBlock(emptyBlockIndex); //nächsten lesen
+						data = tag.readBlock(emptyBlockIndex); 
 					} else {
 						System.out.println("Authentication Failure");
 					}
