@@ -24,6 +24,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 	private TextView txtInfo, txtStatus;
 	private Nfc nfc;
 	private Driver driver;
+	private byte[][] contentToWrite;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,24 +56,26 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 				}
 			}
 			
-//			byte[][] decryptedDriver = scm.decryptString(encryptedDriver);
-//			StringBuffer decryptedString = new StringBuffer();
-//			for(int i = 0; i < decryptedDriver.length; i++) {
-//				for(int j = 0; j < decryptedDriver[i].length; j++) {
-//					decryptedString.append(decryptedDriver[i][j]);
-//				}
-//			}
-//			
-//			NfcObject nfcContent = NfcData.interpretData(decryptedDriver);
+			byte[][] decryptedDriver = scm.decryptString(encryptedDriver);
+			StringBuffer decryptedString = new StringBuffer();
+			for(int i = 0; i < decryptedDriver.length; i++) {
+				for(int j = 0; j < decryptedDriver[i].length; j++) {
+					decryptedString.append(decryptedDriver[i][j]);
+				}
+			}
+			
+			NfcObject nfcContent = NfcData.interpretData(decryptedDriver);
 			
 			String infoText = "Folgender Fahrer wird aufs Band geschrieben:\n" +
 	        		driver.toString() +
 	        		"\n\nCodiert:\n" + encodedString +
-	        		"\n\nVerschlüsselt:\n" + encryptedString;
+	        		"\n\nVerschlüsselt:\n" + encryptedString +
+	        		"\n\nEntschlüsselt:\n" + decryptedString + 
+	        		"\n\nDecodiert:\n" + nfcContent.DriverObject.toString();
 	        txtInfo.setText(infoText);
 	        
 
-			
+			contentToWrite = encryptedDriver;
 			
 		} catch (FsgException e) {
 			// TODO Auto-generated catch block
@@ -105,10 +108,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
     public void executeNfcAction(Intent intent) {
 		txtStatus.setText("Band gefunden");
 		try {
-			DBAdapter dba = new DBAdapter(this);
-			dba.open();
-			Driver driver1 = dba.getDriver((short)100);
-			nfc.writeTag(intent, MifareClassic.KEY_DEFAULT, NfcData.generateDataRegistration(driver));
+			nfc.writeTag(intent, contentToWrite);
 			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			MifareClassic mfc = MifareClassic.get(tagFromIntent);
 			mfc.connect();
