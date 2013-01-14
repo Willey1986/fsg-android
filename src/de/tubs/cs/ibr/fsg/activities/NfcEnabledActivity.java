@@ -42,13 +42,13 @@ abstract public class NfcEnabledActivity extends Activity{
 		if (nfcAdapter != null) {
 			String action = intent.getAction();
 			if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
-				executeNfcAction();
+				executeNfcAction(intent);
 	        }	
 		}
 		
 	}
 	
-	abstract public void executeNfcAction();
+	abstract public void executeNfcAction(Intent intent);
 
 	public void onPause() {
 		super.onPause();

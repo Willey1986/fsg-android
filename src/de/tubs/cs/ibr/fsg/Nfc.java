@@ -586,15 +586,15 @@ public class Nfc {
 	private static byte[] write(byte[] raw) throws FsgException{
 		SecurityManager sManager = new SecurityManager(PASSWORD);
 		
-		return sManager.encryptString(raw);
-		//return raw;
+		//return sManager.encryptString(raw);
+		return raw;
 	}
 	
 	private static byte[] read(byte[]raw)throws FsgException{
 		SecurityManager sManager = new SecurityManager(PASSWORD);
 		
-		return sManager.decryptString(raw);
-		//return raw;
+		//return sManager.decryptString(raw);
+		return raw;
 	}
 
 }

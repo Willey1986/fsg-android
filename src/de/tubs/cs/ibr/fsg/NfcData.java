@@ -5,6 +5,8 @@ package de.tubs.cs.ibr.fsg;
 
 import java.io.*;
 import java.util.Date.*;
+
+import android.util.Log;
 import de.tubs.cs.ibr.fsg.NfcObject;
 import de.tubs.cs.ibr.fsg.NfcObjectBriefing;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
@@ -130,6 +132,14 @@ public class NfcData {
 		short teamID 		= theDriver.getTeam_id();
 		short eventID 		= 1; //TODO: EventID ueber Einstellungen festlegbar ?
 
+		
+		for (int i = 0; i < outputBlock.length; i++) {
+			for (int j = 0; j < outputBlock[i].length; j++) {
+				int t = 1;
+				outputBlock[i][j] = (byte) t;
+			}
+		}
+		
 		outputBlock[0][0] = contentID;
 		outputBlock[0][1] = (byte)(fahrzeugID & 0xff);
 		outputBlock[0][2] = (byte)((fahrzeugID >> 8) & 0xff);
@@ -139,9 +149,10 @@ public class NfcData {
 		outputBlock[0][6] = (byte)((teamID >> 8) & 0xff);
 		outputBlock[0][7] = (byte)(eventID & 0xff);
 		outputBlock[0][8] = (byte)((eventID >> 8) & 0xff);
-		/*for(int i=9;i<16;i++){
-			outputBlock[0][i] = (byte) 0xff;
-		}*/
+		for(int i=9;i<16;i++){
+			outputBlock[0][i] = (byte) 0x00;
+		}
+		
 		
 		//read out and convert the name now
 		contentID = 11;
@@ -161,9 +172,15 @@ public class NfcData {
 		/* >= 1Byte pro Buchstabe bei UTF-8
 		 * >= 2Byte pro Buchstabe bei UTF-16 (UTF-16LE)
 		 * 	Umlaute immer 2Byte
-		 */						
-		outputBlock[1] = fullname.getBytes("UTF-8");
+		 */				
+		
+		byte[] fullnameBytes = fullname.getBytes("UTF-8");
+		System.arraycopy(fullnameBytes, 0, outputBlock[1], 0, fullnameBytes.length);
+		//outputBlock[1] = fullname.getBytes("UTF-8");
 		outputBlock[1][0] = contentID; //write contentID AFTER text, to overwrite whitespace
+		
+		
+		
 		
 		return outputBlock;
 	}

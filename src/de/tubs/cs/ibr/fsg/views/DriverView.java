@@ -34,8 +34,11 @@ public class DriverView extends RelativeLayout{
 		// An dieser Stelle suchen wir nach dem Fahrerbild und stellen es ggf dar.
 		int driverId = driver.getUser_id();
 		File picDirectory = FileHelper.getStoragePath(FileHelper.DRIVER_PICS_DIR);
-		File picFile = new File( picDirectory.getAbsoluteFile() + String.valueOf(File.separatorChar) + String.valueOf(driverId) + ".jpg" );
-		if (picFile.exists()) {
+		File picFile = null;
+		if(picDirectory!=null){
+			picFile = new File( picDirectory.getAbsoluteFile() + String.valueOf(File.separatorChar) + String.valueOf(driverId) + ".jpg" );
+		}
+		if (picFile!=null && picFile.exists() ) {
 			View driverPic = (View) findViewById(R.id.driverPic);
 			Drawable mDrawable = Drawable.createFromPath( picFile.getAbsolutePath() );
 			driverPic.setBackgroundDrawable(mDrawable);

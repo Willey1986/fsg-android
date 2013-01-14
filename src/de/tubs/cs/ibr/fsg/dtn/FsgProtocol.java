@@ -13,26 +13,26 @@ public class FsgProtocol {
 	
 	public final static int UP_REQ_DRIVERS           = 1;
 	public final static int UP_REQ_TEAMS             = 2; 
-	public final static int UP_REQ_BLACK_WRISTLETS   = 3;
+	public final static int UP_REQ_BLACK_TAGS   = 3;
 	public final static int UP_REQ_BLACK_DEVICES     = 4;
-	public final static int UP_REQ_WRISTLET_SINGLE   = 5; 
-	public final static int UP_REQ_WRISTLET_MULTI    = 6;
+	public final static int UP_REQ_TAG_SINGLE   = 5; 
+	public final static int UP_REQ_TAG_MULTI    = 6;
 	public final static int UP_REQ_DRIVER_PICS       = 7;
 
 	public final static int DATA_DRIVERS             = 11; 
 	public final static int DATA_TEAMS               = 12;
-	public final static int DATA_BLACK_WRISTLETS     = 13;
+	public final static int DATA_BLACK_TAGS     = 13;
 	public final static int DATA_BLACK_DEVICES       = 14;
-	public final static int DATA_WRISTLET_SINGLE     = 15;
-	public final static int DATA_WRISTLET_MULTI      = 16;
+	public final static int DATA_TAG_SINGLE     = 15;
+	public final static int DATA_TAG_MULTI      = 16;
 	public final static int DATA_DRIVER_PICS         = 17;
 	
 	public final static int CONFIRM_DRIVERS          = 21; 
 	public final static int CONFIRM_TEAMS            = 22;
-	public final static int CONFIRM_BLACK_WRISTLETS  = 23;
+	public final static int CONFIRM_BLACK_TAGS  = 23;
 	public final static int CONFIRM_BLACK_DEVICES    = 24;
-	public final static int CONFIRM_WRISTLET_SINGLE  = 25;
-	public final static int CONFIRM_WRISTLET_MULTI   = 26;
+	public final static int CONFIRM_TAG_SINGLE  = 25;
+	public final static int CONFIRM_TAG_MULTI   = 26;
 	public final static int CONFIRM_DRIVER_PICS      = 27;
 	
 	public final static int UP_REQ_DRIVERS_TEAMS     = 101;

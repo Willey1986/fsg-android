@@ -2,13 +2,15 @@ package de.tubs.cs.ibr.fsg.activities;
 
 import java.io.IOException;
 
-import de.tubs.cs.ibr.fsg.Nfc;
-import de.tubs.cs.ibr.fsg.NfcData;
-import de.tubs.cs.ibr.fsg.NfcObject;
-import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.*;
 import de.tubs.cs.ibr.fsg.SecurityManager;
+import de.tubs.cs.ibr.fsg.db.DBAdapter;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
+import android.content.Intent;
+import android.nfc.*;
+import android.nfc.tech.MifareClassic;
+import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -53,23 +55,20 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 				}
 			}
 			
-			byte[][] decryptedDriver = scm.decryptString(encryptedDriver);
-			StringBuffer decryptedString = new StringBuffer();
-			for(int i = 0; i < decryptedDriver.length; i++) {
-				for(int j = 0; j < decryptedDriver[i].length; j++) {
-					decryptedString.append(decryptedDriver[i][j]);
-				}
-			}
-			
-			NfcObject nfcContent = NfcData.interpretData(decryptedDriver);
-			
+//			byte[][] decryptedDriver = scm.decryptString(encryptedDriver);
+//			StringBuffer decryptedString = new StringBuffer();
+//			for(int i = 0; i < decryptedDriver.length; i++) {
+//				for(int j = 0; j < decryptedDriver[i].length; j++) {
+//					decryptedString.append(decryptedDriver[i][j]);
+//				}
+//			}
+//			
+//			NfcObject nfcContent = NfcData.interpretData(decryptedDriver);
 			
 			String infoText = "Folgender Fahrer wird aufs Band geschrieben:\n" +
 	        		driver.toString() +
 	        		"\n\nCodiert:\n" + encodedString +
-	        		"\n\nVerschlüsselt:\n" + encryptedString + 
-	        		"\n\nEntschlüsselt:\n" + decryptedString + 
-	        		"\n\nAus ByteArray generierter Fahrer:\n" + nfcContent.DriverObject.toString();
+	        		"\n\nVerschlüsselt:\n" + encryptedString;
 	        txtInfo.setText(infoText);
 	        
 
@@ -103,11 +102,40 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
         return super.onOptionsItemSelected(item);
     }
 
-	@Override
-	public void executeNfcAction() {
-		// TODO Auto-generated method stub
+    public void executeNfcAction(Intent intent) {
 		txtStatus.setText("Band gefunden");
+		try {
+			DBAdapter dba = new DBAdapter(this);
+			dba.open();
+			Driver driver1 = dba.getDriver((short)100);
+			nfc.writeTag(intent, MifareClassic.KEY_DEFAULT, NfcData.generateDataRegistration(driver1));
+			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+			MifareClassic mfc = MifareClassic.get(tagFromIntent);
+			mfc.connect();
+			Log.i("info", bytesToHexString(mfc.getTag().getId()) );
+		} catch (FsgException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
     
+    private String bytesToHexString(byte[] src) {
+        StringBuilder stringBuilder = new StringBuilder("0x");
+        if (src == null || src.length <= 0) {
+            return null;
+        }
+
+        char[] buffer = new char[2];
+        for (int i = 0; i < src.length; i++) {
+            buffer[0] = Character.forDigit((src[i] >>> 4) & 0x0F, 16);  
+            buffer[1] = Character.forDigit(src[i] & 0x0F, 16);  
+            System.out.println(buffer);
+            stringBuilder.append(buffer);
+        }
+
+        return stringBuilder.toString();
+    }
     
 }

@@ -10,7 +10,7 @@
     <string name="menu_reg_requestDriverPics">Fahrerbilder updaten</string>
     <string name="menu_reg_requestDrivers">Fahrerdaten updaten</string>
     <string name="menu_reg_requestTeams">Teams-Daten updaten</string>
-    <string name="menu_reg_requestBlackWristlets">Bänder-Blacklist updaten</string>
+    <string name="menu_reg_requestBlackTags">Bänder-Blacklist updaten</string>
     <string name="menu_reg_requestBlackDevices">Geräte-Blacklist updaten</string>
     <string name="menu_reg_requestDriversTeams">Fahrer- und Teams-Daten updaten</string>
     <string name="menu_reg_requestDriversTeamsDriverPics">Fahrerbilder, Fahrer- und Teams-Daten updaten</string>
@@ -21,6 +21,7 @@
     <string name="title_activity_main">FSG</string>
     <string name="title_activity_error">Fehlermeldung</string>
     <string name="title_activity_data_version">Datenversionsübersicht</string>
+    <string name="title_activity_registration_write_to_tag">RegistrationWriteToTagActivity</string>
 
     <!-- MainActivity Strings -->
     <string name="main_activity_button_1">Fahrerregistrierung</string>
@@ -69,7 +70,7 @@
     <string name="version_title">Datenversionsübersicht</string>
     <string name="version_drivers">Fahrer:</string>
     <string name="version_teams">Teams:</string>
-    <string name="version_blacklist_wristlets">Bänder-Blacklist:</string>
+    <string name="version_blacklist_tags">Bänder-Blacklist:</string>
     <string name="version_blacklist_devices">Geräte-Blacklist:</string>
     <string name="version_driver_pics">Fahrerbilder:</string>
 
@@ -78,10 +79,9 @@
     <string name="noti_text_driver_pics">Fahrerbilder</string>
     <string name="noti_text_drivers">Fahrerdaten</string>
     <string name="noti_text_teams">Teams-Daten</string>
-    <string name="noti_text_blacklist_wirstlets">Bänder-Blacklist</string>
+    <string name="noti_text_blacklist_tags">Bänder-Blacklist</string>
     <string name="noti_text_blacklist_devices">Geräte-Blacklist</string>
     <string name="error_driver_already_checked_in">Driver already checked in to this briefing</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_registration_write_to_tag">RegistrationWriteToTagActivity</string>
 
 </resources>

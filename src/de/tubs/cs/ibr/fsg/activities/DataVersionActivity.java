@@ -25,9 +25,9 @@ public class DataVersionActivity extends Activity {
 		version = prefs.getInt("version_teams", 0);
 		teamsVesionTextView.setText( String.valueOf(version) );
 		
-		TextView blacklistWristletsVesionTextView = (TextView) findViewById(R.id.textViewBlacklistTagsVersion);
-		version = prefs.getInt("version_black_wristlets", 0);
-		blacklistWristletsVesionTextView.setText( String.valueOf(version) );
+		TextView blacklistTagsVesionTextView = (TextView) findViewById(R.id.textViewBlacklistTagsVersion);
+		version = prefs.getInt("version_black_tags", 0);
+		blacklistTagsVesionTextView.setText( String.valueOf(version) );
 		
 		TextView blacklistDevicesTextView = (TextView) findViewById(R.id.textViewBlacklistDevicesVersion);
 		version = prefs.getInt("version_black_devices", 0);

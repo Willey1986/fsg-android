@@ -16,6 +16,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class DBAdapter {
 	
+	public static final int RACE_DISCIPLINE_ACCELERATION = 0;
+	public static final int RACE_DISCIPLINE_SKID_PAD = 1;
+	public static final int RACE_DISCIPLINE_AUTOCROSS = 2;
+	public static final int RACE_DISCIPLINE_ENDURANCE = 3;
+	
 	private SQLiteDatabase database;
 	private DBHelper dbHelper;
 	
@@ -52,7 +57,7 @@ public class DBAdapter {
 		RaceDiscipline discipline3 = new RaceDiscipline((short)102, "Autocross");
 		RaceDiscipline discipline4 = new RaceDiscipline((short)103, "Endurance");
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.GERMANY);
 		
 		Date startTime1 = new Date();
 		Date startTime2 = new Date();
@@ -258,6 +263,61 @@ public class DBAdapter {
 	}
 	
 	/**
+	 * Gibt alle gefahrenen Runs eines Fahrers zurück
+	 * @param driverID
+	 */
+	public void getDrivenRuns(short driverID) {
+		
+	}
+	
+	
+	/**
+	 * Ermittelt alle gefahrenen Runs eines Fahrers auf einer spezifischen Disziplin
+	 * @param driverID ID des Fahrers
+	 * @param disciplineID ID der Disziplin
+	 * @return ArrayList die alle gefahrenen Disziplinen enthält
+	 */
+	public ArrayList<DrivenRun> getDrivenRunsOnDiscipline(short driverID, short disciplineID) {
+		ArrayList<DrivenRun> drivenRuns = new ArrayList<DrivenRun>();
+		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVEN_RUNS + " WHERE " 
+				+ DBHelper.DRIVEN_RUNS_COLUMN_DRIVER_ID + "=" + driverID + " AND " 
+				+ DBHelper.DRIVEN_RUNS_COLUMN_RACE_DISCIPLINE_ID + "=" + disciplineID + ";";
+		Cursor result = rawQuery(sql);
+		if (result.moveToFirst()) {
+			do {
+				Driver driver = getDriver(driverID);
+				RaceDiscipline discipline = getRaceDiscipline(disciplineID);
+				DrivenRun run = new DrivenRun();
+				run.setDriver(driver);
+				run.setRaceDiscipline(discipline);
+				run.setResult(result.getString(result.getColumnIndex(DBHelper.DRIVEN_RUNS_COLUMN_TIME)));
+				run.setTimeStamp(result.getString(result.getColumnIndex(DBHelper.DRIVEN_RUNS_COLUMN_DATE)));
+				switch (result.getInt(result.getColumnIndex(DBHelper.DRIVEN_RUNS_COLUMN_VALID))) {
+					case 1:
+						run.setValid(true);
+						break;
+					case 0:
+						run.setValid(false);
+						break;
+				}
+				drivenRuns.add(run);
+			} while(result.moveToNext());
+		}
+		return drivenRuns;
+	}
+	
+	/**
+	 * Überprüft ob ein Fahrer in der angegebenen Disziplin fahren darf
+	 * @param driverID die ID des Fahrers
+	 * @param raceDisciplineID die ID der Renndisziplin
+	 * @return Teilnahme erlaubt oder nicht
+	 */
+	public boolean isAllowedToDriveDiscipline(short driverID, short raceDisciplineID) {
+		
+		return true;
+	}
+	
+	/**
 	 * Liest ein einzelnes Team anhand der TeamID aus der Datenbank aus
 	 * @param teamID = ID des Teams
 	 * @return = Das gew�nschte Team
@@ -396,12 +456,52 @@ public class DBAdapter {
 	} 
 	
 	/**
+	 * Überprüft anhand der DeviceID ob das Gerät auf der Blacklist steht
+	 * @param DeviceID die ID des Devices als String
+	 * @return Device geblacklisted oder nicht
+	 */
+	public boolean isDeviceBlacklisted(String DeviceID) {
+		Cursor result = database.query(DBHelper.TABLE_BLACKLISTED_DEVICES, 
+				new String[] {DBHelper.BLACKLISTED_TAGS_COLUMN_TAG_ID}, 
+				DBHelper.BLACKLISTED_DEVICES_COLUMN_TAG_ID + "=" + DeviceID, 
+				null, 
+				null, 
+				null, 
+				null);
+		if (result.moveToFirst()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
 	 * Schreibt ein Objekt BlacklistedTag in die Datenbank
 	 * @param blTag = Blacklisted Tag
 	 */
 	public void writeBlacklistedTagToDB(BlacklistedTag blTag) {
 		ContentValues values = blTag.getContentValues();
 		database.insert(DBHelper.TABLE_BLACKLISTED_TAGS, null, values);
+	}
+	
+	/**
+	 * Überprüft anhand der TagID ob das Armband auf der Blacklist steht
+	 * @param TagID die ID des Armbandes als String
+	 * @return Tag geblacklisted oder nicht
+	 */
+	public boolean isTagBlacklisted(String TagID) {
+		Cursor result = database.query(DBHelper.TABLE_BLACKLISTED_TAGS, 
+				new String[] {DBHelper.BLACKLISTED_TAGS_COLUMN_TAG_ID}, 
+				DBHelper.BLACKLISTED_TAGS_COLUMN_TAG_ID + "=" + TagID, 
+				null, 
+				null, 
+				null, 
+				null);
+		if (result.moveToFirst()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public boolean existsKeyValue(String key) {
@@ -436,6 +536,16 @@ public class DBAdapter {
 			cursor.close();
 			return value;
 		}
+	}
+	
+	public RaceDiscipline getRaceDiscipline(int disciplineID) {
+		RaceDiscipline discipline = new RaceDiscipline();
+		Cursor result = database.query(DBHelper.TABLE_RACE_DISCIPLINES, null, DBHelper.RACE_DISCIPLINES_COLUMN_ID + "=" + disciplineID, null, null, null, null);
+		if (result.moveToFirst()) {
+			discipline.setRaceDisciplineId(result.getShort(result.getColumnIndex(DBHelper.RACE_DISCIPLINES_COLUMN_ID)));
+			discipline.setName(result.getString(result.getColumnIndex(DBHelper.RACE_DISCIPLINES_COLUMN_NAME)));
+		}
+		return discipline;
 	}
 	
 	/**
