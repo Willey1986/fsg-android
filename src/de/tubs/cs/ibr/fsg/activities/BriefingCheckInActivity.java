@@ -13,7 +13,7 @@ import de.tubs.cs.ibr.fsg.Nfc;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
-public class BriefingCheckInActivity extends Activity {
+public class BriefingCheckInActivity extends Activity { //NfcEnabledActivity
 	
 	private static NfcAdapter mAdapter;
 	private static Intent mIntent;

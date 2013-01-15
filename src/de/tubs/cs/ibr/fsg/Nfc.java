@@ -41,7 +41,8 @@ public class Nfc {
 	 * Gesamter Inhalt des NFC-Tags
 	 * Array über die Sektoren
 	 */
-	private String memoryContent = new String();
+	//private String memoryContent = new String();
+	private byte[][] memoryContent;
 	
 	/**
 	 * String zur Identifizierung im Log-Cat
@@ -86,7 +87,11 @@ public class Nfc {
 	 * Speichern des Tag-Inhalts
 	 * @param cardData
 	 */
-	private void setData(String cardData){
+//	private void setData(String cardData){
+//		memoryContent = cardData;
+//	}
+	
+	private void setData(byte[][] cardData){
 		memoryContent = cardData;
 	}
 	
@@ -94,11 +99,11 @@ public class Nfc {
 	 * Auslesen des zuletzt gespeicherten Tag-Inhalts
 	 * @return
 	 */
-	public String getData(){
+	public byte[][] getData(){
 		if (memoryContent != null)
 			return memoryContent;
 		else
-			return new String();
+			return new byte[40][16];
 	}
 	
 	/**
@@ -117,7 +122,7 @@ public class Nfc {
 //	}
 	
 	public void clearContent(){
-		memoryContent = new String();
+		memoryContent = new byte[40][16];
 	}
 	
 	public void resolveIntent(Intent intent) throws FsgException{
@@ -213,11 +218,13 @@ public class Nfc {
 			byte[] keyBlock = null;
 			try {
 				tag.connect();
-				String cardData = new String();
 				if (tag.authenticateSectorWithKeyA(tag.blockToSector(3), keyA)){
 					keyBlock = tag.readBlock(3);
 				}
-				for (int i = 0; i < tag.getBlockCount(); i++){
+				if (tag.authenticateSectorWithKeyA(tag.blockToSector(0), keyA)){
+					//TagID separat auslesen
+				}
+				for (int i = 1; i < tag.getBlockCount(); i++){
 					if (tag.authenticateSectorWithKeyA(tag.blockToSector(i), keyA)){
 						
 						//decrypt data in read method
@@ -232,14 +239,15 @@ public class Nfc {
 				if (content != null){
 					System.out.println("not null");
 					byte[][] decryptedContent = read(content);
-					for (int i = 0; i < decryptedContent.length; i++){
-						cardData = cardData.concat(getHexString(decryptedContent[i], decryptedContent[i].length));
-					}
+//					for (int i = 0; i < decryptedContent.length; i++){
+//						cardData = cardData.concat(getHexString(decryptedContent[i], decryptedContent[i].length));
+//					}
+					setData(decryptedContent);
 				}
-				if (!cardData.isEmpty()){
-					System.out.println("CardData: "+cardData);
-					setData(cardData);
-				}
+//				if (!cardData.isEmpty()){
+//					System.out.println("CardData: "+cardData);
+//					setData(cardData);
+//				}
 				System.out.println("end reading.");
 				tag.close();
 			} catch (IOException e) {
@@ -409,7 +417,7 @@ public class Nfc {
 	 * @param oldKey
 	 * @param newKey
 	 */
-	public void changeKey(MifareClassic tag, int sectorIndex, byte[] oldKey, byte[] newKey){
+	public void changeKey(MifareClassic tag, int sectorIndex, byte[] oldKeyA, byte[] newKeyA, byte[] oldKeyB, byte[] newKeyB, byte[] rights){
 		if (tag.isConnected()){
 			//Unterscheidung zwischen großem und kleinem Sektor (4 vs 16 Blöcke)
 		} else {
