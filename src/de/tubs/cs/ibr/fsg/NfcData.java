@@ -36,7 +36,7 @@ public class NfcData {
 					}					
 					outputObject.DriverObject.setTeam_id(test[2]);
 					outputObject.DriverObject.setUser_id(test[1]);
-					outputObject.DriverObject.getTeam().setCarNr(test[0]);
+					//TODO:FehlerHIER:outputObject.DriverObject.getTeam().setCarNr(test[0]);
 					outputObject.setEventID(test[3]);
 						/*
 						System.out.println("fahrzeugID: "+test[0]);
