@@ -1,5 +1,6 @@
 package de.tubs.cs.ibr.fsg.activities;
 
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;

@@ -40,6 +40,10 @@ public class Driver implements Serializable{
 	
 	public Driver() {
 		this.team = new Team();
+		this.user_id = 0;
+		this.team_id = 0;
+		this.first_name = "";
+		this.last_name = "";
 	}
 
 	public short getUser_id() {
