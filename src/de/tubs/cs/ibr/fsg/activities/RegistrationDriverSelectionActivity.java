@@ -62,6 +62,11 @@ public class RegistrationDriverSelectionActivity extends Activity{
 		}
 	}
 	
+	protected void onResume() {
+		super.onResume();
+		dba.open();
+	}
+	
 	protected void onStop() {
 		super.onStop();
 		dba.close();

@@ -124,6 +124,9 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 			if (tagContent.DriverObject.getTeam_id() == 0) {
 				nfc.writeTag(intent, contentToWrite);
 				txtStatus.setText("Registrierungsdaten geschrieben");
+			} else {
+				FsgException e = new FsgException(null, "RegistrationWriteToTagActivity", FsgException.REGISTRATION_ALREADY_PRESENT);
+				throw e;
 			}
 		} catch (FsgException e) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
