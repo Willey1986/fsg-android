@@ -3,22 +3,21 @@ package de.tubs.cs.ibr.fsg.activities;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import de.tubs.cs.ibr.fsg.*;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.TextView;
+import de.tubs.cs.ibr.fsg.Nfc;
+import de.tubs.cs.ibr.fsg.NfcData;
+import de.tubs.cs.ibr.fsg.NfcObject;
+import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.SecurityManager;
 import de.tubs.cs.ibr.fsg.db.DBAdapter;
 import de.tubs.cs.ibr.fsg.db.models.Briefing;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
-import android.content.Intent;
-import android.nfc.*;
-import android.nfc.tech.MifareClassic;
-import android.nfc.tech.NdefFormatable;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.TextView;
-import android.support.v4.app.NavUtils;
 
 public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 	
@@ -78,7 +77,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 	        		"\n\nCodiert:\n" + encodedString +
 	        		"\n\nVerschlüsselt:\n" + encryptedString +
 	        		"\n\nEntschlüsselt:\n" + decryptedString + 
-	        		"\n\nDecodiert:\n" + nfcContent.DriverObject.toString() +
+	        		"\n\nDecodiert:\n" + nfcContent.getDriverObject().toString() +
 	        		"\n\nAnzahl Briefings: " + briefings.size();
 	        txtInfo.setText(infoText);
 	        
@@ -121,7 +120,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 		try {
 			nfc.readTag(intent);
 			NfcObject tagContent = NfcData.interpretData(nfc.getData());
-			if (tagContent.DriverObject.getTeam_id() == 0) {
+			if (tagContent.getDriverObject().getTeam_id() == 0) {
 				nfc.writeTag(intent, contentToWrite);
 				txtStatus.setText("Registrierungsdaten geschrieben");
 			} else {

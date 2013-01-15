@@ -11,28 +11,13 @@ package de.tubs.cs.ibr.fsg;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
-import de.tubs.cs.ibr.fsg.R;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.IntentFilter.MalformedMimeTypeException;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.nfc.tech.IsoDep;
 import android.nfc.tech.MifareClassic;
-import android.nfc.tech.NfcA;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
-import de.tubs.cs.ibr.fsg.NfcData;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class Nfc {

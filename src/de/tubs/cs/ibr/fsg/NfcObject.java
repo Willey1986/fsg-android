@@ -5,59 +5,77 @@ import de.tubs.cs.ibr.fsg.NfcObjectBriefing;
 import java.util.*;
 
 public class NfcObject {
-	public Driver DriverObject;
-	private ArrayList<NfcObjectBriefing> Briefings = new ArrayList<NfcObjectBriefing>();
-	private ArrayList<NfcObjectBriefing> Runs = new ArrayList<NfcObjectBriefing>();
+	private Driver driverObject;
+	private ArrayList<NfcObjectBriefing> briefings = new ArrayList<NfcObjectBriefing>();
+	private ArrayList<NfcObjectBriefing> runs = new ArrayList<NfcObjectBriefing>();
 	
 	private short eventID;	
 	
 	public NfcObject(){
-		DriverObject = new Driver();
+		driverObject = new Driver();
 	}
 	
 	public void addBriefing(NfcObjectBriefing temp){
-		Briefings.add(temp);
+		briefings.add(temp);
 	}
+	
 	public void removeBriefingByID(short id){
-		Iterator<NfcObjectBriefing> it = Briefings.iterator();
+		Iterator<NfcObjectBriefing> it = briefings.iterator();
 		while (it.hasNext()) {
 		  if(it.next().getBriefingID() == id){
-			  Briefings.remove(it.next());
+			  briefings.remove(it.next());
 		  }
 		}
 
 	}
+	
 	public ArrayList<NfcObjectBriefing> getRuns(){
-		return Runs;
+		return runs;
 	}
 	
 	public void addRun(NfcObjectBriefing temp){
-		Runs.add(temp);
+		runs.add(temp);
 	}
+	
 	public void removeRunByID(short id){
-		Iterator<NfcObjectBriefing> it = Runs.iterator();
+		Iterator<NfcObjectBriefing> it = runs.iterator();
 		while (it.hasNext()) {
 		  if(it.next().getBriefingID() == id){
-			  Runs.remove(it.next());
+			  runs.remove(it.next());
 		  }
 		}
 
 	}
+	
 	public ArrayList<NfcObjectBriefing> getBriefings(){
-		return Briefings;
+		return briefings;
 	}
 	
 	public short getEventID(){
 		return eventID;
 	}
+	
 	public void setEventID(short temp){
 		eventID = temp;
 	}
 
 	public void clear() {
-		DriverObject = new Driver();
-		Briefings.removeAll(Briefings);
-		Runs.removeAll(Runs);	
+		driverObject = new Driver();
+		briefings.removeAll(briefings);
+		runs.removeAll(runs);	
 		eventID = 0;
 	}
+
+	public Driver getDriverObject() {
+		return driverObject;
+	}
+
+	public void setDriverObject(Driver driverObject) {
+		this.driverObject = driverObject;
+	}
+	
+	
+	
+	
+	
 }

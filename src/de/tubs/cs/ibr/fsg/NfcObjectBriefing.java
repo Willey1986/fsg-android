@@ -1,6 +1,5 @@
 package de.tubs.cs.ibr.fsg;
 
-import java.util.Date;
 
 public class NfcObjectBriefing {
 	private short briefingID;
