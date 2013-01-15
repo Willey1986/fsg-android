@@ -1,10 +1,12 @@
 package de.tubs.cs.ibr.fsg.activities;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import de.tubs.cs.ibr.fsg.*;
 import de.tubs.cs.ibr.fsg.SecurityManager;
 import de.tubs.cs.ibr.fsg.db.DBAdapter;
+import de.tubs.cs.ibr.fsg.db.models.Briefing;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import android.content.Intent;
@@ -25,18 +27,19 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 	private Nfc nfc;
 	private Driver driver;
 	private byte[][] contentToWrite;
+	private DBAdapter dba;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_write_to_tag);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
         Bundle extras = getIntent().getBundleExtra("bundle");
         driver = (Driver) extras.get("driver");
         txtInfo = (TextView) findViewById(R.id.txtRegWriteInfo);
         txtStatus = (TextView) findViewById(R.id.txtRegWriteStatus);
         nfc = new Nfc(this);
         scm = new SecurityManager("geheim");
+        dba = new DBAdapter(this);
         
         
         try {
@@ -66,25 +69,33 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 			
 			NfcObject nfcContent = NfcData.interpretData(decryptedDriver);
 			
+			dba.open();
+			ArrayList<Briefing> briefings = dba.getAllUpcomingBriefings();
+			dba.close();
+			
 			String infoText = "Folgender Fahrer wird aufs Band geschrieben:\n" +
 	        		driver.toString() +
 	        		"\n\nCodiert:\n" + encodedString +
 	        		"\n\nVerschlüsselt:\n" + encryptedString +
 	        		"\n\nEntschlüsselt:\n" + decryptedString + 
-	        		"\n\nDecodiert:\n" + nfcContent.DriverObject.toString();
+	        		"\n\nDecodiert:\n" + nfcContent.DriverObject.toString() +
+	        		"\n\nAnzahl Briefings: " + briefings.size();
 	        txtInfo.setText(infoText);
+	        
 	        
 
 			contentToWrite = encryptedDriver;
 			
 		} catch (FsgException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Log.i(this.getClass().getName(), e.getOriginException().getMessage());
-			System.out.println("Bubu");
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e);
+			startActivity(mIntent);
+			finish();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e);
+			startActivity(mIntent);
+			finish();
 		}
     }
 
@@ -108,16 +119,13 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
     public void executeNfcAction(Intent intent) {
 		txtStatus.setText("Band gefunden");
 		try {
+			
 			nfc.writeTag(intent, contentToWrite);
-			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-			MifareClassic mfc = MifareClassic.get(tagFromIntent);
-			mfc.connect();
-			Log.i("info", bytesToHexString(mfc.getTag().getId()) );
 		} catch (FsgException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e);
+			startActivity(mIntent);
+			finish();
 		}
 	}
     
