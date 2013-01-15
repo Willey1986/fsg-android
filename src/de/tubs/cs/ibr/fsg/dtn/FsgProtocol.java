@@ -103,8 +103,6 @@ public class FsgProtocol {
 		if (updateRequest.isBlalistDevicesRequest()){
 			result |= 1 << 4;
 		}
-		System.out.println("Intege-Request: " + result);
-		System.out.println("Binary-Request: " + Integer.toBinaryString(result));
 		return result;
 	}
 
