@@ -20,17 +20,23 @@ public class InfoTerminalActivity extends NfcEnabledActivity {
 			nfc.readTag(intent);
 			byte[][] readedTagContent = nfc.getData();  // Der gelesene Inhalt ist an dieser Stelle noch verschluesselt.
 			
+			////////////////////////////////////////////////////////////////
+			// Block nur fuer die Fehlersuche...
+			StringBuffer encryptedString = new StringBuffer();
+			for(int i = 0; i < readedTagContent.length; i++) {
+				for(int j = 0; j < readedTagContent[i].length; j++) {
+					encryptedString.append(readedTagContent[i][j]);
+				}
+			}
+			System.out.println("Verschlüsselt: " + encryptedString);
+			////////////////////////////////////////////////////////////////
+			
 			byte[][] decryptedContent = scm.decryptString( readedTagContent ); // Hier versuchen wir zu entschluesseln // TODO Hier steigt die APP aus!
 			
 			NfcObject tagContent = NfcData.interpretData( decryptedContent ); // Ohne Verschluesselung koennen wir nun an die Daten
 			
-//			if (tagContent.getDriverObject().getTeam_id() == 0) {
-//				nfc.writeTag(intent, contentToWrite);
-//				txtStatus.setText("Registrierungsdaten geschrieben");
-//			} else {
-//				FsgException e = new FsgException(null, "RegistrationWriteToTagActivity", FsgException.REGISTRATION_ALREADY_PRESENT);
-//				throw e;
-//			}
+			System.out.println(tagContent); // Nur fuer die Fehlersuche da, hier kann ich beim debuggen stoppen... ;-)
+
 		} catch (FsgException e) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
 			mIntent.putExtra("Exception", e);
