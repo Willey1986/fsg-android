@@ -16,7 +16,8 @@ public class FsgException extends Exception{
 	public static final int NON_VALID_ID	  	= 10;
 	public static final int CHAR_ENCODE_FAILED	= 11;
 	public static final int CHAR_DECODE_FAILED	= 12;
-	public static final int REGISTRATION_ALREADY_PRESENT	= 12;
+	public static final int REGISTRATION_ALREADY_PRESENT = 13;
+	public static final int TAG_WRONG_KEY_OR_FORMAT      = 14;
 	
 	
 	

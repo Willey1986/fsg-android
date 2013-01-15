@@ -31,6 +31,7 @@
     <string name="error_zip_file_fail">Fehler beim Entpacken der Zip-Datei (Fahrerbilder).</string>
     <string name="error_driver_pics_fail">Fehler beim Speichern der Fahrerbilder.</string>
     <string name="error_empy_choice">Bitte wählen Sie mindestens einen Datensatz aus!</string>
+    <string name="error_tag_wrong_key_or_format">Tag-Lesefehler. Mögliche Ursachen: der Key ist falsch oder der Tag ist falsch formatiert (z.B. mit dem NDEF-Format).</string>
     <string name="error_receiving_bundle">Fehler beim Empfangen eines IBR-DTN-Bündels.</string> <!-- Wird beim IBR-DTN-Service benutzt -->
     <string name="error_sending_bundle">Fehler beim Senden eines IBR-DTN-Bündels.</string> <!-- Wird beim IBR-DTN-Service benutzt -->
     <string name="error_not_ibr_dtn">IBR-DTN-Daemon inaktiv. Bitte starten Sie ihn (ggf. installieren).</string> <!-- Wird beim IBR-DTN-Service benutzt -->

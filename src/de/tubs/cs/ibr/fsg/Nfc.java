@@ -237,7 +237,7 @@ public class Nfc {
 					}
 				}
 				if (content != null){
-					System.out.println("not null");
+					System.out.println("not null (Nfc.java)");
 					byte[][] decryptedContent = read(content);
 //					for (int i = 0; i < decryptedContent.length; i++){
 //						cardData = cardData.concat(getHexString(decryptedContent[i], decryptedContent[i].length));
@@ -248,7 +248,7 @@ public class Nfc {
 //					System.out.println("CardData: "+cardData);
 //					setData(cardData);
 //				}
-				System.out.println("end reading.");
+				System.out.println("end reading (Nfc.java)");
 				tag.close();
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
@@ -341,7 +341,7 @@ public class Nfc {
 								i -= 1; //Einen Schritt zurückgehen, damit gesamter Content geschrieben wird und nicht ein Block übersprungen
 							}
 						} else {
-							System.out.println("Authentication Failure");
+							System.out.println("Authentication Failure 1");
 						}
 					}
 					System.out.println("verifying");
@@ -492,14 +492,16 @@ public class Nfc {
 				if (tag.authenticateSectorWithKeyA(tag.blockToSector(emptyBlockIndex), keyA)){
 					data = tag.readBlock(emptyBlockIndex); //Außer bei der Initialisierung sollte der Block 1 nicht leer sein, da dort die Fahrer-Infos hingeschrieben werden
 				} else {
-					System.out.println("Authentication Failure");
+					System.out.println("Authentication Failure 2");
+					throw new FsgException( new Exception(), this.getClass().toString(), FsgException.TAG_WRONG_KEY_OR_FORMAT);
 				}
 				while ((!Arrays.equals(data, emptyBlock)) && (emptyBlockIndex < tag.getBlockCount()-1)){ //Solange Block nicht frei, letzter Block wird nicht geschaut, der soll frei bleiben
 					++emptyBlockIndex; //nächsten lesen
 					if (tag.authenticateSectorWithKeyA(tag.blockToSector(emptyBlockIndex), keyA)){ 
 						data = tag.readBlock(emptyBlockIndex); 
 					} else {
-						System.out.println("Authentication Failure");
+						System.out.println("Authentication Failure 3");
+						throw new FsgException( new Exception(), this.getClass().toString(), FsgException.TAG_WRONG_KEY_OR_FORMAT);
 					}
 				}
 			} catch (IOException e) {
