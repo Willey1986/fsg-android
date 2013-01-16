@@ -48,7 +48,7 @@ public class NfcData {
 
 						// extract first and lastname from the string
 						outputObject.getDriverObject().setFirst_name(str.substring(0,str.lastIndexOf(" ")));
-						outputObject.getDriverObject().setLast_name(str.substring(str.lastIndexOf(" ")+1));
+						outputObject.getDriverObject().setLast_name(str.substring(str.lastIndexOf(" ")+1, str.lastIndexOf(".")+1));
 							//System.out.println("extraced Name: "+ outputObject.DriverObject.getFirst_name()+" "+outputObject.DriverObject.getLast_name());
 					} catch (Exception e) {
 						throw new FsgException( e, "NfcData", FsgException.CHAR_DECODE_FAILED);
