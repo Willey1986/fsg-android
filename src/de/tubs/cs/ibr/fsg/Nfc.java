@@ -10,6 +10,7 @@
 package de.tubs.cs.ibr.fsg;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -70,9 +71,13 @@ public class Nfc {
 	
 	/**
 	 * Key B für Mifare Classic
-	 */
-	
+	 */	
 	private byte[] keyB = {(byte) 'F', (byte) 'F', (byte) 'F', (byte) 'F', (byte) 'F', (byte) 'F'};
+	
+	/**
+	 * Erster Block des zuletzt gelesenen Tags, enthält die eindeutige ID des Tags
+	 */
+	private String tagID = new String();
 	
 	/**
 	 * Konstruktor
@@ -104,6 +109,14 @@ public class Nfc {
 			return memoryContent;
 		else
 			return new byte[40][16];
+	}
+	
+	private void setTagID(byte[] givenTagID) {
+		tagID = getHexString(givenTagID, givenTagID.length);
+	}
+	
+	public String getTagID() {
+		return tagID;
 	}
 	
 	/**
@@ -223,6 +236,7 @@ public class Nfc {
 				}
 				if (tag.authenticateSectorWithKeyA(tag.blockToSector(0), keyA)){
 					//TagID separat auslesen
+					setTagID(tag.readBlock(0));
 				}
 				for (int i = 1; i < tag.getBlockCount(); i++){
 					if (tag.authenticateSectorWithKeyA(tag.blockToSector(i), keyA)){
@@ -261,7 +275,7 @@ public class Nfc {
 			}
 		}
 	}
-	
+
 	/**
 	 * Liest einen gegebenen Sektor eines gegebenen Tags.
 	 * @param tag
@@ -408,7 +422,7 @@ public class Nfc {
     //6 byte for key A
     //4 byte for Access Bits
     //6 byte for key B which is optional and can be set to 00 or any other value
-	//d.h. für Key A = 00 11 22 33 44 55 und Access Bits = FF 0F 00 (default) muss geschrieben werden: 00 11 22 33 44 55 FF 0F 00 FF FF FF FF FF FF (Key B unchanged)
+	//d.h. für Key A = 00 11 22 33 44 55 und Access Bits = FF 0F 00(default) muss geschrieben werden: 00 11 22 33 44 55 FF 0F 00 FF FF FF FF FF FF (Key B unchanged)
 	
 	/**
 	 * Methode zum Ändern des Keys eines Sektors.
@@ -416,10 +430,38 @@ public class Nfc {
 	 * @param sectorIndex
 	 * @param oldKey
 	 * @param newKey
+	 * @throws FsgException 
 	 */
-	public void changeKey(MifareClassic tag, int sectorIndex, byte[] oldKeyA, byte[] newKeyA, byte[] oldKeyB, byte[] newKeyB, byte[] rights){
+	public void changeKey(Intent intent, int sectorIndex, byte[] oldKeyA, byte[] newKeyA, byte[] rights, byte[] oldKeyB, byte[] newKeyB) throws FsgException{
+		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
+			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+			MifareClassic tag = MifareClassic.get(tagFromIntent);
+			System.out.println("Changing Key");
+			try {
+				String keyString = getHexString(newKeyA, newKeyA.length) + getHexString(rights, rights.length) + getHexString(newKeyB, newKeyB.length);
+				byte[] keyBlock = keyString.getBytes("UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				e1.printStackTrace();
+				throw new FsgException(e1, this.getClass().toString(), FsgException.CHAR_ENCODE_FAILED);
+			}
+			try {
+				tag.connect();
+				//Unterscheidung zwischen großem und kleinem Sektor (4 vs 16 Blöcke)
+				tag.close();
+			} catch (IOException e) {
+				Log.e(TAG, e.getLocalizedMessage());
+				System.out.println("Tag writing error!");
+				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
+			}
+		} else {
+			
+		}
+	}
+	
+	public void changeAccess(MifareClassic tag, int sectorIndex, byte[] rights){
 		if (tag.isConnected()){
 			//Unterscheidung zwischen großem und kleinem Sektor (4 vs 16 Blöcke)
+			//nur bei geschriebenen Blöcken ändern, nicht bei leeren und nicht bei Key-Blöcken!
 		} else {
 			System.out.println("Tag disconnected!");
 		}
