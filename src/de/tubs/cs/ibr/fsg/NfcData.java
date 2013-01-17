@@ -30,8 +30,8 @@ public class NfcData {
 					for(int j=1;j<15;j+=2){
 						test[j/2] = (short) (((inputBlock[i][j+1]&0xFF) << 8) | (inputBlock[i][j]&0xFF));
 					}					
-					outputObject.getDriverObject().setTeam_id(test[2]);
-					outputObject.getDriverObject().setUser_id(test[1]);
+					outputObject.getDriverObject().setTeamID(test[2]);
+					outputObject.getDriverObject().setDriverID(test[1]);
 					//TODO:FehlerHIER:outputObject.DriverObject.getTeam().setCarNr(test[0]);
 					outputObject.setEventID(test[3]);
 						/*
@@ -47,8 +47,8 @@ public class NfcData {
 						str = str.substring(1, str.length());
 
 						// extract first and lastname from the string
-						outputObject.getDriverObject().setFirst_name(str.substring(0,str.lastIndexOf(" ")));
-						outputObject.getDriverObject().setLast_name(str.substring(str.lastIndexOf(" ")+1, str.lastIndexOf(".")+1));
+						outputObject.getDriverObject().setFirstName(str.substring(0,str.lastIndexOf(" ")));
+						outputObject.getDriverObject().setLastName(str.substring(str.lastIndexOf(" ")+1, str.lastIndexOf(".")+1));
 							//System.out.println("extraced Name: "+ outputObject.DriverObject.getFirst_name()+" "+outputObject.DriverObject.getLast_name());
 					} catch (Exception e) {
 						throw new FsgException( e, "NfcData", FsgException.CHAR_DECODE_FAILED);
@@ -112,7 +112,7 @@ public class NfcData {
 	public static byte[][] generateDataRegistration(Driver theDriver) throws FsgException, IOException {	
 		//check for working driver object
 		try{
-			theDriver.getTeam_id();
+			theDriver.getTeamID();
 		} catch (Exception  e) {
 			throw new FsgException( e, "NfcData", FsgException.NON_VALID_ID);
 		}
@@ -124,8 +124,8 @@ public class NfcData {
 		byte contentID 		= 10;
 				
 		short fahrzeugID 	= theDriver.getTeam().getCarNr();
-		short userID 		= theDriver.getUser_id();
-		short teamID 		= theDriver.getTeam_id();
+		short userID 		= theDriver.getDriverID();
+		short teamID 		= theDriver.getTeamID();
 		short eventID 		= 1; //TODO: EventID ueber Einstellungen festlegbar ?
 
 		
@@ -155,9 +155,9 @@ public class NfcData {
 		String prename, lastname;
 		
 		try{
-			prename	= theDriver.getFirst_name(); 
+			prename	= theDriver.getFirstName(); 
 				if(prename.length()>15) prename = prename.substring(0, 16);
-			lastname = theDriver.getLast_name().substring(0, 1)+".";
+			lastname = theDriver.getLastName().substring(0, 1)+".";
 		} catch (Exception  e) {
 			throw new FsgException( e, "NfcData", FsgException.GENERIC_EXCEPTION);
 		}

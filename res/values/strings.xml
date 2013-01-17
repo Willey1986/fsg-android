@@ -49,6 +49,16 @@
     <string name="skidpad">Skid Pad</string>
     <string name="autocross">Autocross</string>
     <string name="endurance">Endurance</string>
+    
+    <string name="which_run">Wie viele Rennen sollen geloggt werden?</string>
+    <string name="run_confirm_scan">Scan</string>
+    <string name="run_init">Initialisierung</string>
+    <string name="run_scan_wait">Scan........Bitte warten.....</string>
+    <string name="run_find_device">Gerät suchen:</string>
+    <string name="run_find_cancel">Abbruch</string>
+    <string name="num1">1</string>
+    <string name="num2">2</string>
+    
 
     <!-- Fahrerregistrierung Strings -->
     <string name="select_team">Wählen Sie ihr Team aus:</string>
