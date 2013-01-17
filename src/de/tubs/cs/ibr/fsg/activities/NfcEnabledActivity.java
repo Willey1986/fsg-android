@@ -1,5 +1,6 @@
 package de.tubs.cs.ibr.fsg.activities;
 
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -27,9 +28,16 @@ abstract public class NfcEnabledActivity extends Activity{
 				ndef.addDataType("*/*");
 				filters = new IntentFilter[] {ndef,};
 				techLists = new String[][] { new String[] { MifareClassic.class.getName() } };
+			}else{
+				throw new FsgException( new NullPointerException("'Der NfcAdapter ist ein \"null\"-Objekt. Grund: Keine NFC-Unterstützung auf dem Gerät"), this.getClass().toString(), FsgException.NOT_NFC_SUPPORT );
 			}
 		} catch (MalformedMimeTypeException e) {
 			throw new RuntimeException("fail",e);
+		}  catch (FsgException e1) {
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e1);
+			startActivity(mIntent);
+			finish();
 		} 
 	}
 	
@@ -51,15 +59,36 @@ abstract public class NfcEnabledActivity extends Activity{
 	abstract public void executeNfcAction(Intent intent);
 
 	public void onPause() {
+		try{
+			if (nfcAdapter != null){
+				nfcAdapter.disableForegroundDispatch(this);
+			}else{
+				throw new FsgException( new NullPointerException("'Der NfcAdapter ist ein \"null\"-Objekt. Grund: Keine NFC-Unterstützung auf dem Gerät"), this.getClass().toString(), FsgException.NOT_NFC_SUPPORT );
+			}
+		}catch (FsgException e1){
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e1);
+			startActivity(mIntent);
+			finish();
+		}
 		super.onPause();
-		if (nfcAdapter != null)
-			nfcAdapter.disableForegroundDispatch(this);
-		
+
 	}
 	
 	public void onResume() {
+		try{
+			if (nfcAdapter != null){
+				nfcAdapter.enableForegroundDispatch(this, pendingIntent, filters, techLists);
+			}else{
+				throw new FsgException( new NullPointerException("'Der NfcAdapter ist ein \"null\"-Objekt. Grund: Keine NFC-Unterstützung auf dem Gerät"), this.getClass().toString(), FsgException.NOT_NFC_SUPPORT );
+			}
+		}catch (FsgException e1){
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e1);
+			startActivity(mIntent);
+			finish();
+		}
 		super.onResume();
-		if (nfcAdapter != null)
-			nfcAdapter.enableForegroundDispatch(this, pendingIntent, filters, techLists);
+
 	}
 }
