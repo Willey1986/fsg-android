@@ -15,7 +15,6 @@ import de.tubs.cs.ibr.fsg.NfcObject;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.SecurityManager;
 import de.tubs.cs.ibr.fsg.db.DBAdapter;
-import de.tubs.cs.ibr.fsg.db.models.Briefing;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
@@ -68,17 +67,12 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 			
 			NfcObject nfcContent = NfcData.interpretData(decryptedDriver);
 			
-			dba.open();
-			ArrayList<Briefing> briefings = dba.getAllUpcomingBriefings();
-			dba.close();
-			
 			String infoText = "Folgender Fahrer wird aufs Band geschrieben:\n" +
 	        		driver.toString() +
 	        		"\n\nCodiert:\n" + encodedString +
 	        		"\n\nVerschlüsselt:\n" + encryptedString +
 	        		"\n\nEntschlüsselt:\n" + decryptedString + 
-	        		"\n\nDecodiert:\n" + nfcContent.getDriverObject().toString() +
-	        		"\n\nAnzahl Briefings: " + briefings.size();
+	        		"\n\nDecodiert:\n" + nfcContent.getDriverObject().toString();
 	        txtInfo.setText(infoText);
 	        
 	        

@@ -29,12 +29,6 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String DRIVERS_COLUMN_FIRST_NAME = "first_name";
 	public static final String DRIVERS_COLUMN_LAST_NAME = "last_name";
 	
-	public static final String TABLE_BRIEFINGS = "briefings";
-	public static final String BRIEFINGS_COLUMN_ID = "_id";
-	public static final String BRIEFINGS_COLUMN_START_TIME = "start_time";
-	public static final String BRIEFINGS_COLUMN_END_TIME = "end_time";
-	public static final String BRIEFINGS_COLUMN_RACE_DISCIPLINE_ID = "race_discipline_id";
-	
 	public static final String TABLE_CHECKED_IN = "checked_in";
 	public static final String CHECKED_IN_COLUMN_ID = "_id";
 	public static final String CHECKED_IN_COLUMN_DRIVER_ID = "driver_id";
@@ -103,12 +97,6 @@ public class DBHelper extends SQLiteOpenHelper{
 			+ DRIVERS_COLUMN_FIRST_NAME + " TEXT NOT NULL,"
 			+ DRIVERS_COLUMN_LAST_NAME + " TEXT NOT NULL)";
 	
-	public static final String TABLE_BRIEFINGS_CREATE = "CREATE TABLE " + TABLE_BRIEFINGS + " ("
-			+ BRIEFINGS_COLUMN_ID + " INTEGER PRIMARY KEY, "
-			+ BRIEFINGS_COLUMN_RACE_DISCIPLINE_ID + " INTEGER NOT NULL, "
-			+ BRIEFINGS_COLUMN_START_TIME + " INTEGER NOT NULL, "
-			+ BRIEFINGS_COLUMN_END_TIME + " INTEGER NOT NULL);";
-	
 	public static final String TABLE_CHECKED_IN_CREATE = "CREATE TABLE " + TABLE_CHECKED_IN + " ("
 			+ CHECKED_IN_COLUMN_ID + " INTEGER PRIMARY KEY, "
 			+ CHECKED_IN_COLUMN_DRIVER_ID + " INTEGER NOT NULL, "
@@ -162,7 +150,6 @@ public class DBHelper extends SQLiteOpenHelper{
 		database.execSQL(TABLE_TEAMS_CREATE);
 		database.execSQL(TABLE_BLACKLISTED_TAGS_CREATE);
 		database.execSQL(TABLE_BLACKLISTED_DEVICES_CREATE);
-		database.execSQL(TABLE_BRIEFINGS_CREATE);
 		database.execSQL(TABLE_CHECKED_IN_CREATE);
 		database.execSQL(TABLE_CHECKED_OUT_CREATE);
 		database.execSQL(TABLE_DRIVEN_RUNS_CREATE);
@@ -184,7 +171,6 @@ public class DBHelper extends SQLiteOpenHelper{
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_BLACKLISTED_DEVICES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_BLACKLISTED_TAGS);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_BRIEFINGS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHECKED_IN);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHECKED_OUT);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DRIVEN_RUNS);
