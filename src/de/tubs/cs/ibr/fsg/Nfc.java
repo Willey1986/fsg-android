@@ -238,9 +238,6 @@ public class Nfc {
 				if (content != null){
 					System.out.println("not null (Nfc.java)");
 					byte[][] decryptedContent = read(content);
-//					for (int i = 0; i < decryptedContent.length; i++){
-//						cardData = cardData.concat(getHexString(decryptedContent[i], decryptedContent[i].length));
-//					}
 					setData(decryptedContent);
 				}
 //				if (!cardData.isEmpty()){
@@ -318,7 +315,7 @@ public class Nfc {
 			try {
 				tag.connect();
 				int emptyBlock = getEmptyBlock(tag);
-				if ((emptyBlock != -1) && (emptyBlock < tag.getBlockCount())){
+				if ((emptyBlock + encryptedContent.length) <= tag.getBlockCount()){ //Anzahl leerer Blöcke größer/gleich Anzahl zu schreibender Blöcke, sonst voll
 					System.out.println("content.length: "+encryptedContent.length);
 					int[] writtenBlocks = new int[encryptedContent.length]; //Array mit den Blocknummern der geschriebenen Blöcke für spätere Verifizierung
 					writtenBlocks[0] = emptyBlock;
