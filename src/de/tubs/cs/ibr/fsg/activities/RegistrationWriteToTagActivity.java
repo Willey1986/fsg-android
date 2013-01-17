@@ -15,7 +15,6 @@ import de.tubs.cs.ibr.fsg.NfcObject;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.SecurityManager;
 import de.tubs.cs.ibr.fsg.db.DBAdapter;
-import de.tubs.cs.ibr.fsg.db.models.Briefing;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
@@ -26,7 +25,6 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 	private Nfc nfc;
 	private Driver driver;
 	private byte[][] contentToWrite;
-	private DBAdapter dba;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,8 +36,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
         txtStatus = (TextView) findViewById(R.id.txtRegWriteStatus);
         nfc = new Nfc(this);
         scm = new SecurityManager("geheim");
-        dba = new DBAdapter(this);
-        
+
         
         try {
         	byte[][] encodedDriver = NfcData.generateDataRegistration(driver);
@@ -68,22 +65,17 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 			
 			NfcObject nfcContent = NfcData.interpretData(decryptedDriver);
 			
-			dba.open();
-			ArrayList<Briefing> briefings = dba.getAllUpcomingBriefings();
-			dba.close();
-			
 			String infoText = "Folgender Fahrer wird aufs Band geschrieben:\n" +
 	        		driver.toString() +
 	        		"\n\nCodiert:\n" + encodedString +
 	        		"\n\nVerschlüsselt:\n" + encryptedString +
 	        		"\n\nEntschlüsselt:\n" + decryptedString + 
-	        		"\n\nDecodiert:\n" + nfcContent.getDriverObject().toString() +
-	        		"\n\nAnzahl Briefings: " + briefings.size();
+	        		"\n\nDecodiert:\n" + nfcContent.getDriverObject().toString();
 	        txtInfo.setText(infoText);
 	        
 	        
 
-			contentToWrite = encryptedDriver;
+			contentToWrite = encodedDriver; //Wenn die Verschluesselung funktioniert, muss hier heissen: contentToWrite = encryptedDriver;
 			
 		} catch (FsgException e) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
@@ -120,7 +112,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 		try {
 			nfc.readTag(intent);
 			NfcObject tagContent = NfcData.interpretData(nfc.getData());
-			if (tagContent.getDriverObject().getTeam_id() == 0) {
+			if (tagContent.getDriverObject().getTeamID() == 0) {
 				nfc.writeTag(intent, contentToWrite);
 				txtStatus.setText("Registrierungsdaten geschrieben");
 			} else {

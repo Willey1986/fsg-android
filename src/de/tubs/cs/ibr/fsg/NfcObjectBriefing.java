@@ -1,5 +1,9 @@
 package de.tubs.cs.ibr.fsg;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class NfcObjectBriefing {
 	private short briefingID;
@@ -21,4 +25,6 @@ public class NfcObjectBriefing {
 	public void setTimestamp(long temp){
 		timestamp = temp;
 	}
+	
+
 }

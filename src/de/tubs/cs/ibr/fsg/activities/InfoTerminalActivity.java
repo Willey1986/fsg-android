@@ -20,20 +20,20 @@ public class InfoTerminalActivity extends NfcEnabledActivity {
 			nfc.readTag(intent);
 			byte[][] readedTagContent = nfc.getData();  // Der gelesene Inhalt ist an dieser Stelle noch verschluesselt.
 			
-			////////////////////////////////////////////////////////////////
-			// Block nur fuer die Fehlersuche...
-			StringBuffer encryptedString = new StringBuffer();
-			for(int i = 0; i < readedTagContent.length; i++) {
-				for(int j = 0; j < readedTagContent[i].length; j++) {
-					encryptedString.append(readedTagContent[i][j]);
-				}
-			}
-			System.out.println("Verschlüsselt: " + encryptedString);
-			////////////////////////////////////////////////////////////////
+//			////////////////////////////////////////////////////////////////
+//			// Block nur fuer die Fehlersuche...
+//			StringBuffer encryptedString = new StringBuffer();
+//			for(int i = 0; i < readedTagContent.length; i++) {
+//				for(int j = 0; j < readedTagContent[i].length; j++) {
+//					encryptedString.append(readedTagContent[i][j]);
+//				}
+//			}
+//			System.out.println("Verschlüsselt: " + encryptedString);
+//			////////////////////////////////////////////////////////////////
+//			
+//			byte[][] decryptedContent = scm.decryptString( readedTagContent ); // Hier versuchen wir zu entschluesseln // TODO Hier steigt die APP aus!
 			
-			byte[][] decryptedContent = scm.decryptString( readedTagContent ); // Hier versuchen wir zu entschluesseln // TODO Hier steigt die APP aus!
-			
-			NfcObject tagContent = NfcData.interpretData( decryptedContent ); // Ohne Verschluesselung koennen wir nun an die Daten
+			NfcObject tagContent = NfcData.interpretData( readedTagContent ); // Ohne Verschluesselung koennen wir nun an die Daten
 			
 			System.out.println(tagContent); // Nur fuer die Fehlersuche da, hier kann ich beim debuggen stoppen... ;-)
 

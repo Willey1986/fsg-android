@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.json.*;
 
+import de.tubs.cs.ibr.fsg.FsgHelper;
 import de.tubs.cs.ibr.fsg.db.models.*;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
@@ -28,10 +29,6 @@ public class DBAdapter {
 		dbHelper = new DBHelper(context);
 	}
 	
-	private long convertToUnixtimestamp(long timestamp) {
-		return (timestamp / 1000L);
-	}
-	
 	public void open() throws SQLException {
 		database = dbHelper.getWritableDatabase();
 	}
@@ -43,7 +40,6 @@ public class DBAdapter {
 	public void writeSampleData() {
 		database.delete(DBHelper.TABLE_DRIVERS, null, null);
 		database.delete(DBHelper.TABLE_TEAMS, null, null);
-		database.delete(DBHelper.TABLE_BRIEFINGS, null, null);
 		database.delete(DBHelper.TABLE_RACE_DISCIPLINES, null, null);
 		
 		Driver driver1 = new Driver((short)100, (short)100, "Harald", "Juhnke");
@@ -61,64 +57,6 @@ public class DBAdapter {
 		RaceDiscipline discipline3 = new RaceDiscipline((short)102, "Autocross");
 		RaceDiscipline discipline4 = new RaceDiscipline((short)103, "Endurance");
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.GERMANY);
-		
-		Date startTime1 = new Date();
-		Date startTime2 = new Date();
-		Date startTime3 = new Date();
-		Date startTime4 = new Date();
-		Date startTime5 = new Date();
-		Date startTime6 = new Date();
-		Date startTime7 = new Date();
-		Date startTime8 = new Date();
-		Date startTime9 = new Date();
-		
-		Date endTime1 = new Date();
-		Date endTime2 = new Date();
-		Date endTime3 = new Date();
-		Date endTime4 = new Date();
-		Date endTime5 = new Date();
-		Date endTime6 = new Date();
-		Date endTime7 = new Date();
-		Date endTime8 = new Date();
-		Date endTime9 = new Date();
-		
-		try {
-			startTime1 = dateFormat.parse("20.08.2013 10:00:00");
-			startTime2 = dateFormat.parse("20.08.2013 13:00:00");
-			startTime3 = dateFormat.parse("21.08.2013 10:00:00");
-			startTime4 = dateFormat.parse("21.08.2013 13:00:00");
-			startTime5 = dateFormat.parse("22.08.2013 10:00:00");
-			startTime6 = dateFormat.parse("22.08.2013 13:00:00");
-			startTime7 = dateFormat.parse("23.08.2013 10:00:00");
-			startTime8 = dateFormat.parse("23.08.2013 13:00:00");
-			startTime9 = dateFormat.parse("23.08.2012 13:00:00");
-			endTime1 = dateFormat.parse("20.08.2013 12:00:00");
-			endTime2 = dateFormat.parse("20.08.2013 15:00:00");
-			endTime3 = dateFormat.parse("21.08.2013 12:00:00");
-			endTime4 = dateFormat.parse("21.08.2013 15:00:00");
-			endTime5 = dateFormat.parse("22.08.2013 12:00:00");
-			endTime6 = dateFormat.parse("22.08.2013 15:00:00");
-			endTime7 = dateFormat.parse("23.08.2013 12:00:00");
-			endTime8 = dateFormat.parse("23.08.2013 15:00:00");
-			endTime9 = dateFormat.parse("23.08.2012 15:00:00");
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-		Briefing briefing1 = new Briefing((short)100, discipline1, convertToUnixtimestamp(startTime1.getTime()), convertToUnixtimestamp(endTime1.getTime()));
-		Briefing briefing2 = new Briefing((short)101, discipline1, convertToUnixtimestamp(startTime2.getTime()), convertToUnixtimestamp(endTime2.getTime()));
-		Briefing briefing3 = new Briefing((short)102, discipline2, convertToUnixtimestamp(startTime3.getTime()), convertToUnixtimestamp(endTime3.getTime()));
-		Briefing briefing4 = new Briefing((short)103, discipline2, convertToUnixtimestamp(startTime4.getTime()), convertToUnixtimestamp(endTime4.getTime()));
-		Briefing briefing5 = new Briefing((short)104, discipline3, convertToUnixtimestamp(startTime5.getTime()), convertToUnixtimestamp(endTime5.getTime()));
-		Briefing briefing6 = new Briefing((short)105, discipline3, convertToUnixtimestamp(startTime6.getTime()), convertToUnixtimestamp(endTime6.getTime()));
-		Briefing briefing7 = new Briefing((short)106, discipline4, convertToUnixtimestamp(startTime7.getTime()), convertToUnixtimestamp(endTime7.getTime()));
-		Briefing briefing8 = new Briefing((short)107, discipline4, convertToUnixtimestamp(startTime8.getTime()), convertToUnixtimestamp(endTime8.getTime()));
-		Briefing briefing9 = new Briefing((short)108, discipline4, convertToUnixtimestamp(startTime9.getTime()), convertToUnixtimestamp(endTime9.getTime()));
-		
 		database.insert(DBHelper.TABLE_DRIVERS, null, driver1.getContentValues());
 		database.insert(DBHelper.TABLE_DRIVERS, null, driver2.getContentValues());
 		database.insert(DBHelper.TABLE_DRIVERS, null, driver3.getContentValues());
@@ -133,16 +71,6 @@ public class DBAdapter {
 		database.insert(DBHelper.TABLE_RACE_DISCIPLINES, null, discipline2.getContentValues());
 		database.insert(DBHelper.TABLE_RACE_DISCIPLINES, null, discipline3.getContentValues());
 		database.insert(DBHelper.TABLE_RACE_DISCIPLINES, null, discipline4.getContentValues());
-		
-		database.insert(DBHelper.TABLE_BRIEFINGS, null, briefing1.getContentValues());
-		database.insert(DBHelper.TABLE_BRIEFINGS, null, briefing2.getContentValues());
-		database.insert(DBHelper.TABLE_BRIEFINGS, null, briefing3.getContentValues());
-		database.insert(DBHelper.TABLE_BRIEFINGS, null, briefing4.getContentValues());
-		database.insert(DBHelper.TABLE_BRIEFINGS, null, briefing5.getContentValues());
-		database.insert(DBHelper.TABLE_BRIEFINGS, null, briefing6.getContentValues());
-		database.insert(DBHelper.TABLE_BRIEFINGS, null, briefing7.getContentValues());
-		database.insert(DBHelper.TABLE_BRIEFINGS, null, briefing8.getContentValues());
-		database.insert(DBHelper.TABLE_BRIEFINGS, null, briefing9.getContentValues());
 		
 		writeKeyValue("secret", "geheimerKey");
 	}
@@ -219,11 +147,11 @@ public class DBAdapter {
 		
 		if(cursor.moveToFirst()) {
 			Driver driver = new Driver();
-			driver.setUser_id(cursor.getShort(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_USER_ID)));
-			driver.setTeam_id(cursor.getShort(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_TEAM_ID)));
-			driver.setFirst_name(cursor.getString(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_FIRST_NAME)));
-			driver.setLast_name(cursor.getString(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_LAST_NAME)));			
-			driver.setTeam(getTeam(driver.getTeam_id()));
+			driver.setDriverID(cursor.getShort(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_USER_ID)));
+			driver.setTeamID(cursor.getShort(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_TEAM_ID)));
+			driver.setFirstName(cursor.getString(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_FIRST_NAME)));
+			driver.setLastName(cursor.getString(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_LAST_NAME)));			
+			driver.setTeam(getTeam(driver.getTeamID()));
 			cursor.close();
 			return driver;
 		}
@@ -387,31 +315,26 @@ public class DBAdapter {
 		}
 	}
 	
-	public void writeCheckIn(short driverId, short briefingId) throws FsgException {
+	public void writeCheckIn(short driverId)  {
+		short briefingId = FsgHelper.generateIdForTodaysBriefing();
 		Date now = new Date();
 		String timestamp = "" + (now.getTime() / 1000L);
 		String sql = "INSERT OR IGNORE INTO " + DBHelper.TABLE_CHECKED_IN + " (" 
 				+ DBHelper.CHECKED_IN_COLUMN_DRIVER_ID + ", "
 				+ DBHelper.CHECKED_IN_COLUMN_BRIEFING_ID + ", "
-				+ DBHelper.CHECKED_IN_COLUMN_VALID + ", "
 				+ DBHelper.CHECKED_IN_COLUMN_TIMESTAMP + ") VALUES ("
 				+ driverId + ", "
 				+ briefingId + ", "
-				+ "1,"
 				+ timestamp +")";
-		if (!isCheckedIn(driverId, briefingId))
-			execSQL(sql);
-		else {
-			throw new FsgException(null, "DBAdapter", FsgException.DRIVER_ALREADY_CHECKED_IN);
-		}
+		execSQL(sql);
 	}
 	
-	public boolean isCheckedIn(short driverId, short briefingId) {
+	public boolean isCheckedIn(short driverId) {
+		short briefingId = FsgHelper.generateIdForTodaysBriefing();
 		String sql = "SELECT * FROM " + DBHelper.TABLE_CHECKED_IN 
 				+ " WHERE " 
 				+ DBHelper.CHECKED_IN_COLUMN_DRIVER_ID + "=" + driverId + " AND "
-				+ DBHelper.CHECKED_IN_COLUMN_BRIEFING_ID + "=" + briefingId + " AND "
-				+ DBHelper.CHECKED_IN_COLUMN_VALID + "=1";
+				+ DBHelper.CHECKED_IN_COLUMN_BRIEFING_ID + "=" + briefingId;
 		Cursor cursor = rawQuery(sql);
 		if (cursor.moveToFirst()) {
 			cursor.close();
@@ -423,26 +346,18 @@ public class DBAdapter {
 		}
 	}
 	
-	public void writeCheckOut(short driverId, short briefingId, int checkedInId) throws FsgException{
-		if (isCheckedIn(driverId, briefingId)) {
-			Date now = new Date();
-			String timestamp = "" + (now.getTime() / 1000L);
-			String sql = "INSERT OR IGNORE INTO " + DBHelper.TABLE_CHECKED_OUT + " (" 
-					+ DBHelper.CHECKED_OUT_COLUMN_DRIVER_ID + ", "
-					+ DBHelper.CHECKED_OUT_COLUMN_BRIEFING_ID + ", "
-					+ DBHelper.CHECKED_OUT_COLUMN_CHECKED_IN_ID + ", "
-					+ DBHelper.CHECKED_OUT_COLUMN_TIMESTAMP + ") VALUES ("
-					+ driverId + ", "
-					+ briefingId + ", "
-					+ checkedInId + ", "
-					+ timestamp +")";
-			execSQL(sql);
-			
-			
-		} else {
-			throw new FsgException(null, "DBAdapter", FsgException.DRIVER_NOT_CHECKED_IN);
-		}
-		
+	public void writeCheckOut(short driverId) {
+		short briefingId = FsgHelper.generateIdForTodaysBriefing();
+		Date now = new Date();
+		String timestamp = "" + (now.getTime() / 1000L);
+		String sql = "INSERT OR IGNORE INTO " + DBHelper.TABLE_CHECKED_OUT + " (" 
+				+ DBHelper.CHECKED_OUT_COLUMN_DRIVER_ID + ", "
+				+ DBHelper.CHECKED_OUT_COLUMN_BRIEFING_ID + ", "
+				+ DBHelper.CHECKED_OUT_COLUMN_TIMESTAMP + ") VALUES ("
+				+ driverId + ", "
+				+ briefingId + ", "
+				+ timestamp +")";
+		execSQL(sql);
 	}
 	
 	/**
@@ -548,55 +463,47 @@ public class DBAdapter {
 	}
 	
 	
-	/**
-	 * Liefert ArrayList mit allen in der DB eingetragenen Briefings
-	 * @return Liste mit Briefings
-	 */
-	public ArrayList<Briefing> getAllBriefings() {
-		ArrayList<Briefing> briefings = new ArrayList<Briefing>();
-		Cursor result = database.query(DBHelper.TABLE_BRIEFINGS, null, null, null, null, null, null);
-		if (result.moveToFirst()) {
-			do {
-				Briefing briefing = new Briefing();
-				briefing.setBriefingId(result.getShort(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_ID)));
-				briefing.setStartTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_START_TIME)));
-				briefing.setEndTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_END_TIME)));
-				
-				RaceDiscipline raceDiscipline = getRaceDiscipline(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_RACE_DISCIPLINE_ID)));
-				briefing.setRaceDiscipline(raceDiscipline);
-				
-				briefings.add(briefing);
-			} while (result.moveToNext());
-			
-		}
-		return briefings;
-	}
-	
-	
-	/**
-	 * Liefert ArrayList mit noch nicht vergangenen Briefings 
-	 * @return Liste mit Briefings
-	 */
-	public ArrayList<Briefing> getAllUpcomingBriefings() {
-		ArrayList<Briefing> briefings = new ArrayList<Briefing>();
-		Date now = new Date();
-		long nowAsUnixTimestamp = (now.getTime() / 1000L) - (3600 * 3);  //Aktuelles Datum als Unix-Timestamp. 3 Stunden Toleranz 
-		Cursor result = database.query(DBHelper.TABLE_BRIEFINGS, null, DBHelper.BRIEFINGS_COLUMN_START_TIME + ">" + nowAsUnixTimestamp, null, null, null, null);
-		if (result.moveToFirst()) {
-			do {
-				Briefing briefing = new Briefing();
-				briefing.setBriefingId(result.getShort(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_ID)));
-				briefing.setStartTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_START_TIME)));
-				briefing.setEndTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_END_TIME)));
-				
-				RaceDiscipline raceDiscipline = getRaceDiscipline(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_RACE_DISCIPLINE_ID)));
-				briefing.setRaceDiscipline(raceDiscipline);
-				
-				briefings.add(briefing);
-			} while (result.moveToNext());
-		}
-		return briefings;
-	}
+//	/**
+//	 * Liefert ArrayList mit allen in der DB eingetragenen Briefings
+//	 * @return Liste mit Briefings
+//	 */
+//	public ArrayList<Briefing> getAllBriefings() {
+//		ArrayList<Briefing> briefings = new ArrayList<Briefing>();
+//		Cursor result = database.query(DBHelper.TABLE_BRIEFINGS, null, null, null, null, null, null);
+//		if (result.moveToFirst()) {
+//			do {
+//				Briefing briefing = new Briefing();
+//				briefing.setBriefingId(result.getShort(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_ID)));
+//				briefing.setStartTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_START_TIME)));
+//				briefing.setEndTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_END_TIME)));
+//				briefings.add(briefing);
+//			} while (result.moveToNext());
+//			
+//		}
+//		return briefings;
+//	}
+//	
+//	
+//	/**
+//	 * Liefert ArrayList mit noch nicht vergangenen Briefings 
+//	 * @return Liste mit Briefings
+//	 */
+//	public ArrayList<Briefing> getAllUpcomingBriefings() {
+//		ArrayList<Briefing> briefings = new ArrayList<Briefing>();
+//		Date now = new Date();
+//		long nowAsUnixTimestamp = (now.getTime() / 1000L) - (3600 * 3);  //Aktuelles Datum als Unix-Timestamp. 3 Stunden Toleranz 
+//		Cursor result = database.query(DBHelper.TABLE_BRIEFINGS, null, DBHelper.BRIEFINGS_COLUMN_START_TIME + ">" + nowAsUnixTimestamp, null, null, null, null);
+//		if (result.moveToFirst()) {
+//			do {
+//				Briefing briefing = new Briefing();
+//				briefing.setBriefingId(result.getShort(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_ID)));
+//				briefing.setStartTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_START_TIME)));
+//				briefing.setEndTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_END_TIME)));
+//				briefings.add(briefing);
+//			} while (result.moveToNext());
+//		}
+//		return briefings;
+//	}
 	
 	/**
 	 * Dient dem direkten Ausf�hren von SQL-Ausdr�cken
