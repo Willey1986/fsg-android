@@ -31,7 +31,7 @@ public class InfoTerminalActivity extends NfcEnabledActivity {
 //			System.out.println("Verschlüsselt: " + encryptedString);
 //			////////////////////////////////////////////////////////////////
 //			
-//			byte[][] decryptedContent = scm.decryptString( readedTagContent ); // Hier versuchen wir zu entschluesseln // TODO Hier steigt die APP aus!
+			//byte[][] decryptedContent = scm.decryptString( readedTagContent ); // Hier versuchen wir zu entschluesseln // TODO Hier steigt die APP aus!
 			
 			NfcObject tagContent = NfcData.interpretData( readedTagContent ); // Ohne Verschluesselung koennen wir nun an die Daten
 			

@@ -12,6 +12,11 @@ public class NfcData {
 	private static long tstampConstant = 1357174835;//1357174835445L; 
 	//at the beginning of each sector there is a informationblock to get
 	
+	public static final short ACCELERATION = 1;
+	public static final short SKID_PAD     = 2;
+	public static final short AUTOCROSS    = 3;
+	public static final short ENDURANCE    = 4;
+	
 	//constants for the encryption/decryption
 	//private final static String SECUREKEY = "KEY";
 	
@@ -81,15 +86,27 @@ public class NfcData {
 					break;
 					
 				case 40: //RUNS DONE
-					short raceID	= (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
-					int tstampr 		= (int) (((inputBlock[i][6]&0xFF) << 32) | ((inputBlock[i][5]&0xFF) << 16) | ((inputBlock[i][4]&0xFF) << 8) | (inputBlock[i][3]&0xFF));
-					long tstamp2r 		= (Long.parseLong(String.valueOf(tstampr))+tstampConstant)*1000;		
+					short runDiscipline	= (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
+					//int tstampr 		= (int) (((inputBlock[i][6]&0xFF) << 32) | ((inputBlock[i][5]&0xFF) << 16) | ((inputBlock[i][4]&0xFF) << 8) | (inputBlock[i][3]&0xFF));
+					//long tstamp2r 		= (Long.parseLong(String.valueOf(tstampr))+tstampConstant)*1000;		
 					
-					NfcObjectRun newRun = new NfcObjectRun();
-					newRun.setRaceID(raceID);
-					newRun.setTimestamp(tstamp2r);
+					//NfcObjectRun newRun = new NfcObjectRun();
+					//newRun.setRaceID(runType);
+					//newRun.setTimestamp(tstamp2r);
 					
-					outputObject.addRun(newRun);
+					if (runDiscipline==ACCELERATION){
+						int newValue = outputObject.getAccelerationRuns() + 1;
+						outputObject.setAccelerationRuns(newValue);
+					}else if (runDiscipline==SKID_PAD){
+						int newValue = outputObject.getSkidPadRuns() + 1;
+						outputObject.setSkidPadRuns(newValue);
+					}else if (runDiscipline==ENDURANCE){
+						int newValue = outputObject.getEnduranceRuns() + 1;
+						outputObject.setEnduranceRuns(newValue);
+					}else{
+						int newValue = outputObject.getAutocrossRuns() + 1;
+						outputObject.setAutocrossRuns(newValue);
+					}
 					
 					break;
 					
@@ -213,20 +230,24 @@ public class NfcData {
 		return outputBlock;
 	}
 	
-	/* RaceIDs:
-	 * 	1 = Acceleration
-	 * 	2 = SkidPad
-	 * 	3 = Autocross
-	 *  4 = Endurance
+
+	/**
+	 * WICHTIG!!!
+	 * Bitte die Konstanten dieser Klasse fuer den Attribut "runDiscipline" benutzen:
+	 * 
+	 *  public static final short ACCELERATION = 1;
+	 *  public static final short SKID_PAD     = 2;
+	 *  public static final short AUTOCROSS    = 3;
+	 *  public static final short ENDURANCE    = 4;
 	 */
-	public static byte[][] generateDataRace(short raceID){
+	public static byte[][] generateRun(short runDiscipline){
 		byte[][] outputBlock = new byte[1][16];
 		byte contentID = 40;
 		int timestamp = makeBetterTimestampNOW();
 		
 		outputBlock[0][0] = contentID;
-		outputBlock[0][1] = (byte)(raceID & 0xff);
-		outputBlock[0][2] = (byte)((raceID >> 8) & 0xff);
+		outputBlock[0][1] = (byte)(runDiscipline & 0xff);
+		outputBlock[0][2] = (byte)((runDiscipline >> 8) & 0xff);
 		outputBlock[0][3] = (byte)(timestamp & 0xff);
 		outputBlock[0][4] = (byte)((timestamp >> 8) & 0xff);
 		outputBlock[0][5] = (byte)((timestamp >> 16) & 0xff);
@@ -234,6 +255,7 @@ public class NfcData {
 		
 		return outputBlock;
 	}
+	
 	
 	public static byte[][] generateDataDestroyCompleteTag(){
 		byte[][] outputBlock = new byte[1][16];

@@ -7,14 +7,23 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class NfcObject {
-	private Driver driverObject;
-	private ArrayList<NfcObjectBriefing> briefings = new ArrayList<NfcObjectBriefing>();
-	private ArrayList<NfcObjectRun> runs = new ArrayList<NfcObjectRun>();
-	
 	private short eventID;	
-	
+	private Driver driverObject;
+	private int accelerationRuns;
+	private int skidPadRuns;
+	private int autocrossRuns;
+	private int enduranceRuns;
+	private ArrayList<NfcObjectBriefing> briefings;
+
+
 	public NfcObject(){
 		driverObject = new Driver();
+		briefings = new ArrayList<NfcObjectBriefing>();
+		accelerationRuns = 0;
+		skidPadRuns = 0;
+		autocrossRuns = 0;
+		enduranceRuns = 0;
+		eventID = 0;
 	}
 	
 	public void addBriefing(NfcObjectBriefing temp){
@@ -28,55 +37,51 @@ public class NfcObject {
 			  briefings.remove(it.next());
 		  }
 		}
-
 	}
 	
-	public ArrayList<NfcObjectRun> getRuns(){
-		return runs;
-	}
 	
-	public void addRun(NfcObjectRun temp){
-		runs.add(temp);
-	}
-	
-	public void removeRunByID(short id){
-		Iterator<NfcObjectRun> it = runs.iterator();
-		while (it.hasNext()) {
-		  if(it.next().getRaceID() == id){
-			  runs.remove(it.next());
-			  break;      // TODO Geaendert, ich glaube den break brauchen wir, sonst werden alle Runs der gleichen Klasse geloescht...
-		  }
-		}
-
-	}
-	
-	public ArrayList<NfcObjectBriefing> getBriefings(){
-		return briefings;
-	}
-	
-	public short getEventID(){
-		return eventID;
-	}
-	
-	public void setEventID(short temp){
-		eventID = temp;
-	}
-
 	public void clear() {
 		driverObject = new Driver();
 		briefings.removeAll(briefings);
-		runs.removeAll(runs);	
+		accelerationRuns = 0;
+		skidPadRuns = 0;
+		autocrossRuns = 0;
+		enduranceRuns = 0;
 		eventID = 0;
 	}
+	
+	
+	/**
+	 * Mit Hilfe dieser Methode koennen wir leicht die Regel ueberpruefen, die besagt:
+	 * Ein Fahrer darf maximal 3 Disziplinen fahren.
+	 */
+	public int howManyDisciplinesAreDriven(){
+		int amount = 0;
+		
+		if(accelerationRuns>0){
+			amount = amount+1;
+		}
 
-	public Driver getDriverObject() {
-		return driverObject;
-	}
-
-	public void setDriverObject(Driver driverObject) {
-		this.driverObject = driverObject;
+		if(skidPadRuns>0){
+			amount = amount+1;
+		}
+		
+		if(autocrossRuns>0){
+			amount = amount+1;
+		}
+		
+		if(enduranceRuns>0){
+			amount = amount+1;
+		}
+		
+		return amount;
 	}
 	
+	
+	/**
+	 * Mit Hilfe dieser Methode koennen wir direkt die Regel ueberpruefen, die besagt:
+	 * Nur wenn der Fahrer am morgentlichen Briefing teilgenommen hat, darf er fahren.
+	 */
 	public boolean haveTheDriverTodaysBriefing() {
 		boolean result = false;
 		
@@ -95,6 +100,66 @@ public class NfcObject {
 		}
 		
 		return result;
+	}
+	
+	public ArrayList<NfcObjectBriefing> getBriefings(){
+		return briefings;
+	}
+	
+	public short getEventID(){
+		return eventID;
+	}
+	
+	public void setEventID(short temp){
+		eventID = temp;
+	}
+
+
+
+	public Driver getDriverObject() {
+		return driverObject;
+	}
+
+	public void setDriverObject(Driver driverObject) {
+		this.driverObject = driverObject;
+	}
+	
+
+
+	public int getAccelerationRuns() {
+		return accelerationRuns;
+	}
+
+	public void setAccelerationRuns(int accelerationRuns) {
+		this.accelerationRuns = accelerationRuns;
+	}
+
+	public int getSkidPadRuns() {
+		return skidPadRuns;
+	}
+
+	public void setSkidPadRuns(int skidPadRuns) {
+		this.skidPadRuns = skidPadRuns;
+	}
+
+	public int getAutocrossRuns() {
+		return autocrossRuns;
+	}
+
+	public void setAutocrossRuns(int autocrossRuns) {
+		this.autocrossRuns = autocrossRuns;
+	}
+
+	public int getEnduranceRuns() {
+		return enduranceRuns;
+	}
+
+	public void setEnduranceRuns(int enduranceRuns) {
+		this.enduranceRuns = enduranceRuns;
+	}
+
+	public void setBriefings(ArrayList<NfcObjectBriefing> briefings) {
+		this.briefings = briefings;
 	}
 	
 	
