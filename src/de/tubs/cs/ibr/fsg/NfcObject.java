@@ -9,7 +9,7 @@ import java.util.*;
 public class NfcObject {
 	private Driver driverObject;
 	private ArrayList<NfcObjectBriefing> briefings = new ArrayList<NfcObjectBriefing>();
-	private ArrayList<NfcObjectBriefing> runs = new ArrayList<NfcObjectBriefing>();
+	private ArrayList<NfcObjectRun> runs = new ArrayList<NfcObjectRun>();
 	
 	private short eventID;	
 	
@@ -31,19 +31,20 @@ public class NfcObject {
 
 	}
 	
-	public ArrayList<NfcObjectBriefing> getRuns(){
+	public ArrayList<NfcObjectRun> getRuns(){
 		return runs;
 	}
 	
-	public void addRun(NfcObjectBriefing temp){
+	public void addRun(NfcObjectRun temp){
 		runs.add(temp);
 	}
 	
 	public void removeRunByID(short id){
-		Iterator<NfcObjectBriefing> it = runs.iterator();
+		Iterator<NfcObjectRun> it = runs.iterator();
 		while (it.hasNext()) {
-		  if(it.next().getBriefingID() == id){
+		  if(it.next().getRaceID() == id){
 			  runs.remove(it.next());
+			  break;      // TODO Geaendert, ich glaube den break brauchen wir, sonst werden alle Runs der gleichen Klasse geloescht...
 		  }
 		}
 

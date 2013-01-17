@@ -81,15 +81,15 @@ public class NfcData {
 					break;
 					
 				case 40: //RUNS DONE
-					short runID	= (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
+					short raceID	= (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
 					int tstampr 		= (int) (((inputBlock[i][6]&0xFF) << 32) | ((inputBlock[i][5]&0xFF) << 16) | ((inputBlock[i][4]&0xFF) << 8) | (inputBlock[i][3]&0xFF));
 					long tstamp2r 		= (Long.parseLong(String.valueOf(tstampr))+tstampConstant)*1000;		
 					
-					NfcObjectBriefing newRun = new NfcObjectBriefing();
-					newRun.setBriefingID(runID);
+					NfcObjectRun newRun = new NfcObjectRun();
+					newRun.setRaceID(raceID);
 					newRun.setTimestamp(tstamp2r);
 					
-					outputObject.addBriefing(newRun);
+					outputObject.addRun(newRun);
 					
 					break;
 					
