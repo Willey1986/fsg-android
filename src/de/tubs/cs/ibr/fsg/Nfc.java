@@ -214,6 +214,7 @@ public class Nfc {
 			byte[] data;
 			byte[][] content = new byte[tag.getBlockCount()][16];
 			byte[] keyBlock = null;
+			byte[] emptyBlock = new byte[16];
 			try {
 				tag.connect();
 				if (tag.authenticateSectorWithKeyA(tag.blockToSector(3), keyA)){
@@ -229,7 +230,7 @@ public class Nfc {
 						//decrypt data in read method
 						//data = read(tag.readBlock(i));
 						data = tag.readBlock(i);
-						if (!Arrays.equals(data, keyBlock)){ //übergeht die Key-Blöcke beim Lesen, setzt voraus, dass alle Key-Blöcke gleich aussehen!
+						if ((!Arrays.equals(data, keyBlock)) && (!Arrays.equals(data, emptyBlock))){ //übergeht die Key-Blöcke beim Lesen, setzt voraus, dass alle Key-Blöcke gleich aussehen!
 							content[i] = data;
 						}
 						//cardData[tag.blockToSector(i)] += getHexString(data, data.length);
