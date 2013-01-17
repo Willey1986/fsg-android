@@ -147,11 +147,11 @@ public class DBAdapter {
 		
 		if(cursor.moveToFirst()) {
 			Driver driver = new Driver();
-			driver.setUser_id(cursor.getShort(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_USER_ID)));
-			driver.setTeam_id(cursor.getShort(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_TEAM_ID)));
-			driver.setFirst_name(cursor.getString(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_FIRST_NAME)));
-			driver.setLast_name(cursor.getString(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_LAST_NAME)));			
-			driver.setTeam(getTeam(driver.getTeam_id()));
+			driver.setDriverID(cursor.getShort(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_USER_ID)));
+			driver.setTeamID(cursor.getShort(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_TEAM_ID)));
+			driver.setFirstName(cursor.getString(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_FIRST_NAME)));
+			driver.setLastName(cursor.getString(cursor.getColumnIndex(DBHelper.DRIVERS_COLUMN_LAST_NAME)));			
+			driver.setTeam(getTeam(driver.getTeamID()));
 			cursor.close();
 			return driver;
 		}
@@ -329,7 +329,8 @@ public class DBAdapter {
 		execSQL(sql);
 	}
 	
-	public boolean isCheckedIn(short driverId, short briefingId) {
+	public boolean isCheckedIn(short driverId) {
+		short briefingId = FsgHelper.generateIdForTodaysBriefing();
 		String sql = "SELECT * FROM " + DBHelper.TABLE_CHECKED_IN 
 				+ " WHERE " 
 				+ DBHelper.CHECKED_IN_COLUMN_DRIVER_ID + "=" + driverId + " AND "

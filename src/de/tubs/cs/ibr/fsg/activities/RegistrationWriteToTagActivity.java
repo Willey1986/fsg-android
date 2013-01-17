@@ -40,8 +40,8 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
         dba = new DBAdapter(this);
         
         dba.open();
-        dba.writeCheckIn(driver.getUser_id());
-        dba.writeCheckOut(driver.getUser_id());
+        dba.writeCheckIn(driver.getDriverID());
+        dba.writeCheckOut(driver.getDriverID());
         dba.close();
         
         try {
@@ -118,7 +118,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 		try {
 			nfc.readTag(intent);
 			NfcObject tagContent = NfcData.interpretData(nfc.getData());
-			if (tagContent.getDriverObject().getTeam_id() == 0) {
+			if (tagContent.getDriverObject().getTeamID() == 0) {
 				nfc.writeTag(intent, contentToWrite);
 				txtStatus.setText("Registrierungsdaten geschrieben");
 			} else {
