@@ -22,16 +22,18 @@ public class RunActivity extends Activity {
     public void onButtonClick(View view){
     	switch (view.getId() ){
     	case R.id.button1:
-    		try {
-    			//Zum Testen der Fehlermeldung...
-    			throw new FsgException( new Exception("'Hier ist die UrsprungException"), this.getClass().toString(), FsgException.END_OF_ROAD );
-
-    		} catch (FsgException e) {
-    			Intent mIntent = new Intent(this, ErrorActivity.class);
-    			mIntent.putExtra("Exception", e);
-    			startActivity(mIntent);
-    			finish();
-    		}
+    		
+    		startActivity(new Intent(this, RunActivityConfirm.class));
+//    		try {
+//    			//Zum Testen der Fehlermeldung...
+//    			throw new FsgException( new Exception("'Hier ist die UrsprungException"), this.getClass().toString(), FsgException.END_OF_ROAD );
+//    			
+//    		} catch (FsgException e) {
+//    			Intent mIntent = new Intent(this, ErrorActivity.class);
+//    			mIntent.putExtra("Exception", e);
+//    			startActivity(mIntent);
+//    			finish();
+//    		}
     		break;
     	case R.id.button2:
     		try {
