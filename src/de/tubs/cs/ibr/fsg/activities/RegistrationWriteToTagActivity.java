@@ -25,7 +25,6 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 	private Nfc nfc;
 	private Driver driver;
 	private byte[][] contentToWrite;
-	private DBAdapter dba;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,12 +36,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
         txtStatus = (TextView) findViewById(R.id.txtRegWriteStatus);
         nfc = new Nfc(this);
         scm = new SecurityManager("geheim");
-        dba = new DBAdapter(this);
-        
-        dba.open();
-        dba.writeCheckIn(driver.getDriverID());
-        dba.writeCheckOut(driver.getDriverID());
-        dba.close();
+
         
         try {
         	byte[][] encodedDriver = NfcData.generateDataRegistration(driver);
