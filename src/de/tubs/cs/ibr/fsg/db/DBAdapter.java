@@ -109,15 +109,15 @@ public class DBAdapter {
 		
 		
 		
-		Briefing briefing1 = new Briefing((short)100, discipline1, convertToUnixtimestamp(startTime1.getTime()), convertToUnixtimestamp(endTime1.getTime()));
-		Briefing briefing2 = new Briefing((short)101, discipline1, convertToUnixtimestamp(startTime2.getTime()), convertToUnixtimestamp(endTime2.getTime()));
-		Briefing briefing3 = new Briefing((short)102, discipline2, convertToUnixtimestamp(startTime3.getTime()), convertToUnixtimestamp(endTime3.getTime()));
-		Briefing briefing4 = new Briefing((short)103, discipline2, convertToUnixtimestamp(startTime4.getTime()), convertToUnixtimestamp(endTime4.getTime()));
-		Briefing briefing5 = new Briefing((short)104, discipline3, convertToUnixtimestamp(startTime5.getTime()), convertToUnixtimestamp(endTime5.getTime()));
-		Briefing briefing6 = new Briefing((short)105, discipline3, convertToUnixtimestamp(startTime6.getTime()), convertToUnixtimestamp(endTime6.getTime()));
-		Briefing briefing7 = new Briefing((short)106, discipline4, convertToUnixtimestamp(startTime7.getTime()), convertToUnixtimestamp(endTime7.getTime()));
-		Briefing briefing8 = new Briefing((short)107, discipline4, convertToUnixtimestamp(startTime8.getTime()), convertToUnixtimestamp(endTime8.getTime()));
-		Briefing briefing9 = new Briefing((short)108, discipline4, convertToUnixtimestamp(startTime9.getTime()), convertToUnixtimestamp(endTime9.getTime()));
+		Briefing briefing1 = new Briefing((short)100,  convertToUnixtimestamp(startTime1.getTime()), convertToUnixtimestamp(endTime1.getTime()));
+		Briefing briefing2 = new Briefing((short)101,  convertToUnixtimestamp(startTime2.getTime()), convertToUnixtimestamp(endTime2.getTime()));
+		Briefing briefing3 = new Briefing((short)102,  convertToUnixtimestamp(startTime3.getTime()), convertToUnixtimestamp(endTime3.getTime()));
+		Briefing briefing4 = new Briefing((short)103,  convertToUnixtimestamp(startTime4.getTime()), convertToUnixtimestamp(endTime4.getTime()));
+		Briefing briefing5 = new Briefing((short)104,  convertToUnixtimestamp(startTime5.getTime()), convertToUnixtimestamp(endTime5.getTime()));
+		Briefing briefing6 = new Briefing((short)105,  convertToUnixtimestamp(startTime6.getTime()), convertToUnixtimestamp(endTime6.getTime()));
+		Briefing briefing7 = new Briefing((short)106,  convertToUnixtimestamp(startTime7.getTime()), convertToUnixtimestamp(endTime7.getTime()));
+		Briefing briefing8 = new Briefing((short)107,  convertToUnixtimestamp(startTime8.getTime()), convertToUnixtimestamp(endTime8.getTime()));
+		Briefing briefing9 = new Briefing((short)108,  convertToUnixtimestamp(startTime9.getTime()), convertToUnixtimestamp(endTime9.getTime()));
 		
 		database.insert(DBHelper.TABLE_DRIVERS, null, driver1.getContentValues());
 		database.insert(DBHelper.TABLE_DRIVERS, null, driver2.getContentValues());
@@ -561,10 +561,6 @@ public class DBAdapter {
 				briefing.setBriefingId(result.getShort(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_ID)));
 				briefing.setStartTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_START_TIME)));
 				briefing.setEndTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_END_TIME)));
-				
-				RaceDiscipline raceDiscipline = getRaceDiscipline(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_RACE_DISCIPLINE_ID)));
-				briefing.setRaceDiscipline(raceDiscipline);
-				
 				briefings.add(briefing);
 			} while (result.moveToNext());
 			
@@ -588,10 +584,6 @@ public class DBAdapter {
 				briefing.setBriefingId(result.getShort(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_ID)));
 				briefing.setStartTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_START_TIME)));
 				briefing.setEndTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_END_TIME)));
-				
-				RaceDiscipline raceDiscipline = getRaceDiscipline(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_RACE_DISCIPLINE_ID)));
-				briefing.setRaceDiscipline(raceDiscipline);
-				
 				briefings.add(briefing);
 			} while (result.moveToNext());
 		}

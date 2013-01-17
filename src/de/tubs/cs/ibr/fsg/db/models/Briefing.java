@@ -12,18 +12,15 @@ public class Briefing {
 	private long startTime;
 	private long endTime;
 	
-	private RaceDiscipline raceDiscipline;
 	
 	public Briefing() {
 		this.briefingId = 0;
 		this.startTime = 0;
 		this.endTime = 0;
-		this.raceDiscipline = null;
 	}
 	
-	public Briefing(short briefingId, RaceDiscipline raceDiscipline, long startTime, long endTime) {
+	public Briefing(short briefingId, long startTime, long endTime) {
 		this.briefingId = briefingId;
-		this.raceDiscipline = raceDiscipline;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
@@ -52,18 +49,10 @@ public class Briefing {
 		this.endTime = endTime;
 	}
 
-	public RaceDiscipline getRaceDiscipline() {
-		return raceDiscipline;
-	}
-
-	public void setRaceDiscipline(RaceDiscipline raceDiscipline) {
-		this.raceDiscipline = raceDiscipline;
-	}
 
 	public ContentValues getContentValues() {
 		ContentValues values = new ContentValues();
 		values.put(DBHelper.BRIEFINGS_COLUMN_ID, this.briefingId);
-		values.put(DBHelper.BRIEFINGS_COLUMN_RACE_DISCIPLINE_ID, this.raceDiscipline.getRaceDisciplineId());
 		values.put(DBHelper.BRIEFINGS_COLUMN_START_TIME, startTime);
 		values.put(DBHelper.BRIEFINGS_COLUMN_END_TIME, endTime);
 		return values;
