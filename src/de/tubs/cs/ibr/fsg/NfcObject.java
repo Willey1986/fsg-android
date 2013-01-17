@@ -2,6 +2,8 @@ package de.tubs.cs.ibr.fsg;
 
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.NfcObjectBriefing;
+
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class NfcObject {
@@ -74,6 +76,25 @@ public class NfcObject {
 		this.driverObject = driverObject;
 	}
 	
+	public boolean haveTheDriverTodaysBriefing() {
+		boolean result = false;
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.GERMANY);
+		Date today = new Date();
+		String todayString = dateFormat.format(today);
+		
+		for(int i=0; i<briefings.size(); i++){
+			Date briefingDay = new Date( briefings.get(i).getTimestamp() );
+			String briefingDayString = dateFormat.format(briefingDay);
+			
+			if(todayString.equalsIgnoreCase(briefingDayString)){
+				result = true;
+				break;
+			}
+		}
+		
+		return result;
+	}
 	
 	
 	

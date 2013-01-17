@@ -83,7 +83,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 	        
 	        
 
-			contentToWrite = encryptedDriver;
+			contentToWrite = encodedDriver; //Wenn die Verschluesselung funktioniert, muss hier heissen: contentToWrite = encryptedDriver;
 			
 		} catch (FsgException e) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
