@@ -2,62 +2,102 @@ package de.tubs.cs.ibr.fsg;
 
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.NfcObjectBriefing;
+
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class NfcObject {
-	public Driver DriverObject;
-	private ArrayList<NfcObjectBriefing> Briefings = new ArrayList<NfcObjectBriefing>();
-	private ArrayList<NfcObjectBriefing> Runs = new ArrayList<NfcObjectBriefing>();
+	private Driver driverObject;
+	private ArrayList<NfcObjectBriefing> briefings = new ArrayList<NfcObjectBriefing>();
+	private ArrayList<NfcObjectRun> runs = new ArrayList<NfcObjectRun>();
 	
 	private short eventID;	
 	
 	public NfcObject(){
-		DriverObject = new Driver();
+		driverObject = new Driver();
 	}
 	
 	public void addBriefing(NfcObjectBriefing temp){
-		Briefings.add(temp);
-	}
-	public void removeBriefingByID(short id){
-		Iterator<NfcObjectBriefing> it = Briefings.iterator();
-		while (it.hasNext()) {
-		  if(it.next().getBriefingID() == id){
-			  Briefings.remove(it.next());
-		  }
-		}
-
-	}
-	public ArrayList<NfcObjectBriefing> getRuns(){
-		return Runs;
+		briefings.add(temp);
 	}
 	
-	public void addRun(NfcObjectBriefing temp){
-		Runs.add(temp);
-	}
-	public void removeRunByID(short id){
-		Iterator<NfcObjectBriefing> it = Runs.iterator();
+	public void removeBriefingByID(short id){
+		Iterator<NfcObjectBriefing> it = briefings.iterator();
 		while (it.hasNext()) {
 		  if(it.next().getBriefingID() == id){
-			  Runs.remove(it.next());
+			  briefings.remove(it.next());
 		  }
 		}
 
 	}
+	
+	public ArrayList<NfcObjectRun> getRuns(){
+		return runs;
+	}
+	
+	public void addRun(NfcObjectRun temp){
+		runs.add(temp);
+	}
+	
+	public void removeRunByID(short id){
+		Iterator<NfcObjectRun> it = runs.iterator();
+		while (it.hasNext()) {
+		  if(it.next().getRaceID() == id){
+			  runs.remove(it.next());
+			  break;      // TODO Geaendert, ich glaube den break brauchen wir, sonst werden alle Runs der gleichen Klasse geloescht...
+		  }
+		}
+
+	}
+	
 	public ArrayList<NfcObjectBriefing> getBriefings(){
-		return Briefings;
+		return briefings;
 	}
 	
 	public short getEventID(){
 		return eventID;
 	}
+	
 	public void setEventID(short temp){
 		eventID = temp;
 	}
 
 	public void clear() {
-		DriverObject = new Driver();
-		Briefings.removeAll(Briefings);
-		Runs.removeAll(Runs);	
+		driverObject = new Driver();
+		briefings.removeAll(briefings);
+		runs.removeAll(runs);	
 		eventID = 0;
 	}
+
+	public Driver getDriverObject() {
+		return driverObject;
+	}
+
+	public void setDriverObject(Driver driverObject) {
+		this.driverObject = driverObject;
+	}
+	
+	public boolean haveTheDriverTodaysBriefing() {
+		boolean result = false;
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.GERMANY);
+		Date today = new Date();
+		String todayString = dateFormat.format(today);
+		
+		for(int i=0; i<briefings.size(); i++){
+			Date briefingDay = new Date( briefings.get(i).getTimestamp() );
+			String briefingDayString = dateFormat.format(briefingDay);
+			
+			if(todayString.equalsIgnoreCase(briefingDayString)){
+				result = true;
+				break;
+			}
+		}
+		
+		return result;
+	}
+	
+	
+	
+	
 }

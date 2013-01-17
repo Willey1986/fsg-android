@@ -9,21 +9,18 @@ import android.content.ContentValues;
 public class Briefing {
 	
 	private short briefingId;
-	private Date startTime;
-	private Date endTime;
+	private long startTime;
+	private long endTime;
 	
-	private RaceDiscipline raceDiscipline;
 	
 	public Briefing() {
 		this.briefingId = 0;
-		this.startTime = null;
-		this.endTime = null;
-		this.raceDiscipline = null;
+		this.startTime = 0;
+		this.endTime = 0;
 	}
 	
-	public Briefing(short briefingId, RaceDiscipline raceDiscipline, Date startTime, Date endTime) {
+	public Briefing(short briefingId, long startTime, long endTime) {
 		this.briefingId = briefingId;
-		this.raceDiscipline = raceDiscipline;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
@@ -36,36 +33,26 @@ public class Briefing {
 		this.briefingId = briefingId;
 	}
 
-	public Date getStartTime() {
+	public long getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Date startTime) {
+	public void setStartTime(long startTime) {
 		this.startTime = startTime;
 	}
 
-	public Date getEndTime() {
+	public long getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Date endTime) {
+	public void setEndTime(long endTime) {
 		this.endTime = endTime;
 	}
 
-	public RaceDiscipline getRaceDiscipline() {
-		return raceDiscipline;
-	}
-
-	public void setRaceDiscipline(RaceDiscipline raceDiscipline) {
-		this.raceDiscipline = raceDiscipline;
-	}
 
 	public ContentValues getContentValues() {
 		ContentValues values = new ContentValues();
-		int startTime = (int)(this.startTime.getTime() / 1000L);
-		int endTime = (int)(this.endTime.getTime() / 1000L);
 		values.put(DBHelper.BRIEFINGS_COLUMN_ID, this.briefingId);
-		values.put(DBHelper.BRIEFINGS_COLUMN_RACE_DISCIPLINE_ID, this.raceDiscipline.getRaceDisciplineId());
 		values.put(DBHelper.BRIEFINGS_COLUMN_START_TIME, startTime);
 		values.put(DBHelper.BRIEFINGS_COLUMN_END_TIME, endTime);
 		return values;

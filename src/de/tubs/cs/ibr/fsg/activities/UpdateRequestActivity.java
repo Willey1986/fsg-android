@@ -3,9 +3,7 @@ package de.tubs.cs.ibr.fsg.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,6 @@ import android.widget.Toast;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.dtn.DTNService;
 import de.tubs.cs.ibr.fsg.dtn.UpdateRequest;
-import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class UpdateRequestActivity extends Activity {
 

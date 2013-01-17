@@ -1,22 +1,23 @@
 package de.tubs.cs.ibr.fsg.activities;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-import de.tubs.cs.ibr.fsg.*;
-import de.tubs.cs.ibr.fsg.SecurityManager;
-import de.tubs.cs.ibr.fsg.db.DBAdapter;
-import de.tubs.cs.ibr.fsg.db.models.Driver;
-import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import android.content.Intent;
-import android.nfc.*;
-import android.nfc.tech.MifareClassic;
-import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.support.v4.app.NavUtils;
+import de.tubs.cs.ibr.fsg.Nfc;
+import de.tubs.cs.ibr.fsg.NfcData;
+import de.tubs.cs.ibr.fsg.NfcObject;
+import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.SecurityManager;
+import de.tubs.cs.ibr.fsg.db.DBAdapter;
+import de.tubs.cs.ibr.fsg.db.models.Briefing;
+import de.tubs.cs.ibr.fsg.db.models.Driver;
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 	
@@ -25,18 +26,19 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 	private Nfc nfc;
 	private Driver driver;
 	private byte[][] contentToWrite;
+	private DBAdapter dba;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_write_to_tag);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
         Bundle extras = getIntent().getBundleExtra("bundle");
         driver = (Driver) extras.get("driver");
         txtInfo = (TextView) findViewById(R.id.txtRegWriteInfo);
         txtStatus = (TextView) findViewById(R.id.txtRegWriteStatus);
         nfc = new Nfc(this);
         scm = new SecurityManager("geheim");
+        dba = new DBAdapter(this);
         
         
         try {
@@ -66,25 +68,33 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 			
 			NfcObject nfcContent = NfcData.interpretData(decryptedDriver);
 			
+			dba.open();
+			ArrayList<Briefing> briefings = dba.getAllUpcomingBriefings();
+			dba.close();
+			
 			String infoText = "Folgender Fahrer wird aufs Band geschrieben:\n" +
 	        		driver.toString() +
 	        		"\n\nCodiert:\n" + encodedString +
 	        		"\n\nVerschlüsselt:\n" + encryptedString +
 	        		"\n\nEntschlüsselt:\n" + decryptedString + 
-	        		"\n\nDecodiert:\n" + nfcContent.DriverObject.toString();
+	        		"\n\nDecodiert:\n" + nfcContent.getDriverObject().toString() +
+	        		"\n\nAnzahl Briefings: " + briefings.size();
 	        txtInfo.setText(infoText);
 	        
+	        
 
-			contentToWrite = encryptedDriver;
+			contentToWrite = encodedDriver; //Wenn die Verschluesselung funktioniert, muss hier heissen: contentToWrite = encryptedDriver;
 			
 		} catch (FsgException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Log.i(this.getClass().getName(), e.getOriginException().getMessage());
-			System.out.println("Bubu");
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e);
+			startActivity(mIntent);
+			finish();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e);
+			startActivity(mIntent);
+			finish();
 		}
     }
 
@@ -108,16 +118,20 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
     public void executeNfcAction(Intent intent) {
 		txtStatus.setText("Band gefunden");
 		try {
-			nfc.writeTag(intent, contentToWrite);
-			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-			MifareClassic mfc = MifareClassic.get(tagFromIntent);
-			mfc.connect();
-			Log.i("info", bytesToHexString(mfc.getTag().getId()) );
+			nfc.readTag(intent);
+			NfcObject tagContent = NfcData.interpretData(nfc.getData());
+			if (tagContent.getDriverObject().getTeam_id() == 0) {
+				nfc.writeTag(intent, contentToWrite);
+				txtStatus.setText("Registrierungsdaten geschrieben");
+			} else {
+				FsgException e = new FsgException(null, "RegistrationWriteToTagActivity", FsgException.REGISTRATION_ALREADY_PRESENT);
+				throw e;
+			}
 		} catch (FsgException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e);
+			startActivity(mIntent);
+			finish();
 		}
 	}
     

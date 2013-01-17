@@ -12,28 +12,13 @@ package de.tubs.cs.ibr.fsg;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
-import java.util.List;
 
-import de.tubs.cs.ibr.fsg.R;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.IntentFilter.MalformedMimeTypeException;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.nfc.tech.IsoDep;
 import android.nfc.tech.MifareClassic;
-import android.nfc.tech.NfcA;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
-import de.tubs.cs.ibr.fsg.NfcData;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class Nfc {
@@ -251,7 +236,7 @@ public class Nfc {
 					}
 				}
 				if (content != null){
-					System.out.println("not null");
+					System.out.println("not null (Nfc.java)");
 					byte[][] decryptedContent = read(content);
 //					for (int i = 0; i < decryptedContent.length; i++){
 //						cardData = cardData.concat(getHexString(decryptedContent[i], decryptedContent[i].length));
@@ -262,7 +247,7 @@ public class Nfc {
 //					System.out.println("CardData: "+cardData);
 //					setData(cardData);
 //				}
-				System.out.println("end reading.");
+				System.out.println("end reading (Nfc.java)");
 				tag.close();
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
@@ -355,7 +340,7 @@ public class Nfc {
 								i -= 1; //Einen Schritt zurückgehen, damit gesamter Content geschrieben wird und nicht ein Block übersprungen
 							}
 						} else {
-							System.out.println("Authentication Failure");
+							System.out.println("Authentication Failure 1");
 						}
 					}
 					System.out.println("verifying");
@@ -534,14 +519,16 @@ public class Nfc {
 				if (tag.authenticateSectorWithKeyA(tag.blockToSector(emptyBlockIndex), keyA)){
 					data = tag.readBlock(emptyBlockIndex); //Außer bei der Initialisierung sollte der Block 1 nicht leer sein, da dort die Fahrer-Infos hingeschrieben werden
 				} else {
-					System.out.println("Authentication Failure");
+					System.out.println("Authentication Failure 2");
+					throw new FsgException( new Exception(), this.getClass().toString(), FsgException.TAG_WRONG_KEY_OR_FORMAT);
 				}
 				while ((!Arrays.equals(data, emptyBlock)) && (emptyBlockIndex < tag.getBlockCount()-1)){ //Solange Block nicht frei, letzter Block wird nicht geschaut, der soll frei bleiben
 					++emptyBlockIndex; //nächsten lesen
 					if (tag.authenticateSectorWithKeyA(tag.blockToSector(emptyBlockIndex), keyA)){ 
 						data = tag.readBlock(emptyBlockIndex); 
 					} else {
-						System.out.println("Authentication Failure");
+						System.out.println("Authentication Failure 3");
+						throw new FsgException( new Exception(), this.getClass().toString(), FsgException.TAG_WRONG_KEY_OR_FORMAT);
 					}
 				}
 			} catch (IOException e) {

@@ -3,12 +3,8 @@
  */
 package de.tubs.cs.ibr.fsg;
 
-import java.io.*;
-import java.util.Date.*;
+import java.io.IOException;
 
-import android.util.Log;
-import de.tubs.cs.ibr.fsg.NfcObject;
-import de.tubs.cs.ibr.fsg.NfcObjectBriefing;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
@@ -34,9 +30,9 @@ public class NfcData {
 					for(int j=1;j<15;j+=2){
 						test[j/2] = (short) (((inputBlock[i][j+1]&0xFF) << 8) | (inputBlock[i][j]&0xFF));
 					}					
-					outputObject.DriverObject.setTeam_id(test[2]);
-					outputObject.DriverObject.setUser_id(test[1]);
-					outputObject.DriverObject.getTeam().setCarNr(test[0]);
+					outputObject.getDriverObject().setTeam_id(test[2]);
+					outputObject.getDriverObject().setUser_id(test[1]);
+					//TODO:FehlerHIER:outputObject.DriverObject.getTeam().setCarNr(test[0]);
 					outputObject.setEventID(test[3]);
 						/*
 						System.out.println("fahrzeugID: "+test[0]);
@@ -51,8 +47,8 @@ public class NfcData {
 						str = str.substring(1, str.length());
 
 						// extract first and lastname from the string
-						outputObject.DriverObject.setFirst_name(str.substring(0,str.lastIndexOf(" ")));
-						outputObject.DriverObject.setLast_name(str.substring(str.lastIndexOf(" ")+1));
+						outputObject.getDriverObject().setFirst_name(str.substring(0,str.lastIndexOf(" ")));
+						outputObject.getDriverObject().setLast_name(str.substring(str.lastIndexOf(" ")+1, str.lastIndexOf(".")+1));
 							//System.out.println("extraced Name: "+ outputObject.DriverObject.getFirst_name()+" "+outputObject.DriverObject.getLast_name());
 					} catch (Exception e) {
 						throw new FsgException( e, "NfcData", FsgException.CHAR_DECODE_FAILED);
@@ -85,15 +81,15 @@ public class NfcData {
 					break;
 					
 				case 40: //RUNS DONE
-					short runID	= (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
+					short raceID	= (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
 					int tstampr 		= (int) (((inputBlock[i][6]&0xFF) << 32) | ((inputBlock[i][5]&0xFF) << 16) | ((inputBlock[i][4]&0xFF) << 8) | (inputBlock[i][3]&0xFF));
 					long tstamp2r 		= (Long.parseLong(String.valueOf(tstampr))+tstampConstant)*1000;		
 					
-					NfcObjectBriefing newRun = new NfcObjectBriefing();
-					newRun.setBriefingID(runID);
+					NfcObjectRun newRun = new NfcObjectRun();
+					newRun.setRaceID(raceID);
 					newRun.setTimestamp(tstamp2r);
 					
-					outputObject.addBriefing(newRun);
+					outputObject.addRun(newRun);
 					
 					break;
 					
