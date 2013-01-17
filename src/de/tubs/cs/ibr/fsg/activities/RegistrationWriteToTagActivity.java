@@ -39,6 +39,10 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
         scm = new SecurityManager("geheim");
         dba = new DBAdapter(this);
         
+        dba.open();
+        dba.writeCheckIn(driver.getUser_id());
+        dba.writeCheckOut(driver.getUser_id());
+        dba.close();
         
         try {
         	byte[][] encodedDriver = NfcData.generateDataRegistration(driver);

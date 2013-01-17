@@ -33,14 +33,12 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String CHECKED_IN_COLUMN_ID = "_id";
 	public static final String CHECKED_IN_COLUMN_DRIVER_ID = "driver_id";
 	public static final String CHECKED_IN_COLUMN_BRIEFING_ID = "briefing_id";
-	public static final String CHECKED_IN_COLUMN_VALID = "valid";
 	public static final String CHECKED_IN_COLUMN_TIMESTAMP = "timestamp";
 	
 	public static final String TABLE_CHECKED_OUT = "checked_out";
 	public static final String CHECKED_OUT_COLUMN_ID = "_id";
 	public static final String CHECKED_OUT_COLUMN_DRIVER_ID = "driver_id";
 	public static final String CHECKED_OUT_COLUMN_BRIEFING_ID = "briefing_id";
-	public static final String CHECKED_OUT_COLUMN_CHECKED_IN_ID = "checked_in_id";
 	public static final String CHECKED_OUT_COLUMN_TIMESTAMP = "timestamp";
 	
 	public static final String TABLE_DRIVEN_RUNS = "driven_runs";
@@ -73,7 +71,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String VALUES_COLUMN_VALUE = "value";
 
 	public static final String DATABASE_NAME = "fsg.db";
-	public static final int DATABASE_VERSION = 30;
+	public static final int DATABASE_VERSION = 35;
 
 	public static final String TABLE_CLASSES_CREATE = "CREATE TABLE " + TABLE_CLASSES + " (" 
 			+ CLASSES_COLUMN_CLASS + " TEXT NOT NULL,"
@@ -101,14 +99,12 @@ public class DBHelper extends SQLiteOpenHelper{
 			+ CHECKED_IN_COLUMN_ID + " INTEGER PRIMARY KEY, "
 			+ CHECKED_IN_COLUMN_DRIVER_ID + " INTEGER NOT NULL, "
 			+ CHECKED_IN_COLUMN_BRIEFING_ID + " INTEGER NOT NULL, "
-			+ CHECKED_IN_COLUMN_VALID + " INTEGER NOT NULL, "
 			+ CHECKED_IN_COLUMN_TIMESTAMP + " TEXT NOT NULL);";
 	
 	public static final String TABLE_CHECKED_OUT_CREATE = "CREATE TABLE " + TABLE_CHECKED_OUT + " ("
 			+ CHECKED_OUT_COLUMN_ID + " INTEGER PRIMARY KEY, "
 			+ CHECKED_OUT_COLUMN_DRIVER_ID + " INTEGER NOT NULL, "
 			+ CHECKED_OUT_COLUMN_BRIEFING_ID + " INTEGER NOT NULL, "
-			+ CHECKED_OUT_COLUMN_CHECKED_IN_ID + " INTEGER NOT NULL, "
 			+ CHECKED_OUT_COLUMN_TIMESTAMP + " TEXT NOT NULL);";
 	
 	public static final String TABLE_DRIVEN_RUNS_CREATE = "CREATE TABLE " + TABLE_DRIVEN_RUNS + " ("

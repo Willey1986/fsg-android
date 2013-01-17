@@ -322,11 +322,9 @@ public class DBAdapter {
 		String sql = "INSERT OR IGNORE INTO " + DBHelper.TABLE_CHECKED_IN + " (" 
 				+ DBHelper.CHECKED_IN_COLUMN_DRIVER_ID + ", "
 				+ DBHelper.CHECKED_IN_COLUMN_BRIEFING_ID + ", "
-				+ DBHelper.CHECKED_IN_COLUMN_VALID + ", "
 				+ DBHelper.CHECKED_IN_COLUMN_TIMESTAMP + ") VALUES ("
 				+ driverId + ", "
 				+ briefingId + ", "
-				+ "1,"
 				+ timestamp +")";
 		execSQL(sql);
 	}
@@ -335,8 +333,7 @@ public class DBAdapter {
 		String sql = "SELECT * FROM " + DBHelper.TABLE_CHECKED_IN 
 				+ " WHERE " 
 				+ DBHelper.CHECKED_IN_COLUMN_DRIVER_ID + "=" + driverId + " AND "
-				+ DBHelper.CHECKED_IN_COLUMN_BRIEFING_ID + "=" + briefingId + " AND "
-				+ DBHelper.CHECKED_IN_COLUMN_VALID + "=1";
+				+ DBHelper.CHECKED_IN_COLUMN_BRIEFING_ID + "=" + briefingId;
 		Cursor cursor = rawQuery(sql);
 		if (cursor.moveToFirst()) {
 			cursor.close();
@@ -348,14 +345,13 @@ public class DBAdapter {
 		}
 	}
 	
-	public void writeCheckOut(short driverId) throws FsgException{
+	public void writeCheckOut(short driverId) {
 		short briefingId = FsgHelper.generateIdForTodaysBriefing();
 		Date now = new Date();
 		String timestamp = "" + (now.getTime() / 1000L);
 		String sql = "INSERT OR IGNORE INTO " + DBHelper.TABLE_CHECKED_OUT + " (" 
 				+ DBHelper.CHECKED_OUT_COLUMN_DRIVER_ID + ", "
 				+ DBHelper.CHECKED_OUT_COLUMN_BRIEFING_ID + ", "
-				+ DBHelper.CHECKED_OUT_COLUMN_CHECKED_IN_ID + ", "
 				+ DBHelper.CHECKED_OUT_COLUMN_TIMESTAMP + ") VALUES ("
 				+ driverId + ", "
 				+ briefingId + ", "
