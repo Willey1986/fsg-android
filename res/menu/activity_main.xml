@@ -1,8 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item 
-        android:id="@+id/user"
-        android:title="User"
+        android:id="@+id/admin"
+        android:title="Admin"
         android:orderInCategory="1"
         android:showAsAction="ifRoom" />
 

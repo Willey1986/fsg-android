@@ -45,6 +45,10 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:label="@string/title_activity_main" >
         </activity>
         <activity
+            android:name=".activities.AdminActivity"
+            android:icon="@string/title_activity_admin"  >
+        </activity>        
+        <activity
             android:name=".activities.RegistrationTeamSelectionActivity"
             android:icon="@drawable/icon_register"
             android:label="@string/main_activity_button_1" >
@@ -76,8 +80,8 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
         </activity>
         <activity
             android:name=".activities.InfoTerminalActivity"
-            android:icon="@drawable/icon_infoterminal">
-        </activity>       
+            android:icon="@drawable/icon_infoterminal" >
+        </activity>
         <activity
             android:name=".activities.ErrorActivity"
             android:icon="@drawable/icon_error"
@@ -103,6 +107,8 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
                 <category android:name="de.tubs.cs.ibr.fsg" />
             </intent-filter>
         </receiver>
-</application>
-        
+
+
+    </application>
+
 </manifest>

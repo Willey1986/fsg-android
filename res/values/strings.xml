@@ -85,4 +85,11 @@
     <string name="title_activity_info_terminalinitialisierung">InfoTerminalinitialisierungActivity</string>
     <string name="title_activity_info_terminal_initialisierung">InfoTerminalInitialisierung</string>
 
+    <string-array name="action_list">
+        <item>User</item>
+        <item>Admin</item>
+    </string-array>
+
+    <string name="title_activity_admin">AdminActivity</string>
+
 </resources>

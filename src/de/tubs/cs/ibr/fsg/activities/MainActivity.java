@@ -1,5 +1,6 @@
 package de.tubs.cs.ibr.fsg.activities;
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -7,10 +8,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import de.tubs.cs.ibr.fsg.R;
+import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
@@ -18,83 +25,97 @@ public class MainActivity extends Activity {
 	private static final String TAG = "MainActivity";
 	private static final boolean DEVELOPER_MODE = true;
 
+	private static final String PASSWORD = "kuh";
+
+	String[] actions = new String[] {
+		"User",
+		"Admin",
+	};	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-    	// W�hrend der Entwicklung k�nnen wir mit Hilfe des StrictModes darauf aufmerksam gemacht werden,
-    	// wenn wir den UI-Thread/Main-Thread mit Sachen blockieren, die eigentlich nebenl�ufig geh�ren.
-    	// Sonst l�uft die App nicht fl�ssig und es drohen sogar die ber�hmt-ber�chtigte ANR Dialoge
-    	// (Application not Responding Dialog). Abhilfe: z.B. AsyncTask(einfach) oder zu Fuss mit einer
-    	// kompletten Multithreading-L�sung mit einem Standard-Java-Thread (schwieriger).
-        if (DEVELOPER_MODE) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectDiskReads()
-                    .detectDiskWrites()
-                    .detectNetwork()   
-                    .penaltyLog()
-                    .build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                    .detectLeakedSqlLiteObjects()
-                    .detectLeakedClosableObjects()
-                    .penaltyLog()
-                    .penaltyDeath()
-                    .build());
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, actions);
+
+        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
+        ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
+ 
+            
+            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+                Toast.makeText(getBaseContext(), "You selected : " + actions[itemPosition]  , Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        };
+        
+        getActionBar().setListNavigationCallbacks(adapter, navigationListener);
+        }
+       
+        public boolean onCreateOptionsMenu(Menu menu) {
+            getMenuInflater().inflate(R.menu.activity_main, menu);
+            return true;
+        }        
+        
+        public boolean onOptionsItemSelected(MenuItem item) {
+        	super.onOptionsItemSelected (item);
+        	switch(item.getItemId()){
+        	case R.id.admin:
+        		chooseAdmin();
+        
+        		break;
+        	}
+        	
+        	return true;
         }
         
-        Log.i(TAG, "activity created.");
-    }
+        private void chooseAdmin(){
+        	new AlertDialog.Builder (this);
+        	 LayoutInflater factory = LayoutInflater.from(this);
+        	 final View textEntryView = factory.inflate(R.layout.dialog_login, null);
+        	    AlertDialog.Builder alert = new AlertDialog.Builder(this);                 
+        	    alert.setTitle("Login");  
+        	 alert.setMessage("Enter Pin :");                
+        	 alert.setView(textEntryView);
+        	 	
+        	 	final Activity obj = this;
+        	 	
+        	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {  
+        	    public void onClick(DialogInterface dialog, int whichButton) {  
+        	    	EditText mUserText;
+        	        mUserText = (EditText) textEntryView.findViewById(R.id.txt_password);
+        	        String strPinCode = mUserText.getText().toString();
+        	    	
 
+        	        if(strPinCode.equals (PASSWORD)) {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-    	super.onOptionsItemSelected(item);
-    	switch(item.getItemId()){
-    	case R.id.user:
-    		chooseUser();
-    		break;
-    	case R.id.menu_settings:
-    		settingsMenuItem();
-    		break;
-    	}
-    	
-    	return true;
-    }
-    
-    private void chooseUser(){
-    	new AlertDialog.Builder (this)
-    	.setTitle("Nutzertyp auswaehlen")
-    	.setMessage("Wahl zwischen Administrator und normalen Nutzer")
-    	.setNeutralButton("Ok",new DialogInterface.OnClickListener() {
-			
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
+            	    	//OK Button wurde gedrueckt
+            	    	startActivity(new Intent(obj, AdminActivity.class));
+        	        }else{
+        	        	//hier ist das Passwort falsch
+            	        Log.d( TAG, "Pin Value : " + strPinCode);
 
-    		}
-    	}).show();
-    }
-    
-    private void settingsMenuItem(){
-    	new AlertDialog.Builder (this)
-    	.setTitle("Settings")
-    	.setMessage("Auswahl der Einstellungen")
-    	.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-			
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-			
-    		}
-    	}).show();
-    }
-    
+            	        Log.d( TAG, "Password: " + PASSWORD);
+        	        }
+        	    	
+        	    	
+        	    	
+        	        
+        	        return;                 
+        	      } 
+        	     });  
+
+        	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+        	        public void onClick(DialogInterface dialog, int which) {
+        	            // TODO Auto-generated method stub
+        	            return;   
+        	        }
+        	    });
+        	            alert.show();        
+        }        
     
     /**
      * 
@@ -118,9 +139,5 @@ public class MainActivity extends Activity {
     		startActivity(new Intent(this, InfoTerminalInitialisierung.class));
     		break;
     	}
-    }
-    
-    
-
-    
+    }  
 }
