@@ -1,7 +1,6 @@
 package de.tubs.cs.ibr.fsg.db;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -9,18 +8,12 @@ import org.json.*;
 
 import de.tubs.cs.ibr.fsg.FsgHelper;
 import de.tubs.cs.ibr.fsg.db.models.*;
-import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 import android.content.*;
 import android.database.*;
 import android.database.sqlite.SQLiteDatabase;
 
 public class DBAdapter {
-	
-	public static final int RACE_DISCIPLINE_ACCELERATION = 0;
-	public static final int RACE_DISCIPLINE_SKID_PAD = 1;
-	public static final int RACE_DISCIPLINE_AUTOCROSS = 2;
-	public static final int RACE_DISCIPLINE_ENDURANCE = 3;
 	
 	private SQLiteDatabase database;
 	private DBHelper dbHelper;
@@ -40,7 +33,6 @@ public class DBAdapter {
 	public void writeSampleData() {
 		database.delete(DBHelper.TABLE_DRIVERS, null, null);
 		database.delete(DBHelper.TABLE_TEAMS, null, null);
-		database.delete(DBHelper.TABLE_RACE_DISCIPLINES, null, null);
 		
 		Driver driver1 = new Driver((short)100, (short)100, "Harald", "Juhnke");
 		Driver driver2 = new Driver((short)101, (short)100, "Stefan", "Raab");
@@ -60,11 +52,6 @@ public class DBAdapter {
 		Team team2 = new Team((short)101, "E", "Spain", "Barcelona", "U", (short)20,(short) 4,(short) 0,(short) 1, "Fernando Alonso Racing");
 		Team team3 = new Team((short)102, "DE", "Germany", "Berlin", "U", (short)31,(short) 5,(short) 0,(short) 1, "I Love To Test Team");
 		
-		RaceDiscipline discipline1 = new RaceDiscipline((short)100, "Acceleration");
-		RaceDiscipline discipline2 = new RaceDiscipline((short)101, "Skid Pad");
-		RaceDiscipline discipline3 = new RaceDiscipline((short)102, "Autocross");
-		RaceDiscipline discipline4 = new RaceDiscipline((short)103, "Endurance");
-		
 		database.insert(DBHelper.TABLE_DRIVERS, null, driver1.getContentValues());
 		database.insert(DBHelper.TABLE_DRIVERS, null, driver2.getContentValues());
 		database.insert(DBHelper.TABLE_DRIVERS, null, driver3.getContentValues());
@@ -82,11 +69,6 @@ public class DBAdapter {
 		database.insert(DBHelper.TABLE_TEAMS, null, team1.getContentValues());
 		database.insert(DBHelper.TABLE_TEAMS, null, team2.getContentValues());
 		database.insert(DBHelper.TABLE_TEAMS, null, team3.getContentValues());
-		
-		database.insert(DBHelper.TABLE_RACE_DISCIPLINES, null, discipline1.getContentValues());
-		database.insert(DBHelper.TABLE_RACE_DISCIPLINES, null, discipline2.getContentValues());
-		database.insert(DBHelper.TABLE_RACE_DISCIPLINES, null, discipline3.getContentValues());
-		database.insert(DBHelper.TABLE_RACE_DISCIPLINES, null, discipline4.getContentValues());
 		
 		writeKeyValue("secret", "geheimerKey");
 	}
@@ -216,49 +198,6 @@ public class DBAdapter {
 		return drivers;
 	}
 	
-	/**
-	 * Gibt alle gefahrenen Runs eines Fahrers zurück
-	 * @param driverID
-	 */
-	public void getDrivenRuns(short driverID) {
-		
-	}
-	
-	
-	/**
-	 * Ermittelt alle gefahrenen Runs eines Fahrers auf einer spezifischen Disziplin
-	 * @param driverID ID des Fahrers
-	 * @param disciplineID ID der Disziplin
-	 * @return ArrayList die alle gefahrenen Disziplinen enthält
-	 */
-	public ArrayList<DrivenRun> getDrivenRunsOnDiscipline(short driverID, short disciplineID) {
-		ArrayList<DrivenRun> drivenRuns = new ArrayList<DrivenRun>();
-		String sql = "SELECT * FROM " + DBHelper.TABLE_DRIVEN_RUNS + " WHERE " 
-				+ DBHelper.DRIVEN_RUNS_COLUMN_DRIVER_ID + "=" + driverID + " AND " 
-				+ DBHelper.DRIVEN_RUNS_COLUMN_RACE_DISCIPLINE_ID + "=" + disciplineID + ";";
-		Cursor result = rawQuery(sql);
-		if (result.moveToFirst()) {
-			do {
-				Driver driver = getDriver(driverID);
-				RaceDiscipline discipline = getRaceDiscipline(disciplineID);
-				DrivenRun run = new DrivenRun();
-				run.setDriver(driver);
-				run.setRaceDiscipline(discipline);
-				run.setResult(result.getString(result.getColumnIndex(DBHelper.DRIVEN_RUNS_COLUMN_TIME)));
-				run.setTimeStamp(result.getString(result.getColumnIndex(DBHelper.DRIVEN_RUNS_COLUMN_DATE)));
-				switch (result.getInt(result.getColumnIndex(DBHelper.DRIVEN_RUNS_COLUMN_VALID))) {
-					case 1:
-						run.setValid(true);
-						break;
-					case 0:
-						run.setValid(false);
-						break;
-				}
-				drivenRuns.add(run);
-			} while(result.moveToNext());
-		}
-		return drivenRuns;
-	}
 	
 	/**
 	 * Liest ein einzelnes Team anhand der TeamID aus der Datenbank aus
@@ -468,15 +407,7 @@ public class DBAdapter {
 		}
 	}
 	
-	public RaceDiscipline getRaceDiscipline(int disciplineID) {
-		RaceDiscipline discipline = new RaceDiscipline();
-		Cursor result = database.query(DBHelper.TABLE_RACE_DISCIPLINES, null, DBHelper.RACE_DISCIPLINES_COLUMN_ID + "=" + disciplineID, null, null, null, null);
-		if (result.moveToFirst()) {
-			discipline.setRaceDisciplineId(result.getShort(result.getColumnIndex(DBHelper.RACE_DISCIPLINES_COLUMN_ID)));
-			discipline.setName(result.getString(result.getColumnIndex(DBHelper.RACE_DISCIPLINES_COLUMN_NAME)));
-		}
-		return discipline;
-	}
+
 	
 	
 //	/**

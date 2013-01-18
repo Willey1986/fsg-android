@@ -12,10 +12,10 @@ public class NfcData {
 	private static long tstampConstant = 1357174835;//1357174835445L; 
 	//at the beginning of each sector there is a informationblock to get
 	
-	public static final short ACCELERATION = 1;
-	public static final short SKID_PAD     = 2;
-	public static final short AUTOCROSS    = 3;
-	public static final short ENDURANCE    = 4;
+	public static final short ACCELERATION = FsgHelper.RACE_DISCIPLINE_ACCELERATION;
+	public static final short SKID_PAD     = FsgHelper.RACE_DISCIPLINE_SKID_PAD;
+	public static final short AUTOCROSS    = FsgHelper.RACE_DISCIPLINE_AUTOCROSS;
+	public static final short ENDURANCE    = FsgHelper.RACE_DISCIPLINE_ENDURANCE;
 	
 	//constants for the encryption/decryption
 	//private final static String SECUREKEY = "KEY";

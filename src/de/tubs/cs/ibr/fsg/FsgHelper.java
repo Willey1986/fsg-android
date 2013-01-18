@@ -4,6 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class FsgHelper {
+	
+	public static final short RACE_DISCIPLINE_ACCELERATION = 1;
+	public static final short RACE_DISCIPLINE_SKID_PAD     = 2;
+	public static final short RACE_DISCIPLINE_AUTOCROSS    = 3;
+	public static final short RACE_DISCIPLINE_ENDURANCE    = 4;
 
 	public static short generateIdForTodaysBriefing(){
 	      SimpleDateFormat dateFormat = new SimpleDateFormat("1MMdd", Locale.GERMANY); // Die 1 ist da, damit die führende Null nicht verschwindet.

@@ -1,18 +1,16 @@
 package de.tubs.cs.ibr.fsg.db.models;
 
-import java.util.Date;
-
 public class DrivenRun {
 
 	private Driver driver;
-	private RaceDiscipline raceDiscipline;
+	private int raceDiscipline;
 	private boolean valid;
 	private String timeStamp;
 	private String result;
 	
 	public DrivenRun() {
 		this.driver = new Driver();
-		this.raceDiscipline = new RaceDiscipline();
+		this.raceDiscipline = 0;
 		this.valid = true;
 		this.timeStamp = new String();
 		this.result = "empty";
@@ -26,11 +24,11 @@ public class DrivenRun {
 		this.driver = driver;
 	}
 
-	public RaceDiscipline getRaceDiscipline() {
+	public int getRaceDiscipline() {
 		return raceDiscipline;
 	}
 
-	public void setRaceDiscipline(RaceDiscipline raceDiscipline) {
+	public void setRaceDiscipline(int raceDiscipline) {
 		this.raceDiscipline = raceDiscipline;
 	}
 

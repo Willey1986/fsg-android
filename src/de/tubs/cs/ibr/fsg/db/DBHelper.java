@@ -49,10 +49,6 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String DRIVEN_RUNS_COLUMN_DATE = "date";
 	public static final String DRIVEN_RUNS_COLUMN_TIME = "time";
 	
-	public static final String TABLE_RACE_DISCIPLINES = "race_disciplines";
-	public static final String RACE_DISCIPLINES_COLUMN_ID = "_id";
-	public static final String RACE_DISCIPLINES_COLUMN_NAME = "name";
-	
 	public static final String TABLE_REGISTERED_TAGS = "tags";
 	public static final String REGISTERED_TAGS_COLUMN_ID = "_id";
 	public static final String REGISTERED_TAGS_COLUMN_TAG_ID = "tag_id";
@@ -71,7 +67,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String VALUES_COLUMN_VALUE = "value";
 
 	public static final String DATABASE_NAME = "fsg.db";
-	public static final int DATABASE_VERSION = 35;
+	public static final int DATABASE_VERSION = 50;
 
 	public static final String TABLE_CLASSES_CREATE = "CREATE TABLE " + TABLE_CLASSES + " (" 
 			+ CLASSES_COLUMN_CLASS + " TEXT NOT NULL,"
@@ -115,10 +111,6 @@ public class DBHelper extends SQLiteOpenHelper{
 			+ DRIVEN_RUNS_COLUMN_DATE + " TEXT NOT NULL, "
 			+ DRIVEN_RUNS_COLUMN_TIME + " TEXT NOT NULL);";
 	
-	public static final String TABLE_RACE_DISCIPLINES_CREATE = "CREATE TABLE " + TABLE_RACE_DISCIPLINES + " ("
-			+ RACE_DISCIPLINES_COLUMN_ID + " INTEGER PRIMARY KEY, "
-			+ RACE_DISCIPLINES_COLUMN_NAME + " TEXT NOT NULL);";
-	
 	public static final String TABLE_REGISTERED_TAGS_CREATE = "CREATE TABLE " + TABLE_REGISTERED_TAGS + " ("
 			+ REGISTERED_TAGS_COLUMN_ID + " INTEGER PRIMARY KEY NOT NULL UNIQUE, "
 			+ REGISTERED_TAGS_COLUMN_TAG_ID + " TEXT NOT NULL);";
@@ -149,13 +141,8 @@ public class DBHelper extends SQLiteOpenHelper{
 		database.execSQL(TABLE_CHECKED_IN_CREATE);
 		database.execSQL(TABLE_CHECKED_OUT_CREATE);
 		database.execSQL(TABLE_DRIVEN_RUNS_CREATE);
-		database.execSQL(TABLE_RACE_DISCIPLINES_CREATE);
 		database.execSQL(TABLE_VALUES_CREATE);
 		database.execSQL(TABLE_REGISTERED_TAGS_CREATE);
-		database.execSQL("INSERT INTO " +TABLE_RACE_DISCIPLINES + " ('name') VALUES('Acceleration');");
-		database.execSQL("INSERT INTO " +TABLE_RACE_DISCIPLINES + " ('name') VALUES('Skid Pad');");
-		database.execSQL("INSERT INTO " +TABLE_RACE_DISCIPLINES + " ('name') VALUES('Autocross');");
-		database.execSQL("INSERT INTO " +TABLE_RACE_DISCIPLINES + " ('name') VALUES('Endurance');");
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -170,7 +157,6 @@ public class DBHelper extends SQLiteOpenHelper{
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHECKED_IN);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHECKED_OUT);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DRIVEN_RUNS);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_RACE_DISCIPLINES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_VALUES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_REGISTERED_TAGS);
 		onCreate(db);
