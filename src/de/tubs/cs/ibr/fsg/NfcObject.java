@@ -1,12 +1,16 @@
 package de.tubs.cs.ibr.fsg;
 
 import de.tubs.cs.ibr.fsg.db.models.Driver;
+import de.tubs.cs.ibr.fsg.dtn.UpdateRequest;
 import de.tubs.cs.ibr.fsg.NfcObjectBriefing;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class NfcObject {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class NfcObject implements Parcelable{
 	private short eventID;	
 	private Driver driverObject;
 	private int accelerationRuns;
@@ -161,6 +165,54 @@ public class NfcObject {
 	public void setBriefings(ArrayList<NfcObjectBriefing> briefings) {
 		this.briefings = briefings;
 	}
+
+	public int describeContents() {
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	public void writeToParcel(Parcel parcel, int flags) {
+		parcel.writeTypedList(briefings );
+		parcel.writeSerializable(driverObject );
+		parcel.writeString(String.valueOf(eventID) );
+		parcel.writeInt(accelerationRuns);
+		parcel.writeInt(skidPadRuns);
+		parcel.writeInt(autocrossRuns);
+		parcel.writeInt(enduranceRuns);
+
+	}
+	
+	
+    /**
+     * 
+     */
+    public static final Parcelable.Creator<NfcObject> CREATOR = new Parcelable.Creator<NfcObject>() {
+        public NfcObject createFromParcel(Parcel mParcel) {
+            return new NfcObject(mParcel);
+        }
+
+        public NfcObject[] newArray(int size) {
+            return new NfcObject[size];
+        }
+    };
+
+
+    /**
+     * @param mParcel
+     */
+    private NfcObject(Parcel mParcel) {
+    	this();
+    	mParcel.readTypedList(briefings, NfcObjectBriefing.CREATOR);
+    	driverObject = (Driver)mParcel.readSerializable();
+    	eventID = Short.valueOf(mParcel.readString());
+    	accelerationRuns = mParcel.readInt();
+    	skidPadRuns = mParcel.readInt();
+    	autocrossRuns = mParcel.readInt();
+    	enduranceRuns = mParcel.readInt();
+    	
+    }
 	
 	
 	

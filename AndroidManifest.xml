@@ -70,7 +70,12 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:label="@string/main_activity_button_4" >
         </activity>
         <activity
-            android:name=".activities.InfoTerminalActivity"
+            android:name=".activities.InfoTerminalPreActivity"
+            android:icon="@drawable/icon_infoterminal"
+            android:label="@string/main_activity_button_5" >
+        </activity>
+        <activity
+            android:name=".activities.InfoTerminalPostActivity"
             android:icon="@drawable/icon_infoterminal"
             android:label="@string/main_activity_button_5" >
         </activity>
@@ -98,8 +103,8 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:label="@string/title_activity_registration_write_to_tag" >
         </activity>
 
-        <service android:name=".dtn.DTNService" >
-        </service> <!-- android:process=".fsg_service" -->
+        <service android:name=".dtn.DTNService" android:process=".fsg_service">
+        </service>
 
         <receiver
             android:name=".dtn.DTNReceiver"
@@ -110,9 +115,9 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
                 <category android:name="de.tubs.cs.ibr.fsg" />
             </intent-filter>
         </receiver>
-        <activity android:name=".activities.RunActivityConfirm"></activity>
 
-        
+        <activity android:name=".activities.RunActivityConfirm" >
+        </activity>
     </application>
 
 </manifest>

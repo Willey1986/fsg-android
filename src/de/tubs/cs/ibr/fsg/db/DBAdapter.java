@@ -49,9 +49,9 @@ public class DBAdapter {
 		Driver driver5 = new Driver((short)104, (short)101, "Nikki", "Lauda");
 		Driver driver6 = new Driver((short)105, (short)101, "Fernando", "Alonso");
 		Driver driver7 = new Driver((short)106, (short)102, "Wolfgang Amadeus", "Mozart");
-		Driver driver8 = new Driver((short)107, (short)102, "Wilson Gonzales", "Ochsenknecht");
-		Driver driver9 = new Driver((short)108, (short)102, "Philipp Alexander", "Schubert-Zimmermann");
-		Driver driver10 = new Driver((short)109, (short)102, "Hannah Katharina", "Hartmann-Westerhagen"); 
+		Driver driver8 = new Driver((short)107, (short)102, "Wilson Gonzáles", "Ochsenknecht");
+		Driver driver9 = new Driver((short)108, (short)102, "Sören Alexander", "Schubert-Zimmermann");
+		Driver driver10 = new Driver((short)109, (short)102, "Lätizia Katharina", "Hartmann-Westerhagen"); 
 		Driver driver11 = new Driver((short)110, (short)102, "Rafael Ferdinand", "van der Vaart");
 		Driver driver12 = new Driver((short)111, (short)102, "Johann Wolfgang", "von Goethe"); 
 		Driver driver13 = new Driver((short)112, (short)102, "Sabine Constanze", "Leutheusser-Schnarrenberger");

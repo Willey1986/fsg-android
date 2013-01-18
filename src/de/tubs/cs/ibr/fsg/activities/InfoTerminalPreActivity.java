@@ -9,7 +9,7 @@ import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.SecurityManager;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
-public class InfoTerminalActivity extends NfcEnabledActivity {
+public class InfoTerminalPreActivity extends NfcEnabledActivity {
 
 	private Nfc nfc;
 	private SecurityManager scm;
@@ -39,6 +39,10 @@ public class InfoTerminalActivity extends NfcEnabledActivity {
 			
 			System.out.println(mNfcObject); // Nur fuer die Fehlersuche da, hier kann ich beim debuggen stoppen... ;-)
 
+			Intent mIntent = new Intent(this, InfoTerminalPostActivity.class);
+			mIntent.putExtra("nfc_object", mNfcObject);
+			startActivity(mIntent);
+			
 		} catch (FsgException e) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
 			mIntent.putExtra("Exception", e);
@@ -51,7 +55,7 @@ public class InfoTerminalActivity extends NfcEnabledActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_info_terminal);
+		setContentView(R.layout.activity_info_terminal_pre);
 	}
 	
 	
