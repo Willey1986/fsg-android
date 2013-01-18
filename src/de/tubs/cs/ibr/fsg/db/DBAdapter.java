@@ -48,9 +48,17 @@ public class DBAdapter {
 		Driver driver4 = new Driver((short)103, (short)101, "Sebastian", "Vettel");
 		Driver driver5 = new Driver((short)104, (short)101, "Nikki", "Lauda");
 		Driver driver6 = new Driver((short)105, (short)101, "Fernando", "Alonso");
+		Driver driver7 = new Driver((short)106, (short)102, "Wolfgang Amadeus", "Mozart");
+		Driver driver8 = new Driver((short)107, (short)102, "Wilson Gonzales", "Ochsenknecht");
+		Driver driver9 = new Driver((short)108, (short)102, "Philipp Alexander", "Schubert-Zimmermann");
+		Driver driver10 = new Driver((short)109, (short)102, "Hannah Katharina", "Hartmann-Westerhagen"); 
+		Driver driver11 = new Driver((short)110, (short)102, "Rafael Ferdinand", "van der Vaart");
+		Driver driver12 = new Driver((short)111, (short)102, "Johann Wolfgang", "von Goethe"); 
+		Driver driver13 = new Driver((short)112, (short)102, "Sabine Constanze", "Leutheusser-Schnarrenberger");
 		
 		Team team1 = new Team((short)100, "DE", "Germany", "Braunschweig", "TU", (short)11,(short) 3,(short) 0,(short) 1, "Lions Racing Team");
 		Team team2 = new Team((short)101, "E", "Spain", "Barcelona", "U", (short)20,(short) 4,(short) 0,(short) 1, "Fernando Alonso Racing");
+		Team team3 = new Team((short)102, "DE", "Germany", "Berlin", "U", (short)31,(short) 5,(short) 0,(short) 1, "I Love To Test Team");
 		
 		RaceDiscipline discipline1 = new RaceDiscipline((short)100, "Acceleration");
 		RaceDiscipline discipline2 = new RaceDiscipline((short)101, "Skid Pad");
@@ -63,9 +71,17 @@ public class DBAdapter {
 		database.insert(DBHelper.TABLE_DRIVERS, null, driver4.getContentValues());
 		database.insert(DBHelper.TABLE_DRIVERS, null, driver5.getContentValues());
 		database.insert(DBHelper.TABLE_DRIVERS, null, driver6.getContentValues());
+		database.insert(DBHelper.TABLE_DRIVERS, null, driver7.getContentValues());
+		database.insert(DBHelper.TABLE_DRIVERS, null, driver8.getContentValues());
+		database.insert(DBHelper.TABLE_DRIVERS, null, driver9.getContentValues());
+		database.insert(DBHelper.TABLE_DRIVERS, null, driver10.getContentValues());
+		database.insert(DBHelper.TABLE_DRIVERS, null, driver11.getContentValues());
+		database.insert(DBHelper.TABLE_DRIVERS, null, driver12.getContentValues());
+		database.insert(DBHelper.TABLE_DRIVERS, null, driver13.getContentValues());
 		
 		database.insert(DBHelper.TABLE_TEAMS, null, team1.getContentValues());
 		database.insert(DBHelper.TABLE_TEAMS, null, team2.getContentValues());
+		database.insert(DBHelper.TABLE_TEAMS, null, team3.getContentValues());
 		
 		database.insert(DBHelper.TABLE_RACE_DISCIPLINES, null, discipline1.getContentValues());
 		database.insert(DBHelper.TABLE_RACE_DISCIPLINES, null, discipline2.getContentValues());

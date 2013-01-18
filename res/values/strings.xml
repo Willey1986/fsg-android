@@ -70,6 +70,8 @@
     <string name="btnRegSearch">Suchen</string>
     <string name="tblDriversName">Name</string>
     <string name="lbSelectedTeam">Team: </string>
+    
+    <!-- InfoTerminal-Activity Strings -->
 
     <!-- Version-Activity Strings -->
     <string name="version_title">Datenversionsübersicht</string>

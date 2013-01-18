@@ -1,52 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LinearLayout1"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background_grey"
-    android:padding="@dimen/grid06" >
+    android:layout_height="match_parent" 
+    android:padding="@dimen/grid06"
+    android:background="@drawable/background_grey" >
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Benutzerinformationen"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:textColor="@color/button_text_color"
-        android:textSize="@dimen/grid06" />
-    
-    <ListView
-        android:id="@+id/listView1"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp" />
-    
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Renninformationen"
-        android:textColor="@color/button_text_color"
-        android:textSize="@dimen/grid06" />
-    
-    <ListView
-        android:id="@+id/listView2"
-        android:layout_width="fill_parent"
-        android:layout_height="160dp" />
+        android:textSize="@dimen/grid06"
+        android:text="@string/wristband_near" />
 
-    <TextView
-        android:id="@+id/textView3"
+
+        
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Briefings"
-        android:textColor="@color/button_text_color"
-        android:textSize="@dimen/grid06" />
-    
-    <ListView
-        android:id="@+id/listView3"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp" />       
-               
-</LinearLayout>
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/grid08" />
+
+</RelativeLayout>

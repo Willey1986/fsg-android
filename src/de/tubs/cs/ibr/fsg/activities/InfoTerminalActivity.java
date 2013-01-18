@@ -1,9 +1,11 @@
 package de.tubs.cs.ibr.fsg.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import de.tubs.cs.ibr.fsg.Nfc;
 import de.tubs.cs.ibr.fsg.NfcData;
 import de.tubs.cs.ibr.fsg.NfcObject;
+import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.SecurityManager;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
@@ -33,9 +35,9 @@ public class InfoTerminalActivity extends NfcEnabledActivity {
 //			
 			//byte[][] decryptedContent = scm.decryptString( readedTagContent ); // Hier versuchen wir zu entschluesseln // TODO Hier steigt die APP aus!
 			
-			NfcObject tagContent = NfcData.interpretData( readedTagContent ); // Ohne Verschluesselung koennen wir nun an die Daten
+			NfcObject mNfcObject = NfcData.interpretData( readedTagContent ); // Ohne Verschluesselung koennen wir nun an die Daten
 			
-			System.out.println(tagContent); // Nur fuer die Fehlersuche da, hier kann ich beim debuggen stoppen... ;-)
+			System.out.println(mNfcObject); // Nur fuer die Fehlersuche da, hier kann ich beim debuggen stoppen... ;-)
 
 		} catch (FsgException e) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
@@ -45,6 +47,14 @@ public class InfoTerminalActivity extends NfcEnabledActivity {
 		}
 		
 	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_info_terminal);
+	}
+	
+	
 
 
 		
