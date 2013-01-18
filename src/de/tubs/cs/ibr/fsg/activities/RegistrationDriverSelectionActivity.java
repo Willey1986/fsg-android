@@ -1,17 +1,13 @@
 package de.tubs.cs.ibr.fsg.activities;
 
-
-import java.io.IOException;
 import java.util.ArrayList;
 
-import de.tubs.cs.ibr.fsg.NfcData;
 import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.SecurityManager;
 import de.tubs.cs.ibr.fsg.db.DBAdapter;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
-import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import de.tubs.cs.ibr.fsg.views.DriverView;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -27,10 +23,10 @@ import android.widget.TextView;
 public class RegistrationDriverSelectionActivity extends Activity{
 	
 	DBAdapter dba = new DBAdapter(this);
+	SecurityManager scm = new SecurityManager("geheim");
 	String teamName;
 	short teamId;
 	LinearLayout llDriversList;
-	AlertDialog.Builder dialog;
 	TextView txtSelectedTeam;
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +38,6 @@ public class RegistrationDriverSelectionActivity extends Activity{
 		teamName = extras.getString("teamName");
 		teamId = extras.getShort("teamID");
 		llDriversList = (LinearLayout) findViewById(R.id.llDriversList);
-		dialog = new AlertDialog.Builder(this);
 		txtSelectedTeam = (TextView) findViewById(R.id.txtSelectedTeam);
 		txtSelectedTeam.setText(" "+teamName);
 		
@@ -55,36 +50,21 @@ public class RegistrationDriverSelectionActivity extends Activity{
 				driverPanel.setOnClickListener(new OnClickListener() {
 					
 					public void onClick(View v) {
-						try {
-							byte[][] encodedDriver = NfcData.generateDataRegistration(driver);
-							StringBuffer encodedString = new StringBuffer();
-							for(int i = 0; i < encodedDriver.length; i++) {
-								for(int j=0; j<encodedDriver[i].length; j++) {
-									encodedString.append(encodedDriver[i][j]);
-								}
-							}
-							dialog.setMessage("Fahrer " + driver.getFirst_name() + " " + driver.getLast_name() + " ausgewählt\n\nID = " 
-									+ driver.getUser_id() + "\nFarhzeugnummer: " + driver.getTeam().getCarNr() 
-									+ "\nCodierter String " + encodedString);
-							dialog.show();
-							//TODO driver Codieren um zu verschl�sseln und aufs Band zu schreiben
-						} catch (IOException e) {
-						Intent mIntent = new Intent(RegistrationDriverSelectionActivity.this, ErrorActivity.class);
-							mIntent.putExtra("Exception", e);
-							startActivity(mIntent);
-							finish();
-						} catch (FsgException e) {
-							Intent mIntent = new Intent(RegistrationDriverSelectionActivity.this, ErrorActivity.class);
-							mIntent.putExtra("Exception", e);
-							startActivity(mIntent);
-							finish();
-						} 
+						Intent intent = new Intent(getBaseContext(), RegistrationWriteToTagActivity.class);
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("driver", driver);
+						intent.putExtra("bundle", bundle);
+						startActivity(intent);
 					}
 				});
 				llDriversList.addView(driverPanel);
 			}
 		}
-		
+	}
+	
+	protected void onResume() {
+		super.onResume();
+		dba.open();
 	}
 	
 	protected void onStop() {

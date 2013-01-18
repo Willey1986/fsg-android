@@ -41,6 +41,11 @@ public class ErrorActivity extends Activity {
     		res = getResources();
         	userText.setText(res.getString(R.string.error_tag_wrong_key));
     		break;
+    	case FsgException.TAG_WRONG_KEY_OR_FORMAT:
+    		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
+    		res = getResources();
+        	userText.setText(res.getString(R.string.error_tag_wrong_key_or_format));
+    		break;
     	case FsgException.NOT_NFC_SUPPORT:
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
     		res = getResources();
@@ -48,7 +53,6 @@ public class ErrorActivity extends Activity {
     		break;
     	case FsgException.DRIVER_ALREADY_CHECKED_IN:
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
-    		res = getResources();
     		userText.setText(R.string.error_driver_already_checked_in);
     		break;
     	case FsgException.END_OF_ROAD:

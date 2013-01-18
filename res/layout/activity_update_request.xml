@@ -16,7 +16,7 @@
         android:gravity="center"
         android:layout_marginTop="30dp"
         android:layout_weight="0.71"
-        android:text="@string/version_title"
+        android:text="@string/update_request_title"
         android:textColor="@color/button_text_color"
         android:textSize="@dimen/grid07" />
 
@@ -26,7 +26,7 @@
         android:layout_width="300dp"
         android:layout_height="fill_parent"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_weight="0.71"
         android:orientation="horizontal" >
 
@@ -38,15 +38,15 @@
             android:textColor="@color/button_text_color"
             android:textSize="@dimen/grid06" />
 
-        <TextView
-            android:id="@+id/textViewTeamsVersion"
-            android:layout_width="50dp"
+        <CheckBox
+            android:id="@+id/checkBoxTeams"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:textColor="@color/button_text_color"
-            android:textSize="@dimen/grid06" />
+            android:button="@layout/checkbox_background" />
+        	
     </LinearLayout>
 
+        
     <LinearLayout
         android:id="@+id/linearLayoutDrivers"
         android:layout_width="300dp"
@@ -63,13 +63,11 @@
             android:textColor="@color/button_text_color"
             android:textSize="@dimen/grid06" />
 
-        <TextView
-            android:id="@+id/textViewDriversVersion"
+        <CheckBox
+            android:id="@+id/checkBoxDrivers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:textColor="@color/button_text_color"
-            android:textSize="@dimen/grid06" />
+            android:button="@layout/checkbox_background" />
     </LinearLayout>
 
     <LinearLayout
@@ -88,13 +86,11 @@
             android:textColor="@color/button_text_color"
             android:textSize="@dimen/grid06" />
 
-        <TextView
-            android:id="@+id/textViewDriverPicsVersion"
+        <CheckBox
+            android:id="@+id/checkBoxDriverPics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:textColor="@color/button_text_color"
-            android:textSize="@dimen/grid06" />
+            android:button="@layout/checkbox_background" />
     </LinearLayout>
 
     <LinearLayout
@@ -113,13 +109,11 @@
             android:textColor="@color/button_text_color"
             android:textSize="@dimen/grid06" />
 
-        <TextView
-            android:id="@+id/textViewBlacklistTagsVersion"
+        <CheckBox
+            android:id="@+id/checkBoxBlacklistTags"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:textColor="@color/button_text_color"
-            android:textSize="@dimen/grid06" />
+            android:button="@layout/checkbox_background" />
     </LinearLayout>
 
     <LinearLayout
@@ -138,27 +132,47 @@
             android:textColor="@color/button_text_color"
             android:textSize="@dimen/grid06" />
 
-        <TextView
-            android:id="@+id/textViewBlacklistDevicesVersion"
+        <CheckBox
+            android:id="@+id/checkBoxBlackDevice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:textColor="@color/button_text_color"
-            android:textSize="@dimen/grid06" />
+            android:button="@layout/checkbox_background" />
     </LinearLayout>
 
-
-    <Button
-        android:id="@+id/okButton"
-        android:layout_width="100dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="30dp"
+    <LinearLayout
+        android:id="@+id/linearLayoutButtons"
+        android:layout_width="300dp"
+        android:layout_height="fill_parent"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.51"
-        android:background="@layout/button_selector"
-        android:gravity="center"
-        android:onClick="onButtonClick"
-        android:text="@string/ok"
-        android:textColor="@color/button_text_color" />
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/requestButton"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_weight="1"
+            android:background="@layout/button_selector"
+            android:gravity="center"
+            android:onClick="onRequestButtonClick"
+            android:text="@string/request_button"
+            android:textColor="@color/button_text_color" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_weight="1"
+            android:background="@layout/button_selector"
+            android:gravity="center"
+            android:onClick="onCancelButtonClick"
+            android:text="@string/cancel"
+            android:textColor="@color/button_text_color" />
+    </LinearLayout>
 
 </LinearLayout>

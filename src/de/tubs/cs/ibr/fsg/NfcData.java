@@ -3,16 +3,19 @@
  */
 package de.tubs.cs.ibr.fsg;
 
-import java.io.*;
-import java.util.Date.*;
-import de.tubs.cs.ibr.fsg.NfcObject;
-import de.tubs.cs.ibr.fsg.NfcObjectBriefing;
+import java.io.IOException;
+
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class NfcData {
 	private static long tstampConstant = 1357174835;//1357174835445L; 
 	//at the beginning of each sector there is a informationblock to get
+	
+	public static final short ACCELERATION = 1;
+	public static final short SKID_PAD     = 2;
+	public static final short AUTOCROSS    = 3;
+	public static final short ENDURANCE    = 4;
 	
 	//constants for the encryption/decryption
 	//private final static String SECUREKEY = "KEY";
@@ -32,9 +35,9 @@ public class NfcData {
 					for(int j=1;j<15;j+=2){
 						test[j/2] = (short) (((inputBlock[i][j+1]&0xFF) << 8) | (inputBlock[i][j]&0xFF));
 					}					
-					outputObject.DriverObject.setTeam_id(test[2]);
-					outputObject.DriverObject.setUser_id(test[1]);
-					outputObject.DriverObject.getTeam().setCarNr(test[0]);
+					outputObject.getDriverObject().setTeamID(test[2]);
+					outputObject.getDriverObject().setDriverID(test[1]);
+					//TODO:FehlerHIER:outputObject.DriverObject.getTeam().setCarNr(test[0]);
 					outputObject.setEventID(test[3]);
 						/*
 						System.out.println("fahrzeugID: "+test[0]);
@@ -49,8 +52,8 @@ public class NfcData {
 						str = str.substring(1, str.length());
 
 						// extract first and lastname from the string
-						outputObject.DriverObject.setFirst_name(str.substring(0,str.lastIndexOf(" ")));
-						outputObject.DriverObject.setLast_name(str.substring(str.lastIndexOf(" ")+1));
+						outputObject.getDriverObject().setFirstName(str.substring(0,str.lastIndexOf(" ")));
+						outputObject.getDriverObject().setLastName(str.substring(str.lastIndexOf(" ")+1, str.lastIndexOf(".")+1));
 							//System.out.println("extraced Name: "+ outputObject.DriverObject.getFirst_name()+" "+outputObject.DriverObject.getLast_name());
 					} catch (Exception e) {
 						throw new FsgException( e, "NfcData", FsgException.CHAR_DECODE_FAILED);
@@ -83,15 +86,32 @@ public class NfcData {
 					break;
 					
 				case 40: //RUNS DONE
-					short runID	= (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
-					int tstampr 		= (int) (((inputBlock[i][6]&0xFF) << 32) | ((inputBlock[i][5]&0xFF) << 16) | ((inputBlock[i][4]&0xFF) << 8) | (inputBlock[i][3]&0xFF));
-					long tstamp2r 		= (Long.parseLong(String.valueOf(tstampr))+tstampConstant)*1000;		
+					short runDiscipline	= (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
+					//int tstampr 		= (int) (((inputBlock[i][6]&0xFF) << 32) | ((inputBlock[i][5]&0xFF) << 16) | ((inputBlock[i][4]&0xFF) << 8) | (inputBlock[i][3]&0xFF));
+					//long tstamp2r 		= (Long.parseLong(String.valueOf(tstampr))+tstampConstant)*1000;		
 					
-					NfcObjectBriefing newRun = new NfcObjectBriefing();
-					newRun.setBriefingID(runID);
-					newRun.setTimestamp(tstamp2r);
+					//NfcObjectRun newRun = new NfcObjectRun();
+					//newRun.setRaceID(runType);
+					//newRun.setTimestamp(tstamp2r);
 					
-					outputObject.addBriefing(newRun);
+					if (runDiscipline==ACCELERATION){
+						int newValue = outputObject.getAccelerationRuns() + 1;
+						outputObject.setAccelerationRuns(newValue);
+					}else if (runDiscipline==SKID_PAD){
+						int newValue = outputObject.getSkidPadRuns() + 1;
+						outputObject.setSkidPadRuns(newValue);
+					}else if (runDiscipline==ENDURANCE){
+						int newValue = outputObject.getEnduranceRuns() + 1;
+						outputObject.setEnduranceRuns(newValue);
+					}else{
+						int newValue = outputObject.getAutocrossRuns() + 1;
+						outputObject.setAutocrossRuns(newValue);
+					}
+					
+					break;
+					
+				case 99: //TAG DESTROYED
+					outputObject.clear();
 					
 					break;
 					
@@ -109,7 +129,7 @@ public class NfcData {
 	public static byte[][] generateDataRegistration(Driver theDriver) throws FsgException, IOException {	
 		//check for working driver object
 		try{
-			theDriver.getTeam_id();
+			theDriver.getTeamID();
 		} catch (Exception  e) {
 			throw new FsgException( e, "NfcData", FsgException.NON_VALID_ID);
 		}
@@ -121,10 +141,18 @@ public class NfcData {
 		byte contentID 		= 10;
 				
 		short fahrzeugID 	= theDriver.getTeam().getCarNr();
-		short userID 		= theDriver.getUser_id();
-		short teamID 		= theDriver.getTeam_id();
+		short userID 		= theDriver.getDriverID();
+		short teamID 		= theDriver.getTeamID();
 		short eventID 		= 1; //TODO: EventID ueber Einstellungen festlegbar ?
 
+		
+		for (int i = 0; i < outputBlock.length; i++) {
+			for (int j = 0; j < outputBlock[i].length; j++) {
+				int t = 1;
+				outputBlock[i][j] = (byte) t;
+			}
+		}
+		
 		outputBlock[0][0] = contentID;
 		outputBlock[0][1] = (byte)(fahrzeugID & 0xff);
 		outputBlock[0][2] = (byte)((fahrzeugID >> 8) & 0xff);
@@ -135,17 +163,18 @@ public class NfcData {
 		outputBlock[0][7] = (byte)(eventID & 0xff);
 		outputBlock[0][8] = (byte)((eventID >> 8) & 0xff);
 		for(int i=9;i<16;i++){
-			outputBlock[0][i] = (byte) 0xff;
+			outputBlock[0][i] = (byte) 0x00;
 		}
+		
 		
 		//read out and convert the name now
 		contentID = 11;
 		String prename, lastname;
 		
 		try{
-			prename	= theDriver.getFirst_name(); 
+			prename	= theDriver.getFirstName(); 
 				if(prename.length()>15) prename = prename.substring(0, 16);
-			lastname = theDriver.getLast_name().substring(0, 1)+".";
+			lastname = theDriver.getLastName().substring(0, 1)+".";
 		} catch (Exception  e) {
 			throw new FsgException( e, "NfcData", FsgException.GENERIC_EXCEPTION);
 		}
@@ -156,9 +185,15 @@ public class NfcData {
 		/* >= 1Byte pro Buchstabe bei UTF-8
 		 * >= 2Byte pro Buchstabe bei UTF-16 (UTF-16LE)
 		 * 	Umlaute immer 2Byte
-		 */						
-		outputBlock[1] = fullname.getBytes("UTF-8");
+		 */				
+		
+		byte[] fullnameBytes = fullname.getBytes("UTF-8");
+		System.arraycopy(fullnameBytes, 0, outputBlock[1], 0, fullnameBytes.length);
+		//outputBlock[1] = fullname.getBytes("UTF-8");
 		outputBlock[1][0] = contentID; //write contentID AFTER text, to overwrite whitespace
+		
+		
+		
 		
 		return outputBlock;
 	}
@@ -195,24 +230,38 @@ public class NfcData {
 		return outputBlock;
 	}
 	
-	/* RaceIDs:
-	 * 	1 = Acceleration
-	 * 	2 = SkidPad
-	 * 	3 = Autocross
-	 *  4 = Endurance
+
+	/**
+	 * WICHTIG!!!
+	 * Bitte die Konstanten dieser Klasse fuer den Attribut "runDiscipline" benutzen:
+	 * 
+	 *  public static final short ACCELERATION = 1;
+	 *  public static final short SKID_PAD     = 2;
+	 *  public static final short AUTOCROSS    = 3;
+	 *  public static final short ENDURANCE    = 4;
 	 */
-	public static byte[][] generateDataRace(short raceID){
+	public static byte[][] generateRun(short runDiscipline){
 		byte[][] outputBlock = new byte[1][16];
 		byte contentID = 40;
 		int timestamp = makeBetterTimestampNOW();
 		
 		outputBlock[0][0] = contentID;
-		outputBlock[0][1] = (byte)(raceID & 0xff);
-		outputBlock[0][2] = (byte)((raceID >> 8) & 0xff);
+		outputBlock[0][1] = (byte)(runDiscipline & 0xff);
+		outputBlock[0][2] = (byte)((runDiscipline >> 8) & 0xff);
 		outputBlock[0][3] = (byte)(timestamp & 0xff);
 		outputBlock[0][4] = (byte)((timestamp >> 8) & 0xff);
 		outputBlock[0][5] = (byte)((timestamp >> 16) & 0xff);
 		outputBlock[0][6] = (byte)((timestamp >> 32) & 0xff);	
+		
+		return outputBlock;
+	}
+	
+	
+	public static byte[][] generateDataDestroyCompleteTag(){
+		byte[][] outputBlock = new byte[1][16];
+		byte contentID = 99;
+		
+		outputBlock[0][0] = contentID;	
 		
 		return outputBlock;
 	}

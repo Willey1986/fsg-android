@@ -16,11 +16,15 @@
     <string name="menu_reg_requestDriversTeamsDriverPics">Fahrerbilder, Fahrer- und Teams-Daten updaten</string>
     <string name="menu_reg_requestBothBlack">Beide Blacklists updaten</string>
     <string name="menu_reg_requestDriverTeamsBothBlack">Beide Blacklists, Fahrer- und Teams-Daten updaten</string>
+    <string name="menu_reg_updateRequest">Updates anfordern</string>
+
 
     <!-- Titelzeile von Activities -->
     <string name="title_activity_main">FSG</string>
     <string name="title_activity_error">Fehlermeldung</string>
     <string name="title_activity_data_version">Datenversionsübersicht</string>
+    <string name="title_activity_update_request">Updates anfordern</string>
+    <string name="title_activity_registration_write_to_tag">RegistrationWriteToTagActivity</string>
 
     <!-- MainActivity Strings -->
     <string name="main_activity_button_1">Fahrerregistrierung</string>
@@ -36,6 +40,9 @@
     <string name="error_not_nfc_support">Keine NFC-Unterstützung auf dem Gerät.</string>
     <string name="error_zip_file_fail">Fehler beim Entpacken der Zip-Datei (Fahrerbilder).</string>
     <string name="error_driver_pics_fail">Fehler beim Speichern der Fahrerbilder.</string>
+
+    <string name="error_empy_choice">Bitte wählen Sie mindestens einen Datensatz aus!</string>
+    <string name="error_tag_wrong_key_or_format">Tag-Lesefehler. Mögliche Ursachen: der Key ist falsch oder der Tag ist falsch formatiert (z.B. mit dem NDEF-Format).</string>
     <string name="error_receiving_bundle">Fehler beim Empfangen eines IBR-DTN-Bündels.</string> <!-- Wird beim IBR-DTN-Service benutzt -->
     <string name="error_sending_bundle">Fehler beim Senden eines IBR-DTN-Bündels.</string> <!-- Wird beim IBR-DTN-Service benutzt -->
     <string name="error_not_ibr_dtn">IBR-DTN-Daemon inaktiv. Bitte starten Sie ihn (ggf. installieren).</string> <!-- Wird beim IBR-DTN-Service benutzt -->
@@ -53,7 +60,15 @@
     <string name="skidpad">Skid Pad</string>
     <string name="autocross">Autocross</string>
     <string name="endurance">Endurance</string>
-
+    <string name="which_run">Wie viele Rennen sollen geloggt werden?</string>
+    <string name="run_confirm_scan">Scan</string>
+    <string name="run_init">Initialisierung</string>
+    <string name="run_scan_wait">Scan........Bitte warten.....</string>
+    <string name="run_find_device">Gerät suchen:</string>
+    <string name="run_find_cancel">Abbruch</string>
+    <string name="num1">1</string>
+    <string name="num2">2</string>
+    
     <!-- Fahrerregistrierung Strings -->
     <string name="select_team">Wählen Sie ihr Team aus:</string>
     <string name="tblRegTitleID">#</string>
@@ -65,23 +80,33 @@
     <string name="tblDriversName">Name</string>
     <string name="lbSelectedTeam">Team: </string>
 
+    
+    <!-- InfoTerminal-Activity Strings -->
+
     <!-- Version-Activity Strings -->
     <string name="version_title">Datenversionsübersicht</string>
     <string name="version_drivers">Fahrer:</string>
     <string name="version_teams">Teams:</string>
-    <string name="version_blacklist_wristlets">Bänder-Blacklist:</string>
+    <string name="version_blacklist_tags">Bänder-Blacklist:</string>
     <string name="version_blacklist_devices">Geräte-Blacklist:</string>
     <string name="version_driver_pics">Fahrerbilder:</string>
 
+    
+    <!-- Version-Activity Strings -->
+    <string name="update_request_title">Updates anfordern</string>
+    <string name="request_button">Anfordern</string>
+    <string name="cancel">Abbrechen</string>
+    
     <!-- Notification Strings -->
     <string name="noti_title">FSG - Update erhalten</string>
     <string name="noti_text_driver_pics">Fahrerbilder</string>
     <string name="noti_text_drivers">Fahrerdaten</string>
     <string name="noti_text_teams">Teams-Daten</string>
-    <string name="noti_text_blacklist_wirstlets">Bänder-Blacklist</string>
+    <string name="noti_text_blacklist_tags">Bänder-Blacklist</string>
     <string name="noti_text_blacklist_devices">Geräte-Blacklist</string>
     <string name="error_driver_already_checked_in">Driver already checked in to this briefing</string>
     <string name="hello_world">Hello world!</string>
+
     <string name="title_activity_info_terminalinitialisierung">InfoTerminalinitialisierungActivity</string>
     <string name="title_activity_info_terminal_initialisierung">InfoTerminalInitialisierung</string>
 

@@ -45,6 +45,7 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:label="@string/title_activity_main" >
         </activity>
         <activity
+
             android:name=".activities.AdminActivity"
             android:icon="@string/title_activity_admin"  >
         </activity>        
@@ -74,6 +75,7 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:label="@string/main_activity_button_4" >
         </activity>
         <activity
+
             android:name=".activities.InfoTerminalInitialisierung"
             android:icon="@drawable/icon_infoterminal"
             android:label="@string/main_activity_button_5" >
@@ -81,6 +83,10 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
         <activity
             android:name=".activities.InfoTerminalActivity"
             android:icon="@drawable/icon_infoterminal" >
+
+            android:name=".activities.InfoTerminalActivity"
+            android:icon="@drawable/icon_infoterminal"
+            android:label="@string/main_activity_button_5" >
         </activity>
         <activity
             android:name=".activities.ErrorActivity"
@@ -109,6 +115,34 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
         </receiver>
 
 
+        <activity
+            android:name=".activities.UpdateRequestActivity"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/title_activity_update_request"
+            android:noHistory="true" >
+        </activity>
+        <activity
+            android:name=".activities.RegistrationWriteToTagActivity"
+            android:icon="@drawable/icon_register"
+            android:label="@string/title_activity_registration_write_to_tag" >
+        </activity>
+
+
+        <service android:name=".dtn.DTNService" >
+        </service> <!-- android:process=".fsg_service" -->
+
+        <receiver
+            android:name=".dtn.DTNReceiver"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="de.tubs.ibr.dtn.intent.RECEIVE" />
+
+                <category android:name="de.tubs.cs.ibr.fsg" />
+            </intent-filter>
+        </receiver>
+        <activity android:name=".activities.RunActivityConfirm"></activity>
+
+        
     </application>
 
 </manifest>

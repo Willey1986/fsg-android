@@ -10,11 +10,14 @@ public class FsgPackage {
 	
 	private byte[] payload;
 	
+	private UpdateRequest updateRequest;
 	
-	public FsgPackage(int packageTyp, int version, byte[] payload) {
-		this.packageTyp = packageTyp;
-		this.version    = version;
-		this.payload    = payload;
+	
+	public FsgPackage(int packageTyp, UpdateRequest updateRequest, int version, byte[] payload ) {
+		this.packageTyp    = packageTyp;
+		this.version       = version;
+		this.payload       = payload;
+		this.updateRequest = updateRequest;
 	}
 
 	public int getVersion() {
@@ -39,6 +42,14 @@ public class FsgPackage {
 
 	public void setPayload(byte[] payload) {
 		this.payload = payload;
+	}
+
+	public UpdateRequest getUpdateRequest() {
+		return updateRequest;
+	}
+
+	public void setUpdateRequest(UpdateRequest updateRequest) {
+		this.updateRequest = updateRequest;
 	}
 
 	

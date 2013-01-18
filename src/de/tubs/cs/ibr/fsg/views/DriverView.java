@@ -29,13 +29,16 @@ public class DriverView extends RelativeLayout{
 		LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layoutInflater.inflate(R.layout.view_registration_driver, this);
 		TextView name = (TextView) findViewById(R.id.tvName);
-		name.setText(driver.getLast_name()+ ", " + driver.getFirst_name());
+		name.setText(driver.getLastName()+ ", " + driver.getFirstName());
 		
 		// An dieser Stelle suchen wir nach dem Fahrerbild und stellen es ggf dar.
-		int driverId = driver.getUser_id();
+		int driverId = driver.getDriverID();
 		File picDirectory = FileHelper.getStoragePath(FileHelper.DRIVER_PICS_DIR);
-		File picFile = new File( picDirectory.getAbsoluteFile() + String.valueOf(File.separatorChar) + String.valueOf(driverId) + ".jpg" );
-		if (picFile.exists()) {
+		File picFile = null;
+		if(picDirectory!=null){
+			picFile = new File( picDirectory.getAbsoluteFile() + String.valueOf(File.separatorChar) + String.valueOf(driverId) + ".jpg" );
+		}
+		if (picFile!=null && picFile.exists() ) {
 			View driverPic = (View) findViewById(R.id.driverPic);
 			Drawable mDrawable = Drawable.createFromPath( picFile.getAbsolutePath() );
 			driverPic.setBackgroundDrawable(mDrawable);

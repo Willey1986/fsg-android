@@ -113,12 +113,13 @@ public class DTNService extends IntentService {
         	String destinationString      = intent.getStringExtra("destination");
     		SingletonEndpoint destination = new SingletonEndpoint(destinationString);
     		String type                   = intent.getStringExtra("type");
+    		UpdateRequest updateRequest   = intent.getParcelableExtra("request");
     		String version                = intent.getStringExtra("version");
     		String payload                = intent.getStringExtra("payload");
     		
     		byte[] payloadByteArray = null;
 			try {
-				payloadByteArray = FsgProtocol.getByteArrayToSend(Integer.valueOf(type), Integer.valueOf(version), payload);
+				payloadByteArray = FsgProtocol.getByteArrayToSend(Integer.valueOf(type), updateRequest, Integer.valueOf(version), payload);
 				if (!mClient.getSession().send(destination, 3600, payloadByteArray )){
 					throw new FsgException(new Exception("Can not send the Data to backend."), new DTNService().getClass().toString(), FsgException.DTN_SENDING_FAIL);
 				}else{
@@ -239,7 +240,7 @@ public class DTNService extends IntentService {
 				File folder = FileHelper.getStoragePath(FileHelper.TEMP_FSG_DIR);
 		
 				try {
-					// Wir erzeugen eine tempor�re Datei
+					// Wir erzeugen eine temporaere Datei
 					String outputFileName = "tempfile_" + System.currentTimeMillis();
 					payloadFile = File.createTempFile(outputFileName, ".fsg", folder);
 					mTranferMode  = TransferMode.FILEDESCRIPTOR;
@@ -313,16 +314,16 @@ public class DTNService extends IntentService {
 							Log.i(TAG, "New teams data received.");
 						}
 						
-					}else if (mFsgBundle.getPackageTyp() == FsgProtocol.DATA_BLACK_WRISTLETS){
+					}else if (mFsgBundle.getPackageTyp() == FsgProtocol.DATA_BLACK_TAGS){
 						isABundleTypForClients = true;
-						if (isANewVersion(mFsgBundle.getVersion(), FsgProtocol.DATA_BLACK_WRISTLETS )){
+						if (isANewVersion(mFsgBundle.getVersion(), FsgProtocol.DATA_BLACK_TAGS )){
 							isANewVersion = true;
 							String jsonArray = new String(mFsgBundle.getPayload(),"UTF8");
-							writeDataToDB(FsgProtocol.DATA_BLACK_WRISTLETS, jsonArray );
+							writeDataToDB(FsgProtocol.DATA_BLACK_TAGS, jsonArray );
 							
-							sendNewVersionConfirmation(mFsgBundle.getVersion(), FsgProtocol.DATA_BLACK_WRISTLETS);
-							saveToPreferencesTheNewVersion(mFsgBundle.getVersion(), FsgProtocol.DATA_BLACK_WRISTLETS);
-							Log.i(TAG, "New wristlets-blacklist received.");
+							sendNewVersionConfirmation(mFsgBundle.getVersion(), FsgProtocol.DATA_BLACK_TAGS);
+							saveToPreferencesTheNewVersion(mFsgBundle.getVersion(), FsgProtocol.DATA_BLACK_TAGS);
+							Log.i(TAG, "New tags-blacklist received.");
 						}
 						
 					}else if (mFsgBundle.getPackageTyp() == FsgProtocol.DATA_BLACK_DEVICES){
@@ -400,7 +401,7 @@ public class DTNService extends IntentService {
 			dba.execSQL(deleteAllTeams);
 			dba.writeTeamsToDB(jsonArray);
 
-		} else if (dataType == FsgProtocol.DATA_BLACK_WRISTLETS) {
+		} else if (dataType == FsgProtocol.DATA_BLACK_TAGS) {
 			String deleteAllBlackTags = "DELETE FROM " + DBHelper.TABLE_BLACKLISTED_TAGS + ";";
 			dba.execSQL(deleteAllBlackTags);
 			dba.writeBlacklistedTagsToDB(jsonArray);
@@ -437,8 +438,8 @@ public class DTNService extends IntentService {
 		}else if(dataType==FsgProtocol.DATA_TEAMS){
 			savedVersion=  prefs.getInt("version_teams", 0);
 			
-		}else if(dataType==FsgProtocol.DATA_BLACK_WRISTLETS){
-			savedVersion=  prefs.getInt("version_black_wristlets", 0);
+		}else if(dataType==FsgProtocol.DATA_BLACK_TAGS){
+			savedVersion=  prefs.getInt("version_black_tags", 0);
 			
 		}else if(dataType==FsgProtocol.DATA_BLACK_DEVICES){
 			savedVersion=  prefs.getInt("version_black_devices", 0);
@@ -478,9 +479,9 @@ public class DTNService extends IntentService {
 			editor.putInt("version_teams", receivedVersion );
 			editor.commit();
 			
-		}else if(dataType==FsgProtocol.DATA_BLACK_WRISTLETS){
+		}else if(dataType==FsgProtocol.DATA_BLACK_TAGS){
 			SharedPreferences.Editor editor = prefs.edit();
-			editor.putInt("version_black_wristlets", receivedVersion );
+			editor.putInt("version_black_tags", receivedVersion );
 			editor.commit();
 			
 		}else if(dataType==FsgProtocol.DATA_BLACK_DEVICES){
@@ -501,10 +502,12 @@ public class DTNService extends IntentService {
 	 */
 	protected void sendNewVersionConfirmation(int receivedVersion, int dataType) {
 		Intent mIntent = new Intent(this, DTNService.class);
+		UpdateRequest updateRequest = new UpdateRequest(true,true,true,true,true);
 		mIntent.setAction(de.tubs.cs.ibr.fsg.Intent.SEND_DATA);
 		mIntent.putExtra("destination", "dtn://fsg-backend.dtn/fsg"  );
+		mIntent.putExtra("request",     updateRequest );    // Fuer Empfangsbestaretigungen nicht wichtig, kann leer sein.
 		mIntent.putExtra("version",     String.valueOf(receivedVersion) );
-		mIntent.putExtra("payload",     "nichts");
+		mIntent.putExtra("payload",     "nichts");          // Fuer Empfangsbestaretigungen nicht wichtig, kann leer sein.
 
 		if(dataType==FsgProtocol.DATA_DRIVER_PICS){
 			mIntent.putExtra("type", String.valueOf(FsgProtocol.CONFIRM_DRIVER_PICS) );
@@ -515,8 +518,8 @@ public class DTNService extends IntentService {
 		}else if(dataType==FsgProtocol.DATA_TEAMS){
 			mIntent.putExtra("type", String.valueOf(FsgProtocol.CONFIRM_TEAMS) );
 			
-		}else if(dataType==FsgProtocol.DATA_BLACK_WRISTLETS){
-			mIntent.putExtra("type", String.valueOf(FsgProtocol.CONFIRM_BLACK_WRISTLETS) );
+		}else if(dataType==FsgProtocol.DATA_BLACK_TAGS){
+			mIntent.putExtra("type", String.valueOf(FsgProtocol.CONFIRM_BLACK_TAGS) );
 			
 		}else if(dataType==FsgProtocol.DATA_BLACK_DEVICES){
 			mIntent.putExtra("type", String.valueOf(FsgProtocol.CONFIRM_BLACK_DEVICES) );
@@ -579,8 +582,8 @@ public class DTNService extends IntentService {
 		}else if(dataType==FsgProtocol.DATA_TEAMS){
 			notificationTextId = R.string.noti_text_teams;
 					
-		}else if(dataType==FsgProtocol.DATA_BLACK_WRISTLETS){
-			notificationTextId = R.string.noti_text_blacklist_wirstlets;
+		}else if(dataType==FsgProtocol.DATA_BLACK_TAGS){
+			notificationTextId = R.string.noti_text_blacklist_tags;
 					
 		}else if(dataType==FsgProtocol.DATA_BLACK_DEVICES){
 			notificationTextId = R.string.noti_text_blacklist_devices;

@@ -13,7 +13,7 @@ import de.tubs.cs.ibr.fsg.Nfc;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
-public class BriefingCheckInActivity extends Activity {
+public class BriefingCheckInActivity extends Activity { //NfcEnabledActivity
 	
 	private static NfcAdapter mAdapter;
 	private static Intent mIntent;
@@ -43,7 +43,7 @@ public class BriefingCheckInActivity extends Activity {
 		
 			mAdapter = NfcAdapter.getDefaultAdapter(this);
 			if(mAdapter==null){
-				throw new FsgException( new NullPointerException("'Der NfcAdapter ist ein \"null\"-Objekt. Grund: Keine NFC-Unterstützung auf dem Gerät"), this.getClass().toString(), FsgException.NOT_NFC_SUPPORT );
+				throw new FsgException( new NullPointerException("'Der NfcAdapter ist ein \"null\"-Objekt. Grund: Keine NFC-Unterstï¿½tzung auf dem Gerï¿½t"), this.getClass().toString(), FsgException.NOT_NFC_SUPPORT );
 			}
 			mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 		
@@ -81,7 +81,7 @@ public class BriefingCheckInActivity extends Activity {
 	public void onResume() {
 		try{
 			if(mAdapter==null){
-				throw new FsgException( new NullPointerException("'Der NfcAdapter ist ein \"null\"-Objekt. Grund: Keine NFC-Unterstützung auf dem Gerät"), this.getClass().toString(), FsgException.NOT_NFC_SUPPORT );
+				throw new FsgException( new NullPointerException("'Der NfcAdapter ist ein \"null\"-Objekt. Grund: Keine NFC-Unterstï¿½tzung auf dem Gerï¿½t"), this.getClass().toString(), FsgException.NOT_NFC_SUPPORT );
 			}else{
 				mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters, mTechLists);
 			}
@@ -108,6 +108,7 @@ public class BriefingCheckInActivity extends Activity {
 		} catch (FsgException e) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
 			mIntent.putExtra("Exception", e);
+			Log.e(TAG, e.toString());
 			startActivity(mIntent);
 		}
 	}
@@ -116,7 +117,7 @@ public class BriefingCheckInActivity extends Activity {
 	public void onPause() {	
 		try{
 			if(mAdapter==null){
-				throw new FsgException( new NullPointerException("'Der NfcAdapter ist ein \"null\"-Objekt. Grund: Keine NFC-Unterstützung auf dem Gerät"), this.getClass().toString(), FsgException.NOT_NFC_SUPPORT );
+				throw new FsgException( new NullPointerException("'Der NfcAdapter ist ein \"null\"-Objekt. Grund: Keine NFC-Unterstï¿½tzung auf dem Gerï¿½t"), this.getClass().toString(), FsgException.NOT_NFC_SUPPORT );
 			}else{
 				mAdapter.disableForegroundDispatch(this);
 			}

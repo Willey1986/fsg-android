@@ -1,5 +1,7 @@
 package de.tubs.cs.ibr.fsg.db.models;
 
+import java.io.Serializable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,8 +9,9 @@ import de.tubs.cs.ibr.fsg.db.DBHelper;
 
 import android.content.ContentValues;
 
-public class Team {
-	
+public class Team implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	private short teamId;
 	private String cn;
 	private String cn_short_en;

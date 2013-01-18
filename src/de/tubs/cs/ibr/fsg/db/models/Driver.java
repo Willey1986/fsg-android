@@ -1,5 +1,7 @@
 package de.tubs.cs.ibr.fsg.db.models;
 
+import java.io.Serializable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,68 +9,73 @@ import de.tubs.cs.ibr.fsg.db.DBHelper;
 
 import android.content.ContentValues;
 
-public class Driver {
+public class Driver implements Serializable{
 
-	private short user_id; 
-	private short team_id;
-	private String first_name;
-	private String last_name;
+	private static final long serialVersionUID = 1L;
+	private short driverID; 
+	private short teamID;
+	private String firstName;
+	private String lastName;
 	private Team team;
 	
 	public Driver(JSONObject driver) {
 		try {
-			this.user_id = (short) driver.getInt("UserID");
-			this.team_id = (short) driver.getInt("TeamID");
-			this.first_name = driver.getString("first_name");
-			this.last_name = driver.getString("last_name");
+			this.driverID = (short) driver.getInt("UserID");
+			this.teamID = (short) driver.getInt("TeamID");
+			this.firstName = driver.getString("first_name");
+			this.lastName = driver.getString("last_name");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		
 	}
 	
-	public Driver(short user_id, short team_id, String first_name,
-			String last_name) {
-		this.user_id = user_id;
-		this.team_id = team_id;
-		this.first_name = first_name;
-		this.last_name = last_name;
+	public Driver(short userID, short teamID, String firstName,
+			String lastName) {
+		this.driverID = userID;
+		this.teamID = teamID;
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
 	
 	public Driver() {
-		
+		this.team = new Team();
+		this.driverID = 0;
+		this.teamID = 0;
+		this.firstName = "";
+		this.lastName = "";
 	}
 
-	public short getUser_id() {
-		return user_id;
+	public short getDriverID() {
+		return this.driverID;
 	}
 
-	public void setUser_id(short user_id) {
-		this.user_id = user_id;
+	public void setDriverID(short driverID) {
+		this.driverID = driverID;
 	}
 
-	public short getTeam_id() {
-		return team_id;
+	public short getTeamID() {
+		return this.teamID;
 	}
 
-	public void setTeam_id(short team_id) {
-		this.team_id = team_id;
+	public void setTeamID(short teamID) {
+		this.teamID = teamID;
 	}
 
-	public String getFirst_name() {
-		return first_name;
+	public String getFirstName() {
+		return this.firstName;
 	}
 
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getLast_name() {
-		return last_name;
+	public String getLastName() {
+		return this.lastName;
 	}
 
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 	
 	public Team getTeam() {
@@ -82,19 +89,19 @@ public class Driver {
 	public ContentValues getContentValues() {
 		ContentValues values = new ContentValues();
 		
-		values.put(DBHelper.DRIVERS_COLUMN_USER_ID, this.user_id);
-		values.put(DBHelper.DRIVERS_COLUMN_FIRST_NAME, this.first_name);
-		values.put(DBHelper.DRIVERS_COLUMN_LAST_NAME, this.last_name);
-		values.put(DBHelper.DRIVERS_COLUMN_TEAM_ID, this.team_id);
+		values.put(DBHelper.DRIVERS_COLUMN_USER_ID, this.driverID);
+		values.put(DBHelper.DRIVERS_COLUMN_FIRST_NAME, this.firstName);
+		values.put(DBHelper.DRIVERS_COLUMN_LAST_NAME, this.lastName);
+		values.put(DBHelper.DRIVERS_COLUMN_TEAM_ID, this.teamID);
 
 		return values;
 	}
 	
 	public String toString() {
-		return this.user_id + "|"
-				+ this.team_id + "|"
-				+ this.first_name + "|"
-				+ this.last_name + "|";
+		return this.driverID + "|"
+				+ this.teamID + "|"
+				+ this.firstName + "|"
+				+ this.lastName + "|";
 	}
 
 }
