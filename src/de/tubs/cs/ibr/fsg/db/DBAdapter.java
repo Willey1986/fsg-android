@@ -70,24 +70,24 @@ public class DBAdapter {
 		database.insert(DBHelper.TABLE_TEAMS, null, team2.getContentValues());
 		database.insert(DBHelper.TABLE_TEAMS, null, team3.getContentValues());
 		
-		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
-		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
-		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
-		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
-		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
-		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
-		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
-		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
-		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RUN_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RUN_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RUN_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RUN_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RUN_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RUN_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RUN_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RUN_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RUN_DISCIPLINE_ACCELERATION);
 		
-		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
-		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
-		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
-		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
-		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
-		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
-		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
-		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RUN_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RUN_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RUN_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RUN_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RUN_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RUN_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RUN_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RUN_DISCIPLINE_AUTOCROSS);
 		
 		writeKeyValue("secret", "geheimerKey");
 	}

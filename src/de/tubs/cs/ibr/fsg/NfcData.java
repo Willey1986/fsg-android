@@ -12,11 +12,6 @@ public class NfcData {
 	private static long tstampConstant = 1357174835;//1357174835445L; 
 	//at the beginning of each sector there is a informationblock to get
 	
-	public static final short ACCELERATION = FsgHelper.RACE_DISCIPLINE_ACCELERATION;
-	public static final short SKID_PAD     = FsgHelper.RACE_DISCIPLINE_SKID_PAD;
-	public static final short AUTOCROSS    = FsgHelper.RACE_DISCIPLINE_AUTOCROSS;
-	public static final short ENDURANCE    = FsgHelper.RACE_DISCIPLINE_ENDURANCE;
-	
 	//constants for the encryption/decryption
 	//private final static String SECUREKEY = "KEY";
 	
@@ -94,13 +89,13 @@ public class NfcData {
 					//newRun.setRaceID(runType);
 					//newRun.setTimestamp(tstamp2r);
 					
-					if (runDiscipline==ACCELERATION){
+					if (runDiscipline==FsgHelper.RUN_DISCIPLINE_ACCELERATION){
 						int newValue = outputObject.getAccelerationRuns() + 1;
 						outputObject.setAccelerationRuns(newValue);
-					}else if (runDiscipline==SKID_PAD){
+					}else if (runDiscipline==FsgHelper.RUN_DISCIPLINE_SKID_PAD){
 						int newValue = outputObject.getSkidPadRuns() + 1;
 						outputObject.setSkidPadRuns(newValue);
-					}else if (runDiscipline==ENDURANCE){
+					}else if (runDiscipline==FsgHelper.RUN_DISCIPLINE_ENDURANCE){
 						int newValue = outputObject.getEnduranceRuns() + 1;
 						outputObject.setEnduranceRuns(newValue);
 					}else{
@@ -233,12 +228,12 @@ public class NfcData {
 
 	/**
 	 * WICHTIG!!!
-	 * Bitte die Konstanten dieser Klasse fuer den Attribut "runDiscipline" benutzen:
+	 * Bitte die Konstanten der Klasse -FsgHelper- fuer den Attribut "runDiscipline" benutzen:
 	 * 
-	 *  public static final short ACCELERATION = 1;
-	 *  public static final short SKID_PAD     = 2;
-	 *  public static final short AUTOCROSS    = 3;
-	 *  public static final short ENDURANCE    = 4;
+	 *  public static final short RUN_DISCIPLINE_ACCELERATION = 1;
+	 *  public static final short RUN_DISCIPLINE_SKID_PAD     = 2;
+	 *  public static final short RUN_DISCIPLINE_AUTOCROSS    = 3;
+	 *  public static final short RUN_DISCIPLINE_ENDURANCE    = 4;
 	 */
 	public static byte[][] generateRun(short runDiscipline){
 		byte[][] outputBlock = new byte[1][16];

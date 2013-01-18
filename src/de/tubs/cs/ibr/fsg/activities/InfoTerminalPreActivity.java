@@ -99,6 +99,11 @@ public class InfoTerminalPreActivity extends NfcEnabledActivity {
 				Intent mIntent = new Intent(context, InfoTerminalPostActivity.class);
 				mIntent.putExtra("nfc_object", mNfcObject);
 				mIntent.putExtra(NfcAdapter.EXTRA_TAG, tagFromIntent);
+				
+				TextView msgToUser = (TextView) findViewById(R.id.infoPreNearTextView);
+				Resources res = getResources();
+				msgToUser.setText(res.getString(R.string.wristband_near));
+				
 				startActivity(mIntent);
 			}
 		}
