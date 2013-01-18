@@ -11,11 +11,16 @@ public class FsgHelper {
 	public static final short RACE_DISCIPLINE_ENDURANCE    = 4;
 
 	public static short generateIdForTodaysBriefing(){
-	      SimpleDateFormat dateFormat = new SimpleDateFormat("1MMdd", Locale.GERMANY); // Die 1 ist da, damit die führende Null nicht verschwindet.
-	      Date today  = new Date();
-	      String todayString = dateFormat.format(today);
-	      short id =  Short.valueOf(todayString);
-	      return id;
-	   }
+		SimpleDateFormat dateFormat = new SimpleDateFormat("1MMdd", Locale.GERMANY); // Die 1 ist da, damit die führende Null nicht verschwindet.
+		Date today  = new Date();
+		String todayString = dateFormat.format(today);
+		short id =  Short.valueOf(todayString);
+		return id;
+	}
+	
+	public static long generateUNIXTimestamp() {
+		Date date = new Date();
+		return (date.getTime() / 1000L);
+	}
 	
 }

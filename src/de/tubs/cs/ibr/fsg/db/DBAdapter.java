@@ -70,6 +70,25 @@ public class DBAdapter {
 		database.insert(DBHelper.TABLE_TEAMS, null, team2.getContentValues());
 		database.insert(DBHelper.TABLE_TEAMS, null, team3.getContentValues());
 		
+		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
+		writeDrivenRun((short)10, FsgHelper.RACE_DISCIPLINE_ACCELERATION);
+		
+		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
+		deleteDrivenRun((short) 11, FsgHelper.RACE_DISCIPLINE_AUTOCROSS);
+		
 		writeKeyValue("secret", "geheimerKey");
 	}
 	
@@ -314,6 +333,29 @@ public class DBAdapter {
 				+ timestamp +")";
 		execSQL(sql);
 	}
+
+	/**
+	 * 
+	 * @param driverID ID des Fahrers
+	 * @param raceDiscipline Wert zwischen 1 und 4 für die Renndisziplinen. Siehe Klasse FsgHelper.
+	 */
+	public void writeDrivenRun(short driverID, short raceDiscipline) {
+		String sql = "INSERT INTO " + DBHelper.TABLE_DRIVEN_RUNS + "(" + DBHelper.DRIVEN_RUNS_COLUMN_DRIVER_ID + ", " + DBHelper.DRIVEN_RUNS_COLUMN_RACE_DISCIPLINE_ID + ", " + DBHelper.DRIVEN_RUNS_COLUMN_TIMESTAMP + ")" +
+				"VALUES (" + driverID + ", " + raceDiscipline + ", " + FsgHelper.generateUNIXTimestamp() + ");";
+		execSQL(sql);
+	}
+	
+	/**
+	 * 
+	 * @param driverID
+	 * @param raceDiscipline
+	 */
+	public void deleteDrivenRun(short driverID, short raceDiscipline) {
+		//Aufgrund nicht gewährleisteter Aktualität der DB können angemeldete Runs nicht gelöscht werden da nicht zwingend alle angemeldeten Runs vorliegen. Deshalb speicherung in seperater Tabelle
+		String sql = "INSERT INTO " + DBHelper.TABLE_INVALID_DRIVEN_RUNS + "(" + DBHelper.INVALID_DRIVEN_RUNS_COLUMN_DRIVER_ID + ", " + DBHelper.INVALID_DRIVEN_RUNS_COLUMN_RACE_DISCIPLINE_ID + ", " + DBHelper.INVALID_DRIVEN_RUNS_COLUMN_TIMESTAMP + ")" +
+				"VALUES (" + driverID + ", " + raceDiscipline + ", " + FsgHelper.generateUNIXTimestamp() + ");";
+		execSQL(sql);
+	}
 	
 	/**
 	 * Schreibt ein Objekt BlacklistedDevice in die Datenbank
@@ -407,51 +449,6 @@ public class DBAdapter {
 		}
 	}
 	
-
-	
-	
-//	/**
-//	 * Liefert ArrayList mit allen in der DB eingetragenen Briefings
-//	 * @return Liste mit Briefings
-//	 */
-//	public ArrayList<Briefing> getAllBriefings() {
-//		ArrayList<Briefing> briefings = new ArrayList<Briefing>();
-//		Cursor result = database.query(DBHelper.TABLE_BRIEFINGS, null, null, null, null, null, null);
-//		if (result.moveToFirst()) {
-//			do {
-//				Briefing briefing = new Briefing();
-//				briefing.setBriefingId(result.getShort(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_ID)));
-//				briefing.setStartTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_START_TIME)));
-//				briefing.setEndTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_END_TIME)));
-//				briefings.add(briefing);
-//			} while (result.moveToNext());
-//			
-//		}
-//		return briefings;
-//	}
-//	
-//	
-//	/**
-//	 * Liefert ArrayList mit noch nicht vergangenen Briefings 
-//	 * @return Liste mit Briefings
-//	 */
-//	public ArrayList<Briefing> getAllUpcomingBriefings() {
-//		ArrayList<Briefing> briefings = new ArrayList<Briefing>();
-//		Date now = new Date();
-//		long nowAsUnixTimestamp = (now.getTime() / 1000L) - (3600 * 3);  //Aktuelles Datum als Unix-Timestamp. 3 Stunden Toleranz 
-//		Cursor result = database.query(DBHelper.TABLE_BRIEFINGS, null, DBHelper.BRIEFINGS_COLUMN_START_TIME + ">" + nowAsUnixTimestamp, null, null, null, null);
-//		if (result.moveToFirst()) {
-//			do {
-//				Briefing briefing = new Briefing();
-//				briefing.setBriefingId(result.getShort(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_ID)));
-//				briefing.setStartTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_START_TIME)));
-//				briefing.setEndTime(result.getInt(result.getColumnIndex(DBHelper.BRIEFINGS_COLUMN_END_TIME)));
-//				briefings.add(briefing);
-//			} while (result.moveToNext());
-//		}
-//		return briefings;
-//	}
-	
 	/**
 	 * Dient dem direkten Ausf�hren von SQL-Ausdr�cken
 	 * @param sql = SQL-String
@@ -472,7 +469,9 @@ public class DBAdapter {
 		return cursor;
 	}
 	
-	
+	public void backUpDBToXML() {
+		//TODO Inhalte sämtlicher Tabellen auslesen und als XML speichern.
+	}
 	
 	
 

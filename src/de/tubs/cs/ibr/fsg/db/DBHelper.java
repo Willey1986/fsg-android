@@ -45,9 +45,13 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String DRIVEN_RUNS_COLUMN_ID = "_id";
 	public static final String DRIVEN_RUNS_COLUMN_DRIVER_ID = "driver_id";
 	public static final String DRIVEN_RUNS_COLUMN_RACE_DISCIPLINE_ID = "race_discipline_id";
-	public static final String DRIVEN_RUNS_COLUMN_VALID = "valid";
-	public static final String DRIVEN_RUNS_COLUMN_DATE = "date";
-	public static final String DRIVEN_RUNS_COLUMN_TIME = "time";
+	public static final String DRIVEN_RUNS_COLUMN_TIMESTAMP = "timestamp";
+	
+	public static final String TABLE_INVALID_DRIVEN_RUNS = "invalid_driven_runs";
+	public static final String INVALID_DRIVEN_RUNS_COLUMN_ID = "_id";
+	public static final String INVALID_DRIVEN_RUNS_COLUMN_DRIVER_ID = "driver_id";
+	public static final String INVALID_DRIVEN_RUNS_COLUMN_RACE_DISCIPLINE_ID = "race_discipline_id";
+	public static final String INVALID_DRIVEN_RUNS_COLUMN_TIMESTAMP = "timestamp";
 	
 	public static final String TABLE_REGISTERED_TAGS = "tags";
 	public static final String REGISTERED_TAGS_COLUMN_ID = "_id";
@@ -67,7 +71,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String VALUES_COLUMN_VALUE = "value";
 
 	public static final String DATABASE_NAME = "fsg.db";
-	public static final int DATABASE_VERSION = 50;
+	public static final int DATABASE_VERSION = 55;
 
 	public static final String TABLE_CLASSES_CREATE = "CREATE TABLE " + TABLE_CLASSES + " (" 
 			+ CLASSES_COLUMN_CLASS + " TEXT NOT NULL,"
@@ -107,9 +111,13 @@ public class DBHelper extends SQLiteOpenHelper{
 			+ DRIVEN_RUNS_COLUMN_ID + " INTEGER PRIMARY KEY, "
 			+ DRIVEN_RUNS_COLUMN_DRIVER_ID + " INTEGER NOT NULL, "
 			+ DRIVEN_RUNS_COLUMN_RACE_DISCIPLINE_ID + " INTEGER NOT NULL, "
-			+ DRIVEN_RUNS_COLUMN_VALID + " INTEGER NOT NULL, "
-			+ DRIVEN_RUNS_COLUMN_DATE + " TEXT NOT NULL, "
-			+ DRIVEN_RUNS_COLUMN_TIME + " TEXT NOT NULL);";
+			+ DRIVEN_RUNS_COLUMN_TIMESTAMP + " INTEGER NOT NULL);";
+	
+	public static final String TABLE_INVALID_DRIVEN_RUNS_CREATE = "CREATE TABLE " + TABLE_INVALID_DRIVEN_RUNS + " ("
+			+ INVALID_DRIVEN_RUNS_COLUMN_ID + " INTEGER PRIMARY KEY, "
+			+ INVALID_DRIVEN_RUNS_COLUMN_DRIVER_ID + " INTEGER NOT NULL, "
+			+ INVALID_DRIVEN_RUNS_COLUMN_RACE_DISCIPLINE_ID + " INTEGER NOT NULL, "
+			+ DRIVEN_RUNS_COLUMN_TIMESTAMP + " INTEGER NOT NULL);";
 	
 	public static final String TABLE_REGISTERED_TAGS_CREATE = "CREATE TABLE " + TABLE_REGISTERED_TAGS + " ("
 			+ REGISTERED_TAGS_COLUMN_ID + " INTEGER PRIMARY KEY NOT NULL UNIQUE, "
@@ -141,6 +149,7 @@ public class DBHelper extends SQLiteOpenHelper{
 		database.execSQL(TABLE_CHECKED_IN_CREATE);
 		database.execSQL(TABLE_CHECKED_OUT_CREATE);
 		database.execSQL(TABLE_DRIVEN_RUNS_CREATE);
+		database.execSQL(TABLE_INVALID_DRIVEN_RUNS_CREATE);
 		database.execSQL(TABLE_VALUES_CREATE);
 		database.execSQL(TABLE_REGISTERED_TAGS_CREATE);
 	}
@@ -157,6 +166,7 @@ public class DBHelper extends SQLiteOpenHelper{
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHECKED_IN);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHECKED_OUT);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DRIVEN_RUNS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_INVALID_DRIVEN_RUNS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_VALUES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_REGISTERED_TAGS);
 		onCreate(db);
