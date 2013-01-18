@@ -27,32 +27,12 @@ public class MainActivity extends Activity {
 
 	private static final String PASSWORD = "kuh";
 
-	String[] actions = new String[] {
-		"User",
-		"Admin",
-	};	
-	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, actions);
-
-        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-
-        ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
- 
-            
-            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                Toast.makeText(getBaseContext(), "You selected : " + actions[itemPosition]  , Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        };
-        
-        getActionBar().setListNavigationCallbacks(adapter, navigationListener);
-        }
+       
+    }
        
         public boolean onCreateOptionsMenu(Menu menu) {
             getMenuInflater().inflate(R.menu.activity_main, menu);
@@ -136,7 +116,8 @@ public class MainActivity extends Activity {
     		startActivity(new Intent(this, RunActivity.class));
     		break;
     	case R.id.button5:
-    		startActivity(new Intent(this, InfoTerminalInitialisierung.class));
+
+    		startActivity(new Intent(this, InfoTerminalPreActivity.class));
     		break;
     	}
     }  
