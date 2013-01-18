@@ -7,7 +7,7 @@
     android:background="@drawable/background_grey" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/infoPreNearTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -24,7 +24,7 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/infoPreNearTextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/grid08" />
 

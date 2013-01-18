@@ -32,9 +32,9 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
+         <!--    <intent-filter>
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
-            </intent-filter>
+            </intent-filter>   -->
 
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"

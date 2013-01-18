@@ -25,6 +25,7 @@
     <string name="title_activity_data_version">Datenversionsübersicht</string>
     <string name="title_activity_update_request">Updates anfordern</string>
     <string name="title_activity_registration_write_to_tag">RegistrationWriteToTagActivity</string>
+    <string name="title_activity_admin">AdminActivity</string>
 
     <!-- MainActivity Strings -->
     <string name="main_activity_button_1">Fahrerregistrierung</string>
@@ -85,7 +86,8 @@
     <string name="lbSelectedTeam">Team: </string>
 
     <!-- InfoTerminal-Activity Strings -->
-
+	<string name="infoTerminalTryAgain">Fehler beim Lesen, bitte probieren Sie es erneut.</string>
+	<string name="infoTerminalReading">Das Fahrerarmband wird gelesen, bitte nicht entfernen.</string>
 
     <!-- Version-Activity Strings -->
     <string name="version_title">Datenversionsübersicht</string>
@@ -119,6 +121,6 @@
         <item>Admin</item>
     </string-array>
 
-    <string name="title_activity_admin">AdminActivity</string>
+    
 
 </resources>
