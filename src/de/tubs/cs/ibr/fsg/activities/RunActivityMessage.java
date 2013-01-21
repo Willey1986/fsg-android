@@ -3,8 +3,13 @@ package de.tubs.cs.ibr.fsg.activities;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import de.tubs.cs.ibr.fsg.Nfc;
+import de.tubs.cs.ibr.fsg.NfcData;
 import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,14 +17,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class RunActivityMessage extends  Activity{
+public class RunActivityMessage extends  NfcEnabledActivity{
 	
+	boolean isAllowedToScan;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_run_message);
 		
-		
+		this.isAllowedToScan = false;
 
 		boolean isShowingError = getIntent().getBooleanExtra("showError",false);
 		
@@ -96,12 +102,52 @@ public class RunActivityMessage extends  Activity{
 		finish();
 	}
 	
+	
+	/** Try to allow even on error
+	 * 
+	 * @param view
+	 */
 	public void allowClick(View view){
 		
+		this.isAllowedToScan = true;
+		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+		alertDialog.setTitle("Fahrer trotzdem genehmigen");
+		alertDialog.setMessage("Bitte Band erneut dranhalten...");
+		alertDialog.show();
+
 	}
 	
 	void runMain(){
 		startActivity(new  Intent(this, MainActivity.class));
     	finish();
+	}
+
+
+	@Override
+	public void executeNfcAction(Intent intent) {
+		// TODO Auto-generated method stub
+		if(isAllowedToScan){
+			try{
+				Nfc nfc = new Nfc(this);
+				
+				short runID = getIntent().getShortExtra("runID", (short)0);
+				byte[][]run = NfcData.generateRun(runID);
+				
+				nfc.writeTag(getIntent(),run);
+				
+				//write one more time
+				if(getIntent().getIntExtra("runTurns", 0)==2){
+					nfc.writeTag(getIntent(),run);
+				}
+			}catch(FsgException e){
+				Intent mIntent = new Intent(this, ErrorActivity.class);
+    			mIntent.putExtra("Exception", e);
+    			startActivity(mIntent);
+    			finish();
+			}
+			
+			startActivity(new  Intent(this, MainActivity.class));
+	    	finish();
+		}
 	}
 }
