@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
@@ -23,54 +24,16 @@ public class RunActivity extends Activity {
     	
     	Intent intent;
     	
-    	switch (view.getId() ){
-    	case R.id.button1:
-
-    		intent = new Intent(this, RunActivityConfirm.class);
-			
-    		intent.putExtra("ActivityName","Acceleration");
-			
-    		startActivity(intent);
-    		
-    		break;
-    	case R.id.button2:
-    		try {
-    			//Zum Testen der Fehlermeldung...
-    			throw new FsgException( new Exception("'Hier ist die UrsprungException"), this.getClass().toString(), FsgException.END_OF_ROAD );
-
-    		} catch (FsgException e) {
-    			Intent mIntent = new Intent(this, ErrorActivity.class);
-    			mIntent.putExtra("Exception", e);
-    			startActivity(mIntent);
-    			finish();
-    		}
-    		break;
-    	case R.id.button3:
-    		try {
-    			//Zum Testen der Fehlermeldung...
-    			throw new FsgException( new Exception("'Hier ist die UrsprungException"), this.getClass().toString(), FsgException.END_OF_ROAD );
-
-    		} catch (FsgException e) {
-    			Intent mIntent = new Intent(this, ErrorActivity.class);
-    			mIntent.putExtra("Exception", e);
-    			startActivity(mIntent);
-    			finish();
-    		}
-    		break;
-    	case R.id.button4:
-    		try {
-    			//Zum Testen der Fehlermeldung...
-    			throw new FsgException( new Exception("'Hier ist die UrsprungException"), this.getClass().toString(), FsgException.END_OF_ROAD );
-
-    		} catch (FsgException e) {
-    			Intent mIntent = new Intent(this, ErrorActivity.class);
-    			mIntent.putExtra("Exception", e);
-    			startActivity(mIntent);
-    			finish();
-    		}
-    		break;
-
-    	}
+    	Button b = (Button)view;
+    	
+    	
+		intent = new Intent(this, RunActivityConfirm.class);
+		
+		intent.putExtra("ActivityName",b.getText());
+		
+		startActivity(intent);
+    	
+    	
     }
     
 }
