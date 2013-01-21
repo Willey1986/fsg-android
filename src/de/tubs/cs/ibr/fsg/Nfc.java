@@ -226,14 +226,25 @@ public class Nfc {
 				}
 				for (int i = 1; i < tag.getBlockCount(); i++){
 					if (tag.authenticateSectorWithKeyA(tag.blockToSector(i), keyA)){
-						
-						//decrypt data in read method
-						//data = read(tag.readBlock(i));
+//						//decrypt data in read method
+//						//data = read(tag.readBlock(i));
+//						data = tag.readBlock(i);
+//						if ((!Arrays.equals(data, keyBlock)) && (!Arrays.equals(data, emptyBlock))){ //übergeht die Key-Blöcke beim Lesen, setzt voraus, dass alle Key-Blöcke gleich aussehen!
+//							content[i] = data;
+//						}
+//						//cardData[tag.blockToSector(i)] += getHexString(data, data.length);
+			
 						data = tag.readBlock(i);
-						if ((!Arrays.equals(data, keyBlock)) && (!Arrays.equals(data, emptyBlock))){ //übergeht die Key-Blöcke beim Lesen, setzt voraus, dass alle Key-Blöcke gleich aussehen!
+						// Sobald der erste leere Block erreicht wird, wird die Schleife verlassen.
+						if(Arrays.equals(data, emptyBlock)){ 
+							break;
+						}
+						// Key-Blöcke werden im Ergebnis Array nicht gespeichert. Setzt voraus, dass alle Key-Blöcke gleich aussehen!
+						if (!Arrays.equals(data, keyBlock)){ 
 							content[i] = data;
 						}
-						//cardData[tag.blockToSector(i)] += getHexString(data, data.length);
+						
+						
 					}
 				}
 				if (content != null){
