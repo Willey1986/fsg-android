@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class RunActivityConfirm extends Activity {
 
 	private CheckBox check1;
 	private CheckBox check2;
+	
+	private boolean isWaiting;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,49 @@ public class RunActivityConfirm extends Activity {
 
 		Button scanB = (Button) findViewById(R.id.scanButton);
 		scanB.setEnabled(false);
+		
+		//init waiting is false
+		this.isWaiting = false;
+	}
+	
+	
+	private void shouldShowWait(boolean showWaiting){
+
+		
+		
+		TextView text1 = (TextView) findViewById(R.id.textView1);
+		TextView text2 = (TextView) findViewById(R.id.textView2);
+		
+		
+		//should show the waiting information
+		int isVisible = View.GONE;
+		
+		//show checkbox
+		int checkBoxIsVisible = View.GONE;
+		
+		if(showWaiting){
+			text1.setText("Initialisierung");
+			
+			isVisible = View.VISIBLE;
+			
+			checkBoxIsVisible = View.INVISIBLE;
+		}else{
+
+			text1.setText("Wie viele Rennen sollen geloggt werden?");
+			isVisible = View.INVISIBLE;
+
+			checkBoxIsVisible = View.VISIBLE;
+		}
+		this.isWaiting = showWaiting;
+		
+		text2.setVisibility(isVisible);
+		ProgressBar progress = (ProgressBar) findViewById(R.id.progressbar);
+		progress.setVisibility(isVisible);
+		
+		check1.setVisibility(checkBoxIsVisible);
+		check2.setVisibility(checkBoxIsVisible);
+		
+		
 	}
 	
     /**
@@ -40,6 +86,18 @@ public class RunActivityConfirm extends Activity {
     		case R.id.scanButton:
     		
     			//user pressed scan button
+    			
+    			this.shouldShowWait(!this.isWaiting);
+    			
+    			//user should wait
+    			if(this.isWaiting){
+    				Button scanB = (Button) findViewById(R.id.scanButton);
+    				scanB.setText("Abbruch");
+    			}else{
+    				Button scanB = (Button) findViewById(R.id.scanButton);
+    				scanB.setText("Scan");
+    			}
+    			
     			
     			break;
     		case R.id.check1:
