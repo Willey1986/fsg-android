@@ -15,8 +15,6 @@ import android.widget.TextView;
 public class RunActivityMessage extends  Activity{
 	
 	
-	private boolean isSuccessful;
-	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_run_message);
@@ -44,7 +42,10 @@ public class RunActivityMessage extends  Activity{
 
 			  headTitle.setText("Genehming fehlgeschlagen:");
 			  
-			  this.isSuccessful = false;
+
+			  TextView textview = (TextView) findViewById(R.id.textView);
+			  textview.setText(getIntent().getStringExtra("message"));
+			  
 		}else{
 			//green background
 
@@ -56,8 +57,6 @@ public class RunActivityMessage extends  Activity{
 			  someView.setBackgroundColor(Color.GREEN);
 			  
 			  headTitle.setText("Erfolgreich geloggt:");
-			  
-			  this.isSuccessful = true;
 			  
 			  
 			  //hide the buttons
@@ -86,6 +85,15 @@ public class RunActivityMessage extends  Activity{
 		
 		
 		
+		
+	}
+	
+	
+	public void retryClick(View view){
+		finish();
+	}
+	
+	public void allowClick(View view){
 		
 	}
 	

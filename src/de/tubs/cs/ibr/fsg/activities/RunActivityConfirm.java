@@ -4,6 +4,7 @@ import de.tubs.cs.ibr.fsg.Nfc;
 import de.tubs.cs.ibr.fsg.NfcData;
 import de.tubs.cs.ibr.fsg.NfcObject;
 import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import android.app.Activity;
 import android.content.Intent;
@@ -175,7 +176,15 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 				
 				mIntent.putExtra("showError",false);
 				
+				Driver driver = tagContent.getDriverObject();
 				
+				if(driver.getDriverID() == 0){
+					mIntent.putExtra("message","Band ist ungültig. Kein Fahrerdaten vorhanden!");
+					throw new FsgException( new Exception("Invalid Driver"), 
+							this.getClass().toString(), FsgException.GENERIC_EXCEPTION );
+				}else{
+					System.out.println(driver);
+				}
 				
 				
 			} catch (FsgException e) {
@@ -183,8 +192,6 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 				//error type
 				mIntent.putExtra("showError",true);
 				
-				
-				mIntent.putExtra("ErrorMessage",e);
 			}finally{
 				//run title
 				TextView titleLabel = (TextView) findViewById(R.id.runTitle);
