@@ -72,6 +72,9 @@ public class RunActivityMessage extends  Activity{
 			  TextView textview = (TextView) findViewById(R.id.textView);
 			  textview.setTextColor(Color.BLACK);
 			  
+			  textview.setText(getIntent().getStringExtra("posMessage"));
+			  
+			  
 			  //close the message after 3 seconds
 			  new Timer().schedule(new TimerTask() {          
 				    @Override
@@ -79,7 +82,7 @@ public class RunActivityMessage extends  Activity{
 				        // this code will be executed after 3 seconds
 				    	runMain();
 				    }
-				}, 3000);
+				}, 5000);
 		}
 		
 		

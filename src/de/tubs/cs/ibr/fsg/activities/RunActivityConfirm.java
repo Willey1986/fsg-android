@@ -183,7 +183,13 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 					throw new FsgException( new Exception("Invalid Driver"), 
 							this.getClass().toString(), FsgException.GENERIC_EXCEPTION );
 				}else{
-					System.out.println(driver);
+
+					TextView titleLabel = (TextView) findViewById(R.id.runTitle);
+					String message = "Fahrer "+driver.getLastName()+", "+driver.getFirstName()
+							+", mit ID " + driver.getDriverID() + " wurde die Genehmigung für Rennen "
+							+ titleLabel.getText() + " erteilt.";
+					mIntent.putExtra("posMessage",message);
+					
 				}
 				
 				
