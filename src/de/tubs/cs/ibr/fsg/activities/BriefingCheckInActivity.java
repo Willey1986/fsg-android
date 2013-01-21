@@ -13,7 +13,7 @@ import de.tubs.cs.ibr.fsg.Nfc;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
-public class BriefingCheckInActivity extends Activity { //NfcEnabledActivity
+public class BriefingCheckInActivity extends NfcEnabledActivity { //NfcEnabledActivity
 	
 	private static NfcAdapter mAdapter;
 	private static Intent mIntent;
@@ -36,14 +36,14 @@ public class BriefingCheckInActivity extends Activity { //NfcEnabledActivity
 	private Nfc nfc;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		try {
 
 			setContentView(R.layout.activity_briefing_checkin);
 		
 			mAdapter = NfcAdapter.getDefaultAdapter(this);
 			if(mAdapter==null){
-				throw new FsgException( new NullPointerException("'Der NfcAdapter ist ein \"null\"-Objekt. Grund: Keine NFC-Unterst�tzung auf dem Ger�t"), this.getClass().toString(), FsgException.NOT_NFC_SUPPORT );
+				throw new FsgException( new NullPointerException("'Der NfcAdapter ist ein \"null\"-Objekt. Grund: Keine NFC-Unterstützung auf dem Gerät"), this.getClass().toString(), FsgException.NOT_NFC_SUPPORT );
 			}
 			mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 		
@@ -134,6 +134,12 @@ public class BriefingCheckInActivity extends Activity { //NfcEnabledActivity
 			finish();
 		}
 		super.onPause();
+		
+	}
+
+	@Override
+	public void executeNfcAction(Intent intent) {
+		// TODO Auto-generated method stub
 		
 	}
 }

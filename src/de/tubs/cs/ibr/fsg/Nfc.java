@@ -57,7 +57,12 @@ public class Nfc {
 	/**
 	 * Key B für Mifare Classic
 	 */	
-	private byte[] keyB = {(byte) 'F', (byte) 'F', (byte) 'F', (byte) 'F', (byte) 'F', (byte) 'F'};
+	private byte[] keyB = null;
+	
+	/**
+	 * Default Rechte eines Sektors
+	 */
+	private byte[] defaultRights = {(byte) 'F', (byte) 'F', (byte) '0', (byte) 'F', (byte) '0', (byte) '0'};
 	
 	/**
 	 * Erster Block des zuletzt gelesenen Tags, enthält die eindeutige ID des Tags
@@ -69,8 +74,9 @@ public class Nfc {
 	 * @param context
 	 */
 	public Nfc(Context context){
-		//Key auslesen und in Variable key speichern!
+		//Key auslesen und in Variable  speichern!
 		this.keyA = MifareClassic.KEY_DEFAULT;
+		this.keyB = MifareClassic.KEY_DEFAULT;
 	}
 	
 	/**
@@ -102,6 +108,16 @@ public class Nfc {
 	
 	public String getTagID() {
 		return tagID;
+	}
+	
+	private void setKeyA(byte[] newKeyA){
+		this.keyA = newKeyA;
+		//außerdem in Preferences abspeichern
+	}
+	
+	private void setKeyB(byte[] newKeyB){
+		this.keyB = newKeyB;
+		//außerdem in Preferences abspeichern
 	}
 	
 	/**
@@ -226,9 +242,6 @@ public class Nfc {
 				}
 				for (int i = 1; i < tag.getBlockCount(); i++){
 					if (tag.authenticateSectorWithKeyA(tag.blockToSector(i), keyA)){
-						
-						//decrypt data in read method
-						//data = read(tag.readBlock(i));
 						data = tag.readBlock(i);
 						if ((!Arrays.equals(data, keyBlock)) && (!Arrays.equals(data, emptyBlock))){ //übergeht die Key-Blöcke beim Lesen, setzt voraus, dass alle Key-Blöcke gleich aussehen!
 							content[i] = data;
@@ -258,47 +271,6 @@ public class Nfc {
 			}
 		}
 	}
-
-	/**
-	 * Liest einen gegebenen Sektor eines gegebenen Tags.
-	 * @param tag
-	 * @param key
-	 * @param sectorIndex
-	 * @return
-	 * @throws FsgException
-	 */
-//	public String readSector(MifareClassic tag, byte[] key, int sectorIndex) throws FsgException{
-//		byte[] data;
-//		String cardData = null;
-//		String tempString = null;
-//		if (tag.isConnected()){
-//			try{
-//				
-//				for (int i = tag.sectorToBlock(sectorIndex); i < (tag.sectorToBlock(sectorIndex)+tag.getBlockCountInSector(sectorIndex)-1); i++){ //letzter Block wird nicht gelesen, da er den Key enthält
-//					if (tag.authenticateSectorWithKeyA(sectorIndex, key)){
-//						
-//						//decrypt blocks using read method
-//						data = tag.readBlock(i);
-//						tempString = getHexString(data, data.length);
-//						cardData = cardData.concat(tempString);
-//						tempString = null;
-//					}
-//				}
-//			} catch (IOException e) {
-//				Log.e(TAG, e.getLocalizedMessage());
-//				System.out.println("Tag reading error!");
-//				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
-//			}
-//			if (cardData != null){
-//				return cardData;
-//			} else {
-//				return "";
-//			}
-//		} else {
-//			System.out.println("Tag disconnected!");
-//			return "";
-//		}
-//	}
 	
 	/**
 	 * Schreibe gegebenen Inhalt auf Tag, ab nächstem freien Block
@@ -408,30 +380,68 @@ public class Nfc {
 	//d.h. für Key A = 00 11 22 33 44 55 und Access Bits = FF 0F 00(default) muss geschrieben werden: 00 11 22 33 44 55 FF 0F 00 FF FF FF FF FF FF (Key B unchanged)
 	
 	/**
-	 * Methode zum Ändern des Keys eines Sektors.
-	 * @param tag
+	 * Methode zum Ändern der Keys und Rechte, Keys werden bei null nicht geändert, Rechte werden nur bei
+	 * null dynamisch geändert (alle beschriebenen Blöcke werden read-only)
+	 * @param intent
 	 * @param sectorIndex
-	 * @param oldKey
-	 * @param newKey
-	 * @throws FsgException 
+	 * @param newKeyA
+	 * @param rights
+	 * @param newKeyB
+	 * @throws FsgException
 	 */
-	public void changeKey(Intent intent, int sectorIndex, byte[] oldKeyA, byte[] newKeyA, byte[] rights, byte[] oldKeyB, byte[] newKeyB) throws FsgException{
+	public void changeKey(Intent intent, int sectorIndex, byte[] newKeyA, byte[] rights, byte[] newKeyB) throws FsgException{
 		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
 			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			MifareClassic tag = MifareClassic.get(tagFromIntent);
 			System.out.println("Changing Key");
+			byte b = Byte.parseByte("");
+			int[] newRights = new int[16];
+			byte Byte6;
+			byte Byte7;
+			byte Byte8;
+			byte Byte9;
 			try {
+				if (newKeyA == null){
+					newKeyA = keyA;
+				}
+				if (newKeyB == null){
+					newKeyB = keyB;
+				}
+				tag.connect();
+				if (rights == null){
+					//rights = defaultRights;
+					if (tag.authenticateSectorWithKeyA(sectorIndex, keyA)){//Im Auslieferungszustand kann nur mit KeyA authentifiziert werden
+						for (int i = 0; i < tag.getBlockCountInSector(sectorIndex); i++){
+							if (!Arrays.equals((tag.readBlock(tag.sectorToBlock(sectorIndex)+i)), new byte[16])){
+								newRights[i] = 1;
+							} else {
+								newRights[i] = 0;
+							}
+						}
+					} else if (tag.authenticateSectorWithKeyB(sectorIndex, keyB)){
+						for (int i = 0; i < tag.getBlockCountInSector(sectorIndex); i++){
+							if (!Arrays.equals((tag.readBlock(tag.sectorToBlock(sectorIndex)+i)), new byte[16])){
+								newRights[i] = 1;
+							} else {
+								newRights[i] = 0;
+							}
+						}
+					}
+					//irgendwie die einzelnen Bytes generieren, passend zu dem Array
+				}
 				String keyString = getHexString(newKeyA, newKeyA.length) + getHexString(rights, rights.length) + getHexString(newKeyB, newKeyB.length);
 				byte[] keyBlock = keyString.getBytes("UTF-8");
+				if (tag.getBlockCountInSector(sectorIndex) == 4){
+					
+				}
+				else if (tag.getBlockCountInSector(sectorIndex) == 16){
+					
+				}
+				tag.close();
 			} catch (UnsupportedEncodingException e1) {
 				e1.printStackTrace();
 				throw new FsgException(e1, this.getClass().toString(), FsgException.CHAR_ENCODE_FAILED);
-			}
-			try {
-				tag.connect();
-				//Unterscheidung zwischen großem und kleinem Sektor (4 vs 16 Blöcke)
-				tag.close();
-			} catch (IOException e) {
+			}	catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
 				System.out.println("Tag writing error!");
 				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
@@ -441,12 +451,20 @@ public class Nfc {
 		}
 	}
 	
-	public void changeAccess(MifareClassic tag, int sectorIndex, byte[] rights){
-		if (tag.isConnected()){
-			//Unterscheidung zwischen großem und kleinem Sektor (4 vs 16 Blöcke)
-			//nur bei geschriebenen Blöcken ändern, nicht bei leeren und nicht bei Key-Blöcken!
-		} else {
-			System.out.println("Tag disconnected!");
+	public void initializeTag(Intent intent) throws FsgException{
+		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
+			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+			MifareClassic tag = MifareClassic.get(tagFromIntent);
+			System.out.println("initializing...");
+			try {
+				tag.connect();
+				
+				tag.close();
+			} catch (Exception e){
+				Log.e(TAG, e.getLocalizedMessage());
+				System.out.println("Tag initializing error!");
+				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
+			}
 		}
 	}
 	
