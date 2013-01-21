@@ -1,6 +1,10 @@
 package de.tubs.cs.ibr.fsg.activities;
 
+import de.tubs.cs.ibr.fsg.Nfc;
+import de.tubs.cs.ibr.fsg.NfcData;
+import de.tubs.cs.ibr.fsg.NfcObject;
 import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,15 +14,18 @@ import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class RunActivityConfirm extends Activity {
+public class RunActivityConfirm extends NfcEnabledActivity {
 
 	private CheckBox check1;
 	private CheckBox check2;
 	
 	private boolean isWaiting;
+
+
+	private Nfc nfc;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_run_confirm);
 		
@@ -35,6 +42,9 @@ public class RunActivityConfirm extends Activity {
 		
 		//init waiting is false
 		this.isWaiting = false;
+		
+		//init an nfc instance
+		nfc = new Nfc(this);
 	}
 	
 	
@@ -146,4 +156,34 @@ public class RunActivityConfirm extends Activity {
     			
     	}
     }
+
+
+	@Override
+	public void executeNfcAction(Intent intent) {
+		// TODO Auto-generated method stub
+		if(!this.isWaiting){
+			//do nothing
+			return;
+		}else{
+			//read the card
+			
+			Intent mIntent = new Intent(this, RunActivityMessage.class);
+			startActivity(mIntent);
+			
+//			try {
+//				nfc.readTag(intent);
+//				NfcObject tagContent = NfcData.interpretData(nfc.getData());
+//				
+//				
+//				
+//			} catch (FsgException e) {
+//				Intent mIntent = new Intent(this, ErrorActivity.class);
+//				mIntent.putExtra("Exception", e);
+//				startActivity(mIntent);
+//				finish();
+//			}
+			
+			
+		}
+	}
 }
