@@ -1,7 +1,6 @@
 package de.tubs.cs.ibr.fsg.activities;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import de.tubs.cs.ibr.fsg.NfcData;
 import de.tubs.cs.ibr.fsg.NfcObject;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.SecurityManager;
-import de.tubs.cs.ibr.fsg.db.DBAdapter;
 import de.tubs.cs.ibr.fsg.db.models.Driver;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
@@ -110,7 +108,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
     public void executeNfcAction(Intent intent) {
 		txtStatus.setText("Band gefunden");
 		try {
-			nfc.readTag(intent);
+			//nfc.readTag(intent);
 			NfcObject tagContent = NfcData.interpretData(nfc.getData());
 			if (tagContent.getDriverObject().getTeamID() == 0) {
 				nfc.writeTag(intent, contentToWrite);
