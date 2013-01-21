@@ -2,10 +2,12 @@ package de.tubs.cs.ibr.fsg.activities;
 
 import de.tubs.cs.ibr.fsg.R;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 public class RunActivityConfirm extends Activity {
 
@@ -16,6 +18,12 @@ public class RunActivityConfirm extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_run_confirm);
+		
+		String title = getIntent().getStringExtra("ActivityName");
+		
+		TextView titleLabel = (TextView) findViewById(R.id.runTitle);
+		titleLabel.setText(title);
+		
 		check1 = (CheckBox) findViewById(R.id.check1);
 		check2 = (CheckBox) findViewById(R.id.check2);
 

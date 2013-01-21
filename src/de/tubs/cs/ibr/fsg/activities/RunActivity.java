@@ -20,20 +20,18 @@ public class RunActivity extends Activity {
      * @param view
      */
     public void onButtonClick(View view){
+    	
+    	Intent intent;
+    	
     	switch (view.getId() ){
     	case R.id.button1:
+
+    		intent = new Intent(this, RunActivityConfirm.class);
+			
+    		intent.putExtra("ActivityName","Acceleration");
+			
+    		startActivity(intent);
     		
-    		startActivity(new Intent(this, RunActivityConfirm.class));
-//    		try {
-//    			//Zum Testen der Fehlermeldung...
-//    			throw new FsgException( new Exception("'Hier ist die UrsprungException"), this.getClass().toString(), FsgException.END_OF_ROAD );
-//    			
-//    		} catch (FsgException e) {
-//    			Intent mIntent = new Intent(this, ErrorActivity.class);
-//    			mIntent.putExtra("Exception", e);
-//    			startActivity(mIntent);
-//    			finish();
-//    		}
     		break;
     	case R.id.button2:
     		try {
