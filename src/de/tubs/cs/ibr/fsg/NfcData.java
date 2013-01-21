@@ -105,6 +105,31 @@ public class NfcData {
 					
 					break;
 					
+				case 50: //RUNS UNDONE
+					runDiscipline	= (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
+					//int tstampr 		= (int) (((inputBlock[i][6]&0xFF) << 32) | ((inputBlock[i][5]&0xFF) << 16) | ((inputBlock[i][4]&0xFF) << 8) | (inputBlock[i][3]&0xFF));
+					//long tstamp2r 		= (Long.parseLong(String.valueOf(tstampr))+tstampConstant)*1000;		
+					
+					//NfcObjectRun newRun = new NfcObjectRun();
+					//newRun.setRaceID(runType);
+					//newRun.setTimestamp(tstamp2r);
+					
+					if (runDiscipline==FsgHelper.RUN_DISCIPLINE_ACCELERATION){
+						short newValue = (short) (outputObject.getAccelerationRuns() - 1);
+						outputObject.setAccelerationRuns(newValue);
+					}else if (runDiscipline==FsgHelper.RUN_DISCIPLINE_SKID_PAD){
+						short newValue = (short) (outputObject.getSkidPadRuns() - 1);
+						outputObject.setSkidPadRuns(newValue);
+					}else if (runDiscipline==FsgHelper.RUN_DISCIPLINE_ENDURANCE){
+						short newValue = (short) (outputObject.getEnduranceRuns() - 1);
+						outputObject.setEnduranceRuns(newValue);
+					}else{
+						short newValue = (short) (outputObject.getAutocrossRuns() - 1);
+						outputObject.setAutocrossRuns(newValue);
+					}
+					
+					break;
+					
 				case 99: //TAG DESTROYED
 					outputObject.clear();
 					
@@ -227,6 +252,9 @@ public class NfcData {
 	
 
 	/**
+	 * Mit Hilfe dieser Methode loggen wir einen Run. Es kann immer nur ein Run geloggt werden.
+	 * Wenn es mehr werden sollen, dann Bitte diese Methode mehrmals aufrufen.
+	 * 
 	 * WICHTIG!!!
 	 * Bitte die Konstanten der Klasse -FsgHelper- fuer den Attribut "runDiscipline" benutzen:
 	 * 
@@ -238,6 +266,28 @@ public class NfcData {
 	public static byte[][] generateRun(short runDiscipline){
 		byte[][] outputBlock = new byte[1][16];
 		byte contentID = 40;
+		int timestamp = makeBetterTimestampNOW();
+		
+		outputBlock[0][0] = contentID;
+		outputBlock[0][1] = (byte)(runDiscipline & 0xff);
+		outputBlock[0][2] = (byte)((runDiscipline >> 8) & 0xff);
+		outputBlock[0][3] = (byte)(timestamp & 0xff);
+		outputBlock[0][4] = (byte)((timestamp >> 8) & 0xff);
+		outputBlock[0][5] = (byte)((timestamp >> 16) & 0xff);
+		outputBlock[0][6] = (byte)((timestamp >> 32) & 0xff);	
+		
+		return outputBlock;
+	}
+	
+	
+	/**
+	 * Mit Hilfe dieser Methode annulieren wir einen Run, wir brauchen nur die Disiplin.
+	 * Es koennen nitch mehrere runs auf ein Mal annuliert werden, wenn es mehr werden sollen, dann
+	 * Bitte diese Methode mehrmals aufrufen.
+	 */
+	public static byte[][] decreaseRun(short runDiscipline){
+		byte[][] outputBlock = new byte[1][16];
+		byte contentID = 50;
 		int timestamp = makeBetterTimestampNOW();
 		
 		outputBlock[0][0] = contentID;

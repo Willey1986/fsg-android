@@ -117,6 +117,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 				FsgException e = new FsgException(null, "RegistrationWriteToTagActivity", FsgException.REGISTRATION_ALREADY_PRESENT);
 				throw e;
 			}
+			onBackPressed();
 		} catch (FsgException e) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
 			mIntent.putExtra("Exception", e);
