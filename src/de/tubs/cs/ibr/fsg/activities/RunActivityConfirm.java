@@ -168,20 +168,29 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 			//read the card
 			
 			Intent mIntent = new Intent(this, RunActivityMessage.class);
-			startActivity(mIntent);
 			
-//			try {
-//				nfc.readTag(intent);
-//				NfcObject tagContent = NfcData.interpretData(nfc.getData());
-//				
-//				
-//				
-//			} catch (FsgException e) {
-//				Intent mIntent = new Intent(this, ErrorActivity.class);
-//				mIntent.putExtra("Exception", e);
-//				startActivity(mIntent);
-//				finish();
-//			}
+			try {
+				nfc.readTag(intent);
+				NfcObject tagContent = NfcData.interpretData(nfc.getData());
+				
+				mIntent.putExtra("showError",false);
+				
+				
+				
+				
+			} catch (FsgException e) {
+				
+				//error type
+				mIntent.putExtra("showError",true);
+				
+				
+				mIntent.putExtra("ErrorMessage",e);
+			}finally{
+				//run title
+				TextView titleLabel = (TextView) findViewById(R.id.runTitle);
+				mIntent.putExtra("runTitle",titleLabel.getText());
+				startActivity(mIntent);
+			}
 			
 			
 		}

@@ -1,39 +1,67 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="20"
     android:background="@drawable/background_red"
-    android:padding="@dimen/grid06"
-    tools:context=".activities.RunActivityMessage" >
+	android:id="@+id/view"
+    android:gravity="center_vertical|center_horizontal" >
 
-    <TextView
-        android:id="@+id/textViewForCenter"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="" />
+<TextView
+    android:id="@+id/textViewForCenter"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:text="" />
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+<TextView
+    android:id="@+id/title"
+        android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
-                android:text="Running"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/button_text_color"
-                android:textSize="@dimen/grid06"  />
+        android:layout_weight="1"
+    android:layout_marginTop="26dp"
+            android:text="Running"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06"  />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="44dp"
-        android:text="TextView"
-        android:textColor="@color/white" />
-    
-</RelativeLayout>
+<TextView
+    android:id="@+id/headTitle"
+    android:layout_width="@dimen/button_width"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dp"
+    android:layout_weight="1"
+    android:text="Genehmigung fehlgeschlagen:"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:textColor="@color/button_text_color"
+    android:textSize="@dimen/grid06" />
+
+<TextView
+    android:id="@+id/textView"
+    android:layout_width="@dimen/button_width"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="18dp"
+    android:layout_weight="1"
+    android:text="Fahrer XY mit ID ABC wurde die Genehmigung fuer das Rennen XY nicht erteilt."
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:textColor="@color/button_text_color"
+    android:textSize="@dimen/grid05" />
+
+
+<Button
+    android:id="@+id/allowButton"
+    android:layout_width="@dimen/button_width"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="17dp"
+    android:layout_marginTop="30dp"
+    android:layout_weight="1"
+    android:text="START trotzdem genehmigen?" />
+<Button
+    android:id="@+id/retryButton"
+    android:layout_width="@dimen/button_width"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="19dp"
+    android:layout_weight="1"
+    android:text="Noch mal scannen" />
+
+</LinearLayout>
