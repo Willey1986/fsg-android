@@ -20,16 +20,18 @@ public class AdminActivity extends Activity {
     
     public void onButtonClick(View view){
     	switch (view.getId() ){
-    	case R.id.button6:
-    		//startActivity(new Intent(this, TransferActivity.class));
+    	case R.id.buttonCopyTag:
+    		//startActivity(new Intent(this, CopyTagActivity.class));
     		break;
-    	case R.id.button7:
-    		//startActivity(new Intent(this, DeleteActivity.class));
+    	case R.id.buttonInvalidateTag:
+    		//startActivity(new Intent(this, InvalidateTagActivity.class));
     		break;
-    	case R.id.button8:
-    		//startActivity(new Intent(this, DeleteOneActivity.class));
+    	case R.id.buttonInvalidateBlock:
+    		//startActivity(new Intent(this, InvalidateBlockActivity.class));
     		break;
-    		
+    	case R.id.buttonConfiguration:
+    		//startActivity(new Intent(this, ConfigurationActivity.class));
+    		break;
     	}
     }
 

@@ -8,48 +8,63 @@
     android:gravity="center_vertical|center_horizontal">
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/buttonCopyTag"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginBottom="@dimen/grid04"
         android:background="@layout/button_selector"
-        android:drawableLeft="@drawable/icon_briefing_in"
+        android:drawableLeft="@drawable/icon_copy_tag"
         android:gravity="left|center_vertical" 
         android:drawablePadding="@dimen/grid04"
         android:paddingLeft="@dimen/grid04"
         android:textColor="@color/button_text_color"
         android:onClick="onButtonClick"
-        android:text="Band übertragen" />
+        android:text="@string/admin_copy_tag" />
     
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/buttonInvalidateTag"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginBottom="@dimen/grid04"
         android:background="@layout/button_selector"
-        android:drawableLeft="@drawable/icon_briefing_out"
+        android:drawableLeft="@drawable/icon_invalidate_tag"
         android:gravity="left|center_vertical" 
         android:drawablePadding="@dimen/grid04"
         android:paddingLeft="@dimen/grid04"
         android:textColor="@color/button_text_color"
         android:onClick="onButtonClick"
-        android:text="Band ungültig machen" />
+        android:text="@string/admin_invalidate_tag" />
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/buttonInvalidateBlock"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginBottom="@dimen/grid04"
         android:background="@layout/button_selector"
-        android:drawableLeft="@drawable/icon_briefing_out"
+        android:drawableLeft="@drawable/icon_invalidate_block"
         android:gravity="left|center_vertical" 
         android:drawablePadding="@dimen/grid04"
         android:paddingLeft="@dimen/grid04"
         android:textColor="@color/button_text_color"
         android:onClick="onButtonClick"
-        android:text="Einzelnen Block ungültig machen" />
+        android:text="@string/admin_invalidate_block" />
+    
+        <Button
+        android:id="@+id/buttonConfiguration"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginBottom="@dimen/grid04"
+        android:background="@layout/button_selector"
+        android:drawableLeft="@drawable/icon_configuration"
+        android:gravity="left|center_vertical" 
+        android:drawablePadding="@dimen/grid04"
+        android:paddingLeft="@dimen/grid04"
+        android:textColor="@color/button_text_color"
+        android:onClick="onButtonClick"
+        android:text="@string/admin_configuration" />
 
 </LinearLayout>
