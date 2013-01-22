@@ -90,16 +90,16 @@ public class NfcData {
 					//newRun.setTimestamp(tstamp2r);
 					
 					if (runDiscipline==FsgHelper.RUN_DISCIPLINE_ACCELERATION){
-						int newValue = outputObject.getAccelerationRuns() + 1;
+						short newValue = (short) (outputObject.getAccelerationRuns() + 1);
 						outputObject.setAccelerationRuns(newValue);
 					}else if (runDiscipline==FsgHelper.RUN_DISCIPLINE_SKID_PAD){
-						int newValue = outputObject.getSkidPadRuns() + 1;
+						short newValue = (short) (outputObject.getSkidPadRuns() + 1);
 						outputObject.setSkidPadRuns(newValue);
 					}else if (runDiscipline==FsgHelper.RUN_DISCIPLINE_ENDURANCE){
-						int newValue = outputObject.getEnduranceRuns() + 1;
+						short newValue = (short) (outputObject.getEnduranceRuns() + 1);
 						outputObject.setEnduranceRuns(newValue);
 					}else{
-						int newValue = outputObject.getAutocrossRuns() + 1;
+						short newValue = (short) (outputObject.getAutocrossRuns() + 1);
 						outputObject.setAutocrossRuns(newValue);
 					}
 					

@@ -1,21 +1,216 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/RelativeLayout1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:padding="@dimen/grid06"
-    android:background="@drawable/background_grey" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_grey"
+    android:orientation="vertical"
+    android:weightSum="7" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textColor="@color/button_text_color"
-        android:gravity="center"
-        android:textSize="@dimen/grid06"
-        android:text="Hier wird alles dargestellt, noch in Arbeit... Gez. BER-Vorstand" />
+    <View
+        android:id="@+id/infoTerminalDriverPic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/helmet100x100"
+        android:gravity="center" />
 
+    <View
+        android:layout_width="500dp"
+        android:layout_height="1dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.2"
+        android:background="@color/button_text_color"
+        android:gravity="center" />
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/linearLayoutLastname"
+        android:layout_width="500dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.71"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textViewLastname1"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/infoTerminalName"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+
+        <TextView
+            android:id="@+id/textViewLastname2"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:text="Mustermann Westerhagen"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutFirstname"
+        android:layout_width="500dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.71"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textViewFirstname1"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/infoTerminalFirstname"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+
+        <TextView
+            android:id="@+id/textViewFirstname2"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:text="Wilson Gonzales"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="500dp"
+        android:layout_height="1dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.2"
+        android:background="@color/button_text_color"
+        android:gravity="center" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutBriefring"
+        android:layout_width="500dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.71"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textViewBriefring1"
+            android:layout_width="392dp"
+            android:layout_height="wrap_content"
+            android:text="@string/infoTerminalBriefing"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+
+        <View
+            android:id="@+id/infoTerminalBriefingIcon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/icon_briefing_out" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutAccelerationRuns"
+        android:layout_width="500dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.71"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textViewAccelerationRuns1"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:text="@string/infoTerminalAcceleration"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+
+        <TextView
+            android:id="@+id/textViewAccelerationRuns2"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="9"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutEnduranceRuns"
+        android:layout_width="500dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.71"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textViewEnduranceRuns1"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:text="@string/infoTerminalEndurance"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+
+        <TextView
+            android:id="@+id/textViewEnduranceRuns2"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="9"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutSkidPadRuns"
+        android:layout_width="500dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.71"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textViewSkidPadRuns1"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:text="@string/infoTerminalSkidPad"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+
+        <TextView
+            android:id="@+id/textViewSkidPadRuns2"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="9"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutAutocrossRuns"
+        android:layout_width="500dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.71"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textViewAutocrossRuns1"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:text="@string/infoTerminalAutocross"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+
+        <TextView
+            android:id="@+id/textViewAutocrossRuns2"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="9"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid06" />
+    </LinearLayout>
+
+</LinearLayout>

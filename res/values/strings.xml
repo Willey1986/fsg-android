@@ -44,14 +44,10 @@
 
     <string name="error_empy_choice">Bitte wählen Sie mindestens einen Datensatz aus!</string>
     <string name="error_tag_wrong_key_or_format">Tag-Lesefehler. Mögliche Ursachen: der Key ist falsch oder der Tag ist falsch formatiert (z.B. mit dem NDEF-Format).</string>
-    <string name="error_receiving_bundle">Fehler beim Empfangen eines IBR-DTN-Bündels.</string>
- <!-- Wird beim IBR-DTN-Service benutzt -->
-    <string name="error_sending_bundle">Fehler beim Senden eines IBR-DTN-Bündels.</string>
- <!-- Wird beim IBR-DTN-Service benutzt -->
-    <string name="error_not_ibr_dtn">IBR-DTN-Daemon inaktiv. Bitte starten Sie ihn (ggf. installieren).</string>
- <!-- Wird beim IBR-DTN-Service benutzt -->
-    <string name="error_security_exception">"Permission"-Fehler. Deinstallieren und installieren Sie die App erneut!</string>
- <!-- Wird beim IBR-DTN-Service benutzt -->
+    <string name="error_receiving_bundle">Fehler beim Empfangen eines IBR-DTN-Bündels.</string><!-- Wird beim IBR-DTN-Service benutzt -->
+    <string name="error_sending_bundle">Fehler beim Senden eines IBR-DTN-Bündels.</string><!-- Wird beim IBR-DTN-Service benutzt -->
+    <string name="error_not_ibr_dtn">IBR-DTN-Daemon inaktiv. Bitte starten Sie ihn (ggf. installieren).</string><!-- Wird beim IBR-DTN-Service benutzt -->
+    <string name="error_security_exception">"Permission"-Fehler. Deinstallieren und installieren Sie die App erneut!</string><!-- Wird beim IBR-DTN-Service benutzt -->
     <string name="error_end_of_road">Tut uns Leid, hier wird noch gebaut. ;-)</string>
     <string name="ok">OK</string>
 
@@ -87,7 +83,14 @@
 
     <!-- InfoTerminal-Activity Strings -->
 	<string name="infoTerminalTryAgain">Fehler beim Lesen, bitte probieren Sie es erneut.</string>
-	<string name="infoTerminalReading">Das Fahrerarmband wird gelesen, bitte nicht entfernen.</string>
+	<string name="infoTerminalReading">Das Fahrerarmband wird gelesen.\nBitte nicht entfernen.</string>
+	<string name="infoTerminalName">Nachname:</string>
+	<string name="infoTerminalFirstname">Vorname:</string>
+	<string name="infoTerminalBriefing">Briefing heute besucht:</string>
+	<string name="infoTerminalAcceleration">Acceleration runs:</string>
+	<string name="infoTerminalEndurance">Endurance runs:</string>
+	<string name="infoTerminalSkidPad">Skid pad runs:</string>
+	<string name="infoTerminalAutocross">Autocross runs:</string>
 
     <!-- Version-Activity Strings -->
     <string name="version_title">Datenversionsübersicht</string>

@@ -13,10 +13,10 @@ import android.os.Parcelable;
 public class NfcObject implements Parcelable{
 	private short eventID;	
 	private Driver driverObject;
-	private int accelerationRuns;
-	private int skidPadRuns;
-	private int autocrossRuns;
-	private int enduranceRuns;
+	private short accelerationRuns;
+	private short skidPadRuns;
+	private short autocrossRuns;
+	private short enduranceRuns;
 	private ArrayList<NfcObjectBriefing> briefings;
 
 
@@ -130,35 +130,35 @@ public class NfcObject implements Parcelable{
 	
 
 
-	public int getAccelerationRuns() {
+	public short getAccelerationRuns() {
 		return accelerationRuns;
 	}
 
-	public void setAccelerationRuns(int accelerationRuns) {
+	public void setAccelerationRuns(short accelerationRuns) {
 		this.accelerationRuns = accelerationRuns;
 	}
 
-	public int getSkidPadRuns() {
+	public short getSkidPadRuns() {
 		return skidPadRuns;
 	}
 
-	public void setSkidPadRuns(int skidPadRuns) {
+	public void setSkidPadRuns(short skidPadRuns) {
 		this.skidPadRuns = skidPadRuns;
 	}
 
-	public int getAutocrossRuns() {
+	public short getAutocrossRuns() {
 		return autocrossRuns;
 	}
 
-	public void setAutocrossRuns(int autocrossRuns) {
+	public void setAutocrossRuns(short autocrossRuns) {
 		this.autocrossRuns = autocrossRuns;
 	}
 
-	public int getEnduranceRuns() {
+	public short getEnduranceRuns() {
 		return enduranceRuns;
 	}
 
-	public void setEnduranceRuns(int enduranceRuns) {
+	public void setEnduranceRuns(short enduranceRuns) {
 		this.enduranceRuns = enduranceRuns;
 	}
 
@@ -177,10 +177,10 @@ public class NfcObject implements Parcelable{
 		parcel.writeTypedList(briefings );
 		parcel.writeSerializable(driverObject );
 		parcel.writeString(String.valueOf(eventID) );
-		parcel.writeInt(accelerationRuns);
-		parcel.writeInt(skidPadRuns);
-		parcel.writeInt(autocrossRuns);
-		parcel.writeInt(enduranceRuns);
+		parcel.writeString(String.valueOf(accelerationRuns));
+		parcel.writeString(String.valueOf(skidPadRuns));
+		parcel.writeString(String.valueOf(autocrossRuns));
+		parcel.writeString(String.valueOf(enduranceRuns));
 
 	}
 	
@@ -207,10 +207,10 @@ public class NfcObject implements Parcelable{
     	mParcel.readTypedList(briefings, NfcObjectBriefing.CREATOR);
     	driverObject = (Driver)mParcel.readSerializable();
     	eventID = Short.valueOf(mParcel.readString());
-    	accelerationRuns = mParcel.readInt();
-    	skidPadRuns = mParcel.readInt();
-    	autocrossRuns = mParcel.readInt();
-    	enduranceRuns = mParcel.readInt();
+    	accelerationRuns = Short.valueOf(mParcel.readString());
+    	skidPadRuns = Short.valueOf(mParcel.readString());
+    	autocrossRuns = Short.valueOf(mParcel.readString());
+    	enduranceRuns = Short.valueOf(mParcel.readString());
     	
     }
 	

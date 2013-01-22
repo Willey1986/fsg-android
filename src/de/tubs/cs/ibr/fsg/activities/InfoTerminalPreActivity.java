@@ -7,6 +7,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import de.tubs.cs.ibr.fsg.Nfc;
 import de.tubs.cs.ibr.fsg.NfcData;
@@ -19,6 +20,7 @@ public class InfoTerminalPreActivity extends NfcEnabledActivity {
 
 	private Nfc nfc;
 	private SecurityManager scm;
+	private final static String TAG = "InfoTerminalPreActivity";
 
 	@Override
 	public void executeNfcAction(Intent intent) {
@@ -39,7 +41,20 @@ public class InfoTerminalPreActivity extends NfcEnabledActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_info_terminal_pre);
+		Log.i(TAG, "activity created.");
 	}
+
+
+
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		TextView msgToUser = (TextView) findViewById(R.id.infoPreNearTextView);
+		Resources res = getResources();
+		msgToUser.setText(res.getString(R.string.wristband_near));
+	}
+
+
 
 	private class NfcOperation extends AsyncTask<Intent, Integer, NfcObject> {
 
@@ -100,9 +115,9 @@ public class InfoTerminalPreActivity extends NfcEnabledActivity {
 				mIntent.putExtra("nfc_object", mNfcObject);
 				mIntent.putExtra(NfcAdapter.EXTRA_TAG, tagFromIntent);
 				
-				TextView msgToUser = (TextView) findViewById(R.id.infoPreNearTextView);
-				Resources res = getResources();
-				msgToUser.setText(res.getString(R.string.wristband_near));
+//				TextView msgToUser = (TextView) findViewById(R.id.infoPreNearTextView);
+//				Resources res = getResources();
+//				msgToUser.setText(res.getString(R.string.wristband_near));
 				
 				startActivity(mIntent);
 			}

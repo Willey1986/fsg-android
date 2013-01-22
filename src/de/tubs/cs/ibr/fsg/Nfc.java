@@ -52,17 +52,17 @@ public class Nfc {
 	/**
 	 * Key A für Mifare Classic
 	 */
-	private byte[] keyA = null;
+	private byte[] keyA = MifareClassic.KEY_DEFAULT;
 	
 	/**
 	 * Key B für Mifare Classic
 	 */	
-	private byte[] keyB = null;
+	private byte[] keyB = MifareClassic.KEY_DEFAULT;
 	
 	/**
 	 * Default Rechte eines Sektors
 	 */
-	private byte[] defaultRights = {(byte) 'F', (byte) 'F', (byte) '0', (byte) 'F', (byte) '0', (byte) '0'};
+	private byte[] defaultRights = {(byte) '0', (byte) 'F', (byte) '0', (byte) '0', (byte) 'F', (byte) 'F', (byte) '0', (byte) '0'};
 	
 	/**
 	 * Erster Block des zuletzt gelesenen Tags, enthält die eindeutige ID des Tags
@@ -74,19 +74,15 @@ public class Nfc {
 	 * @param context
 	 */
 	public Nfc(Context context){
-		//Key auslesen und in Variable  speichern!
-		this.keyA = MifareClassic.KEY_DEFAULT;
-		this.keyB = MifareClassic.KEY_DEFAULT;
+		//TODO: Key auslesen und in Variable  speichern!
+		//keyA = 
+		//keyB = 
 	}
 	
 	/**
 	 * Speichern des Tag-Inhalts
 	 * @param cardData
-	 */
-//	private void setData(String cardData){
-//		memoryContent = cardData;
-//	}
-	
+	 */	
 	private void setData(byte[][] cardData){
 		memoryContent = cardData;
 	}
@@ -111,13 +107,17 @@ public class Nfc {
 	}
 	
 	private void setKeyA(byte[] newKeyA){
-		this.keyA = newKeyA;
-		//außerdem in Preferences abspeichern
+		if (keyA != newKeyA){
+			keyA = newKeyA;
+			//TODO: außerdem in Preferences abspeichern
+		}
 	}
 	
 	private void setKeyB(byte[] newKeyB){
-		this.keyB = newKeyB;
-		//außerdem in Preferences abspeichern
+		if (keyB != newKeyB){
+			keyB = newKeyB;
+			//TODO: außerdem in Preferences abspeichern
+		}
 	}
 	
 	/**
@@ -243,10 +243,16 @@ public class Nfc {
 				for (int i = 1; i < tag.getBlockCount(); i++){
 					if (tag.authenticateSectorWithKeyA(tag.blockToSector(i), keyA)){
 						data = tag.readBlock(i);
-						if ((!Arrays.equals(data, keyBlock)) && (!Arrays.equals(data, emptyBlock))){ //übergeht die Key-Blöcke beim Lesen, setzt voraus, dass alle Key-Blöcke gleich aussehen!
+						// Sobald der erste leere Block erreicht wird, wird die Schleife verlassen.
+						if(Arrays.equals(data, emptyBlock)){ 
+							break;
+						}
+						// Key-Blöcke werden im Ergebnis Array nicht gespeichert. Setzt voraus, dass alle Key-Blöcke gleich aussehen!
+						if (!Arrays.equals(data, keyBlock)){ 
 							content[i] = data;
 						}
-						//cardData[tag.blockToSector(i)] += getHexString(data, data.length);
+						
+						
 					}
 				}
 				if (content != null){
@@ -394,12 +400,7 @@ public class Nfc {
 			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			MifareClassic tag = MifareClassic.get(tagFromIntent);
 			System.out.println("Changing Key");
-			byte b = Byte.parseByte("");
-			int[] newRights = new int[16];
-			byte Byte6;
-			byte Byte7;
-			byte Byte8;
-			byte Byte9;
+			
 			try {
 				if (newKeyA == null){
 					newKeyA = keyA;
@@ -407,37 +408,71 @@ public class Nfc {
 				if (newKeyB == null){
 					newKeyB = keyB;
 				}
-				tag.connect();
-				if (rights == null){
-					//rights = defaultRights;
-					if (tag.authenticateSectorWithKeyA(sectorIndex, keyA)){//Im Auslieferungszustand kann nur mit KeyA authentifiziert werden
-						for (int i = 0; i < tag.getBlockCountInSector(sectorIndex); i++){
-							if (!Arrays.equals((tag.readBlock(tag.sectorToBlock(sectorIndex)+i)), new byte[16])){
-								newRights[i] = 1;
-							} else {
-								newRights[i] = 0;
+				tag.connect();		
+				if (rights == null){//alle beschriebenen Blöcke werden read-only gesetzt
+					rights = new byte[tag.getBlockCountInSector(sectorIndex)];
+					if (tag.getBlockCountInSector(sectorIndex) == 4){
+						if (tag.authenticateSectorWithKeyB(sectorIndex, keyB)){
+							for (int i = 0; i < tag.getBlockCountInSector(sectorIndex); i++){
+								if (!Arrays.equals((tag.readBlock(tag.sectorToBlock(sectorIndex)+i)), new byte[16])){
+									rights = setReadOnly(rights, i);
+								} else {
+									rights = setReadWrite(rights, i);
+								}
+									
 							}
-						}
-					} else if (tag.authenticateSectorWithKeyB(sectorIndex, keyB)){
-						for (int i = 0; i < tag.getBlockCountInSector(sectorIndex); i++){
-							if (!Arrays.equals((tag.readBlock(tag.sectorToBlock(sectorIndex)+i)), new byte[16])){
-								newRights[i] = 1;
+						} else {
+							//falls KeyA: nicht read-only und Key B darf alles
+							if (sectorIndex != 0){
+								rights = setReadWrite(rights, 0);
+								rights = setReadWrite(rights, 1);
+								rights = setReadWrite(rights, 2);
+								rights = setReadOnly(rights, 3);
 							} else {
-								newRights[i] = 0;
+								rights = setReadOnly(rights, 0);//bei SectorIndex 0, darf Block 0 nicht rw sein, nur read-only
+								rights = setReadWrite(rights, 1);
+								rights = setReadWrite(rights, 2);
+								rights = setReadOnly(rights, 3);
 							}
+								
 						}
 					}
-					//irgendwie die einzelnen Bytes generieren, passend zu dem Array
+					if (tag.getBlockCountInSector(sectorIndex) == 16){
+						if (tag.authenticateSectorWithKeyB(sectorIndex, keyB)){//Abfrage, alle 5 Blöcke müssen beschrieben sein
+							for (int i = 0; i < tag.getBlockCountInSector(sectorIndex); i=i+5){
+								boolean broken = false;
+								for (int j = i; (j < i+5) && (j < tag.getBlockCountInSector(sectorIndex)); j++){
+									if (Arrays.equals((tag.readBlock(tag.sectorToBlock(sectorIndex)+j)), new byte[16])){
+										broken = true;
+										break;
+									}
+								}//!broken bedeutet, Schleife wurde nicht abgebrochen, d.h. alle Blöcke sind beschrieben
+								if (!broken){//i ist entweder 0, 5, 10 oder 15
+									rights = setReadOnly(rights, i%4); //i%4 ist also 0, 1, 2 oder 3
+								} else {
+									rights = setReadWrite(rights, i%4);
+								}
+							}
+						} else {
+							//falls KeyA: read-write und Key B darf alles
+							rights = setReadWrite(rights, 0);
+							rights = setReadWrite(rights, 1);
+							rights = setReadWrite(rights, 2);
+							rights = setReadOnly(rights, 3);
+						}
+					}
 				}
 				String keyString = getHexString(newKeyA, newKeyA.length) + getHexString(rights, rights.length) + getHexString(newKeyB, newKeyB.length);
 				byte[] keyBlock = keyString.getBytes("UTF-8");
-				if (tag.getBlockCountInSector(sectorIndex) == 4){
-					
+				if (tag.authenticateSectorWithKeyB(sectorIndex, keyB)){
+					tag.writeBlock(tag.sectorToBlock(sectorIndex)+tag.getBlockCountInSector(sectorIndex)-1, keyBlock);
+				} else if (tag.authenticateSectorWithKeyA(sectorIndex, keyA)){
+					tag.writeBlock(tag.sectorToBlock(sectorIndex)+tag.getBlockCountInSector(sectorIndex)-1, keyBlock);
 				}
-				else if (tag.getBlockCountInSector(sectorIndex) == 16){
-					
-				}
+				System.out.println("Key changed!");
 				tag.close();
+				setKeyA(newKeyA);
+				setKeyB(newKeyB);
 			} catch (UnsupportedEncodingException e1) {
 				e1.printStackTrace();
 				throw new FsgException(e1, this.getClass().toString(), FsgException.CHAR_ENCODE_FAILED);
@@ -451,21 +486,117 @@ public class Nfc {
 		}
 	}
 	
+	/**
+	 * Initialisieren des Tags für Benutzung mit KeyB
+	 * @param intent
+	 * @throws FsgException
+	 */
 	public void initializeTag(Intent intent) throws FsgException{
-		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
-			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-			MifareClassic tag = MifareClassic.get(tagFromIntent);
-			System.out.println("initializing...");
-			try {
-				tag.connect();
-				
-				tag.close();
-			} catch (Exception e){
-				Log.e(TAG, e.getLocalizedMessage());
-				System.out.println("Tag initializing error!");
-				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY);
-			}
+		for (int i = 0; i < 40; i++) {
+			changeKey(intent, i, null, null, null);
 		}
+	}
+	
+	private byte[] setReadOnly(byte[] oldRights, int i){
+		byte Byte6 = oldRights[0];
+		byte Byte7 = oldRights[1];
+		byte Byte8 = oldRights[2];
+		byte Byte9 = oldRights[3];
+		switch(i){
+		case 0: {
+			Byte6 = setBit(Byte6, 0);
+			Byte6 = flipBit(Byte6, 0);
+			Byte6 = flipBit(Byte6, 4);
+			Byte7 = setBit(Byte7, 0);	
+			Byte7 = flipBit(Byte7, 0);
+			Byte7 = setBit(Byte7, 4);
+			Byte8 = setBit(Byte8, 4);
+			break;
+		}
+		case 1: {
+			Byte6 = setBit(Byte6, 1);
+			Byte6 = flipBit(Byte6, 1);
+			Byte6 = flipBit(Byte6, 5);
+			Byte7 = setBit(Byte6, 1);
+			Byte7 = flipBit(Byte6, 1);
+			Byte7 = setBit(Byte7, 5);
+			Byte8 = setBit(Byte8, 5);
+			break;
+		}
+		case 2: {
+			Byte6 = setBit(Byte6, 2);
+			Byte6 = flipBit(Byte6, 2);
+			Byte6 = flipBit(Byte6, 6);
+			Byte7 = setBit(Byte6, 2);
+			Byte7 = flipBit(Byte6, 2);
+			Byte7 = setBit(Byte7, 6);
+			Byte8 = setBit(Byte8, 6);
+			break;
+		}
+		case 3: {//SectorTrailer
+			Byte6 = flipBit(Byte6, 3);
+			Byte6 = setBit(Byte6, 7);
+			Byte6 = flipBit(Byte6, 7);
+			Byte7 = setBit(Byte7, 3);
+			Byte7 = flipBit(Byte7, 3);
+			Byte8 = setBit(Byte8, 3);
+			Byte8 = setBit(Byte8, 7);
+			break;
+		}
+		}
+		byte[] newRights = {Byte6, Byte7, Byte8, Byte9};
+		return newRights;
+	}
+	
+	private byte[] setReadWrite(byte[] oldRights, int i){
+		byte Byte6 = oldRights[0];
+		byte Byte7 = oldRights[1];
+		byte Byte8 = oldRights[2];
+		byte Byte9 = oldRights[3];
+		switch(i){//Blöcke
+		case 0: {
+			Byte6 = flipBit(Byte6, 0);
+			Byte6 = setBit(Byte6, 4);
+			Byte6 = flipBit(Byte6, 4);
+			Byte7 = setBit(Byte7, 0);	
+			Byte7 = flipBit(Byte7, 0);
+			Byte8 = setBit(Byte8, 0);
+			Byte8 = setBit(Byte8, 4);
+			break;
+		}
+		case 1: {
+			Byte6 = flipBit(Byte6, 1);
+			Byte6 = setBit(Byte6, 5);
+			Byte6 = flipBit(Byte6, 5);
+			Byte7 = setBit(Byte7, 1);	
+			Byte7 = flipBit(Byte7, 1);
+			Byte8 = setBit(Byte8, 1);
+			Byte8 = setBit(Byte8, 5);
+			break;
+		}
+		case 2: {
+			Byte6 = flipBit(Byte6, 2);
+			Byte6 = setBit(Byte6, 6);
+			Byte6 = flipBit(Byte6, 6);
+			Byte7 = setBit(Byte7, 2);	
+			Byte7 = flipBit(Byte7, 2);
+			Byte8 = setBit(Byte8, 2);
+			Byte8 = setBit(Byte8, 6);
+			break;
+		}
+		case 3: {//SectorTrailer
+			Byte6 = flipBit(Byte6, 3);
+			Byte6 = setBit(Byte6, 7);
+			Byte6 = flipBit(Byte6, 7);
+			Byte7 = setBit(Byte7, 3);
+			Byte7 = flipBit(Byte7, 3);
+			Byte8 = setBit(Byte8, 3);
+			Byte8 = setBit(Byte8, 7);
+			break;
+		}
+		}
+		byte[] newRights = {Byte6, Byte7, Byte8, Byte9};
+		return newRights;
 	}
 	
 	/**
@@ -622,7 +753,6 @@ public class Nfc {
 		for (byte b : raw) {
 			if (pos >= len)
 				break;
-
 			pos++;
 			int v = b & 0xFF;
 			hex[index++] = HEX_CHAR_TABLE[v >>> 4];
@@ -630,6 +760,14 @@ public class Nfc {
 		}
 
 		return new String(hex);
+	}
+	
+	private byte setBit( byte n, int pos ){
+		return (byte) (n | (1 << pos));
+	}
+	
+	private byte flipBit( byte n, int pos ){
+	  return (byte) (n ^ (1 << pos));
 	}
 	
 	/**

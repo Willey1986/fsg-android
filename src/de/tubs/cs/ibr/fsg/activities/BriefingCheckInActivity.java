@@ -9,8 +9,12 @@ import android.nfc.NfcAdapter;
 import android.nfc.tech.MifareClassic;
 import android.os.Bundle;
 import android.util.Log;
+import de.tubs.cs.ibr.fsg.FsgHelper;
 import de.tubs.cs.ibr.fsg.Nfc;
+import de.tubs.cs.ibr.fsg.NfcData;
+import de.tubs.cs.ibr.fsg.NfcObject;
 import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.db.DBAdapter;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class BriefingCheckInActivity extends NfcEnabledActivity { //NfcEnabledActivity
@@ -100,18 +104,18 @@ public class BriefingCheckInActivity extends NfcEnabledActivity { //NfcEnabledAc
 		super.onResume();
 	}
 
-	@Override
-	public void onNewIntent(Intent intent) {
-		Log.i("Foreground dispatch", "Discovered tag with intent: " + intent);
-		try {
-			nfc.resolveIntent(intent);
-		} catch (FsgException e) {
-			Intent mIntent = new Intent(this, ErrorActivity.class);
-			mIntent.putExtra("Exception", e);
-			Log.e(TAG, e.toString());
-			startActivity(mIntent);
-		}
-	}
+//	@Override
+//	public void onNewIntent(Intent intent) {
+//		Log.i("Foreground dispatch", "Discovered tag with intent: " + intent);
+//		try {
+//			nfc.resolveIntent(intent);
+//		} catch (FsgException e) {
+//			Intent mIntent = new Intent(this, ErrorActivity.class);
+//			mIntent.putExtra("Exception", e);
+//			Log.e(TAG, e.toString());
+//			startActivity(mIntent);
+//		}
+//	}
 
 	@Override
 	public void onPause() {	
@@ -139,7 +143,32 @@ public class BriefingCheckInActivity extends NfcEnabledActivity { //NfcEnabledAc
 
 	@Override
 	public void executeNfcAction(Intent intent) {
-		// TODO Auto-generated method stub
+		try {
+			//nfc.resolveIntent(intent);
+			System.out.println("Checking In...");
+			nfc.readTag(intent);
+			NfcObject checkInObject = NfcData.interpretData(nfc.getData());
+			short driverID = checkInObject.getDriverObject().getDriverID();
+			DBAdapter database = new DBAdapter(this);
+			database.open();
+			if (!database.isTagBlacklisted(nfc.getTagID())){//Tag geblacklistet?
+				if (!database.getDriver(driverID).equals(null)){ //Wenn der Fahrer in der DB existiert
+					database.writeCheckIn(checkInObject.getDriverObject().getDriverID());
+				} else {
+					//Fahrer in DB schreiben?
+				}
+			}
+			if (database.isCheckedIn(driverID)){
+				System.out.println("Checked In, writing Tag...");
+				nfc.writeTag(intent, NfcData.generateCheckIN(FsgHelper.generateIdForTodaysBriefing()));
+			}
+			database.close();
+		} catch (FsgException e) {
+			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("Exception", e);
+			Log.e(TAG, e.toString());
+			startActivity(mIntent);
+		}
 		
 	}
 }
