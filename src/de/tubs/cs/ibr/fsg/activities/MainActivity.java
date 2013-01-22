@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
        dba = new DBAdapter(this);
+       
     }
        
         public boolean onCreateOptionsMenu(Menu menu) {
@@ -49,6 +50,7 @@ public class MainActivity extends Activity {
 		    		break;
 		    	case R.id.miRegInsertDummyData:
 		    		dba.open();
+		    		dba.isTagBlacklisted("sdfsdf");
 					dba.writeSampleData();
 					return true;
 				case R.id.showDataVersion:

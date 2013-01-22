@@ -64,7 +64,7 @@ public class ErrorActivity extends Activity {
     	case FsgException.REGISTRATION_ALREADY_PRESENT:
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
     		res = getResources();
-        	userText.setText(res.getString(R.string.error_registration_already_present));
+        	userText.setText(R.string.error_registration_already_present);
         	this.mCase = FsgException.REGISTRATION_ALREADY_PRESENT;
     		break;
     	case FsgException.END_OF_ROAD:

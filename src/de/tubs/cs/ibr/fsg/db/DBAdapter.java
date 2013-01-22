@@ -12,6 +12,7 @@ import de.tubs.cs.ibr.fsg.db.models.*;
 import android.content.*;
 import android.database.*;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class DBAdapter {
 	
@@ -401,13 +402,8 @@ public class DBAdapter {
 	 * @return Tag geblacklisted oder nicht
 	 */
 	public boolean isTagBlacklisted(String TagID) {
-		Cursor result = database.query(DBHelper.TABLE_BLACKLISTED_TAGS, 
-				new String[] {DBHelper.BLACKLISTED_TAGS_COLUMN_TAG_ID}, 
-				DBHelper.BLACKLISTED_TAGS_COLUMN_TAG_ID + "=" + TagID, 
-				null, 
-				null, 
-				null, 
-				null);
+		String sql = "SELECT * FROM " + DBHelper.TABLE_BLACKLISTED_TAGS + " WHERE " + DBHelper.BLACKLISTED_TAGS_COLUMN_TAG_ID + "='" + TagID + "';";
+		Cursor result = rawQuery(sql);
 		if (result.moveToFirst()) {
 			return true;
 		} else {
