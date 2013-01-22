@@ -22,7 +22,7 @@ public class NfcData {
 		
 		//read out the complete inputArray
 		for(int i=0;i<inputBlock.length;i++){
-				//System.out.println("ContentID: "+Byte.toString(inputBlock[i][0]));
+				System.out.println("ContentID: "+Byte.toString(inputBlock[i][0]));
 			
 			switch(inputBlock[i][0]){
 				case 10: //Registrierungsdaten IDs

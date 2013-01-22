@@ -18,9 +18,7 @@ public class FsgException extends Exception{
 	public static final int CHAR_DECODE_FAILED	= 12;
 	public static final int REGISTRATION_ALREADY_PRESENT = 13;
 	public static final int TAG_WRONG_KEY_OR_FORMAT      = 14;
-	
-	
-	
+	public static final int TAG_EMPTY = 15;
 	
 	/*
 	 * DB-Exceptions 
