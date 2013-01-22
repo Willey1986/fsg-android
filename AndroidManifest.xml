@@ -32,9 +32,6 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-         <!--    <intent-filter>
-                <action android:name="android.nfc.action.TECH_DISCOVERED" />
-            </intent-filter>   -->
 
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"
@@ -97,21 +94,6 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:label="@string/title_activity_data_version"
             android:noHistory="true" >
         </activity>
-
-        <service android:name=".dtn.DTNService" >
-        </service> <!-- android:process=".fsg_service" -->
-
-        <receiver
-            android:name=".dtn.DTNReceiver"
-            android:enabled="true" >
-            <intent-filter>
-                <action android:name="de.tubs.ibr.dtn.intent.RECEIVE" />
-
-                <category android:name="de.tubs.cs.ibr.fsg" />
-            </intent-filter>
-        </receiver>
-
-
         <activity
             android:name=".activities.UpdateRequestActivity"
             android:icon="@drawable/ic_launcher"
@@ -123,9 +105,18 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:icon="@drawable/icon_register"
             android:label="@string/title_activity_registration_write_to_tag" >
         </activity>
+        <activity
+            android:name=".activities.RunActivityConfirm"
+            android:icon="@drawable/icon_run">
+        </activity>
+        <activity
+            android:name=".activities.RunActivityMessage"
+            android:icon="@drawable/icon_run">
+        </activity>
 
-
-        <service android:name=".dtn.DTNService" android:process=".fsg_service">
+        <service
+            android:name=".dtn.DTNService"
+            android:process=".fsg_service">
         </service>
 
         <receiver
@@ -133,13 +124,10 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:enabled="true" >
             <intent-filter>
                 <action android:name="de.tubs.ibr.dtn.intent.RECEIVE" />
-
                 <category android:name="de.tubs.cs.ibr.fsg" />
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activities.RunActivityConfirm" >
-        </activity>
     </application>
 
 </manifest>

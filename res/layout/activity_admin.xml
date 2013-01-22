@@ -50,6 +50,6 @@
         android:paddingLeft="@dimen/grid04"
         android:textColor="@color/button_text_color"
         android:onClick="onButtonClick"
-        android:text="Einzl. Block ungültig machen" />
+        android:text="Einzelnen Block ungültig machen" />
 
 </LinearLayout>

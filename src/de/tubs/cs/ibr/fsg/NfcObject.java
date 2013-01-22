@@ -214,6 +214,19 @@ public class NfcObject implements Parcelable{
     	
     }
 	
+    
+    /**
+     * Mit Hilfe dieser Methode bekommen wir die Daten eines Tags in JSON-Format.
+     * 
+     * @return Alle Daten in JSON-Format, die auf einem Tag geschrieben sind.
+     */
+    public String getJSONData(){
+    	String result = "TODO";
+    	
+    	//TODO Das hier muss mit Leben gefuellt werden
+    	
+    	return result;
+    }
 	
 	
 	

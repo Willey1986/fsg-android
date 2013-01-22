@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class AdminActivity extends Activity {
 
@@ -15,6 +16,21 @@ public class AdminActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+    }
+    
+    public void onButtonClick(View view){
+    	switch (view.getId() ){
+    	case R.id.button6:
+    		startActivity(new Intent(this, TransferActivity.class));
+    		break;
+    	case R.id.button7:
+    		startActivity(new Intent(this, DeleteActivity.class));
+    		break;
+    	case R.id.button8:
+    		startActivity(new Intent(this, DeleteOneActivity.class));
+    		break;
+    		
+    	}
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -31,6 +47,8 @@ public class AdminActivity extends Activity {
     	}
     	
     	return true;
+    	
+    	
     }
         
 }

@@ -120,6 +120,9 @@ public class InfoTerminalPreActivity extends NfcEnabledActivity {
 //				msgToUser.setText(res.getString(R.string.wristband_near));
 				
 				startActivity(mIntent);
+				TextView msgToUser = (TextView) findViewById(R.id.infoPreNearTextView);
+				Resources res = getResources();
+				msgToUser.setText(res.getString(R.string.wristband_near));
 			}
 		}
 
@@ -129,10 +132,15 @@ public class InfoTerminalPreActivity extends NfcEnabledActivity {
 
 		@Override
 		protected void onProgressUpdate(Integer... values) {
-			if (values[0] == 1) {
-				Resources res = getResources();
-				this.msgToUser.setText(res.getString(R.string.wristband_near));
+			try {
+				if (values[0] == 1) {
+					Resources res = getResources();
+					this.msgToUser.setText(res.getString(R.string.wristband_near));
+				}
+			} catch (Exception e) {
+				// Nichts tun, kommt vor, wenn die Karte entnommen wurde.
 			}
+
 		}
 	}
 
