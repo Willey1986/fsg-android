@@ -107,7 +107,8 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
         </activity>
         <activity
             android:name=".activities.RunActivityConfirm"
-            android:icon="@drawable/icon_run">
+            android:icon="@drawable/icon_run"
+            android:noHistory="true">
         </activity>
         <activity
             android:name=".activities.RunActivityMessage"
