@@ -1,113 +1,47 @@
-
-    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@drawable/background_grey"
-        android:columnCount="1"
-        android:padding="@dimen/grid06" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_column="0"
-            android:layout_gravity="left|top"
-            android:layout_row="0"
-            android:orientation="vertical"
-            android:weightSum="20" >
-
-            <TextView
-                android:id="@+id/runTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/grid03"
-                android:layout_weight="8.79"
-                android:text="@string/main_activity_button_4"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/button_text_color"
-                android:textSize="@dimen/grid06" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-      			android:layout_marginTop="30dp"
-                android:layout_marginBottom="18dp"
-                android:text="@string/which_run"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/button_text_color" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout2"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_grey"
+    android:gravity="top|center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/grid04" >
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
+        android:id="@+id/txtRunInfo"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/run_scan_wait"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/white"
-        android:visibility="invisible" />
-    
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="8.79" >
+        android:text="@string/txtRunInfo"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid06" />
 
-                <CheckBox
-                    android:id="@+id/check1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:onClick="onButtonClick"
-                    android:text="@string/num1"
-                android:textColor="@color/button_text_color"
-                    android:textSize="24sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:gravity="center" >
 
-                <CheckBox
-                    android:id="@+id/check2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:onClick="onButtonClick"
-                    android:text="@string/num2"
-                android:textColor="@color/button_text_color"
-                    android:textSize="24sp" />
-            </RelativeLayout>
-        </LinearLayout>
+        <Button
+            android:id="@+id/btnRunOne"
+            android:layout_width="@dimen/button_run_width"
+            android:layout_height="@dimen/button_run_width"
+            android:layout_margin="@dimen/grid01"
+            android:background="@layout/button_selector"
+            android:text="@string/btnRunOne"
+            android:textColor="@color/button_text_color"
+            android:textColorHint="@color/button_text_color"
+            android:textSize="@dimen/grid12" />
 
-        
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnCount="1" >
+        <Button
+            android:id="@+id/btnRunTwo"
+            android:layout_width="@dimen/button_run_width"
+            android:layout_height="@dimen/button_run_width"
+            android:layout_margin="@dimen/grid01"
+            android:background="@layout/button_selector"
+            android:text="@string/btnRunTwo"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid12" />
 
-                <Button
-                    android:id="@+id/scanButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_gravity="center_horizontal|top"
-                    android:layout_marginBottom="16dp"
-                    android:layout_row="1"
-                    android:onClick="onButtonClick"
-                    android:text="@string/run_confirm_scan" />
+    </LinearLayout>
 
-                <ProgressBar
-                    android:id="@+id/progressbar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_gravity="center_horizontal|top"
-                    android:layout_row="0"
-                    android:visibility="invisible" />
-            </GridLayout>
-
-    </GridLayout>
+</LinearLayout>

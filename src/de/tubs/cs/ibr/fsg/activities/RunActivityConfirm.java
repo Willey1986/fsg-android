@@ -30,22 +30,22 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_run_confirm);
 		
-		String title = getIntent().getStringExtra("ActivityName");
+		//String title = getIntent().getStringExtra("ActivityName");
 		
-		TextView titleLabel = (TextView) findViewById(R.id.runTitle);
-		titleLabel.setText(title);
-		
-		check1 = (CheckBox) findViewById(R.id.check1);
-		check2 = (CheckBox) findViewById(R.id.check2);
-
-		Button scanB = (Button) findViewById(R.id.scanButton);
-		scanB.setEnabled(false);
-		
-		//init waiting is false
-		this.isWaiting = false;
-		
-		//init an nfc instance
-		nfc = new Nfc(this);
+//		TextView titleLabel = (TextView) findViewById(R.id.runTitle);
+//		titleLabel.setText(title);
+//		
+//		check1 = (CheckBox) findViewById(R.id.check1);
+//		check2 = (CheckBox) findViewById(R.id.check2);
+//
+//		Button scanB = (Button) findViewById(R.id.scanButton);
+//		scanB.setEnabled(false);
+//		
+//		//init waiting is false
+//		this.isWaiting = false;
+//		
+//		//init an nfc instance
+//		nfc = new Nfc(this);
 	}
 	
 	

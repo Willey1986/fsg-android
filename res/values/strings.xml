@@ -120,5 +120,8 @@
     <string name="title_activity_transfer">Band übertragen</string>
     <string name="title_activity_delete_one">Einzl. Block ungültig machen</string>
     <string name="error_empty_database">Datenbank leer. Bitte zunächst neue Daten anfordern!</string>
+    <string name="btnRunOne">1</string>
+    <string name="btnRunTwo">2</string>
+    <string name="txtRunInfo">Anzahl zu fahrende Runs auswählen</string>
 
 </resources>
