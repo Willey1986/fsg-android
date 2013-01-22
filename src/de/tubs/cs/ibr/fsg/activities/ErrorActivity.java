@@ -15,6 +15,8 @@ public class ErrorActivity extends Activity {
 
 	private final static String TAG = "ErrorActivity";
 	Exception mException;
+	private int mCase = 0;
+	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,16 @@ public class ErrorActivity extends Activity {
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
     		userText.setText(R.string.error_driver_already_checked_in);
     		break;
+    	case FsgException.EMPTY_DATABASE:
+    		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
+    		userText.setText(R.string.error_empty_database);
+    		break;
+    	case FsgException.REGISTRATION_ALREADY_PRESENT:
+    		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
+    		res = getResources();
+        	userText.setText(res.getString(R.string.error_registration_already_present));
+        	this.mCase = FsgException.REGISTRATION_ALREADY_PRESENT;
+    		break;
     	case FsgException.END_OF_ROAD:
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
     		res = getResources();
@@ -73,7 +85,12 @@ public class ErrorActivity extends Activity {
 
     
     public void onButtonClick(View view){
-		startActivity(new  Intent(this, MainActivity.class));
+    	if (this.mCase == FsgException.REGISTRATION_ALREADY_PRESENT){
+    		onBackPressed();
+    	}else{
+    		startActivity(new  Intent(this, MainActivity.class));
+    	}
+		
     }
  
     

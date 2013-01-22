@@ -44,9 +44,10 @@ public class RunActivityMessage extends  NfcEnabledActivity{
 			  View someView = findViewById(R.id.view);
 
 			  // Set the color
-			  someView.setBackgroundColor(Color.RED);
+			  //someView.setBackgroundColor(Color.RED);
+			  someView.setBackgroundDrawable( getResources().getDrawable(R.drawable.background_red) );
 
-			  headTitle.setText("Genehming fehlgeschlagen:");
+			  headTitle.setText("Genehmigung fehlgeschlagen:");
 			  
 
 			  TextView textview = (TextView) findViewById(R.id.textView);
@@ -60,7 +61,8 @@ public class RunActivityMessage extends  NfcEnabledActivity{
 			  View someView = findViewById(R.id.view);
 
 			  // Set the color
-			  someView.setBackgroundColor(Color.GREEN);
+			  //someView.setBackgroundColor(Color.GREEN);
+			  someView.setBackgroundDrawable( getResources().getDrawable(R.drawable.background_green) );
 			  
 			  headTitle.setText("Erfolgreich geloggt:");
 			  
@@ -86,7 +88,7 @@ public class RunActivityMessage extends  NfcEnabledActivity{
 				    @Override
 				    public void run() {
 				        // this code will be executed after 3 seconds
-				    	runMain();
+				    	goToRunActivity();
 				    }
 				}, 5000);
 		}
@@ -117,8 +119,8 @@ public class RunActivityMessage extends  NfcEnabledActivity{
 
 	}
 	
-	void runMain(){
-		startActivity(new  Intent(this, MainActivity.class));
+	void goToRunActivity(){
+		startActivity(new  Intent(this, RunActivity.class));
     	finish();
 	}
 

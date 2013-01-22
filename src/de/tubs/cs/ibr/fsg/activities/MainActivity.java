@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import de.tubs.cs.ibr.fsg.R;
+import de.tubs.cs.ibr.fsg.db.DBAdapter;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.widget.ArrayAdapter;
@@ -26,12 +27,13 @@ public class MainActivity extends Activity {
 	private static final boolean DEVELOPER_MODE = false;
 
 	private static final String PASSWORD = "kuh";
-
+	private DBAdapter dba;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       
+       dba = new DBAdapter(this);
     }
        
         public boolean onCreateOptionsMenu(Menu menu) {
@@ -42,12 +44,20 @@ public class MainActivity extends Activity {
         public boolean onOptionsItemSelected(MenuItem item) {
         	super.onOptionsItemSelected (item);
         	switch(item.getItemId()){
-        	case R.id.admin:
-        		chooseAdmin();
-        
-        		break;
-        	}
-        	
+		    	case R.id.admin:
+		    		chooseAdmin();
+		    		break;
+		    	case R.id.miRegInsertDummyData:
+		    		dba.open();
+					dba.writeSampleData();
+					return true;
+				case R.id.showDataVersion:
+					startActivity(new Intent(this, DataVersionActivity.class));
+					return true;
+				case R.id.updateRequest:
+					startActivity(new Intent(this, UpdateRequestActivity.class));
+					return true;
+		    }	
         	return true;
         }
         
@@ -121,4 +131,15 @@ public class MainActivity extends Activity {
     		break;
     	}
     }  
+    
+
+	protected void onStop() {
+		super.onStop();
+		dba.close();
+	}
+	
+	protected void onResume() {
+		super.onResume();
+		dba.open();
+	}
 }
