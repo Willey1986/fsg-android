@@ -233,15 +233,15 @@ public class Nfc {
 			byte[] emptyBlock = new byte[16];
 			try {
 				tag.connect();
-				if (tag.authenticateSectorWithKeyA(tag.blockToSector(3), keyA)){
+				if (tag.authenticateSectorWithKeyB(tag.blockToSector(3), keyB)){
 					keyBlock = tag.readBlock(3);
-				}
-				if (tag.authenticateSectorWithKeyA(tag.blockToSector(0), keyA)){
+				} 
+				if (tag.authenticateSectorWithKeyB(tag.blockToSector(0), keyB)){
 					//TagID separat auslesen
 					setTagID(tag.readBlock(0));
 				}
 				for (int i = 1; i < tag.getBlockCount(); i++){
-					if (tag.authenticateSectorWithKeyA(tag.blockToSector(i), keyA)){
+					if (tag.authenticateSectorWithKeyB(tag.blockToSector(i), keyB)){
 						data = tag.readBlock(i);
 						// Sobald der erste leere Block erreicht wird, wird die Schleife verlassen.
 						if(Arrays.equals(data, emptyBlock)){ 
@@ -255,7 +255,7 @@ public class Nfc {
 						
 					}
 				}
-				if (content != null){
+				if (!Arrays.equals(content, null)){ //content != null
 					System.out.println("not null (Nfc.java)");
 					byte[][] decryptedContent = read(content);
 					setData(decryptedContent);
@@ -300,7 +300,7 @@ public class Nfc {
 					writtenBlocks[0] = emptyBlock;
 				
 					for (int i = 0; i < encryptedContent.length; i++){
-						if (tag.authenticateSectorWithKeyA(tag.blockToSector(emptyBlock), keyA)){
+						if (tag.authenticateSectorWithKeyB(tag.blockToSector(emptyBlock), keyB)){
 							if (isEmpty(tag, emptyBlock)){//nur wenn Block tatsächlich leer wird geschrieben
 								System.out.println("block is empty");
 								tag.writeBlock(emptyBlock, encryptedContent[i]);
@@ -356,14 +356,14 @@ public class Nfc {
 				for(int i = 0; i < writtenBlocks.length; i++){
 					if (writtenBlocks[i] != 0){
 						lastBlock = i;
-						if(tag.authenticateSectorWithKeyA(tag.blockToSector(writtenBlocks[i]), keyA)){					
+						if(tag.authenticateSectorWithKeyB(tag.blockToSector(writtenBlocks[i]), keyB)){					
 							if (!Arrays.equals(tag.readBlock(writtenBlocks[i]), content[i])){//Bei Unterschied -> false
 								return false;
 							}
 						}
 					} else { //wenn nichts ins Array geschrieben wurde, wurde einfach hochgezählt
 						int nextBlock = (i - lastBlock) + writtenBlocks[lastBlock];
-						if(tag.authenticateSectorWithKeyA(tag.blockToSector(nextBlock), keyA)){					
+						if(tag.authenticateSectorWithKeyB(tag.blockToSector(nextBlock), keyB)){					
 							if (!Arrays.equals(tag.readBlock(nextBlock), content[i])){//Bei Unterschied -> false
 								return false;
 							}
@@ -421,20 +421,6 @@ public class Nfc {
 								}
 									
 							}
-						} else {
-							//falls KeyA: nicht read-only und Key B darf alles
-							if (sectorIndex != 0){
-								rights = setReadWrite(rights, 0);
-								rights = setReadWrite(rights, 1);
-								rights = setReadWrite(rights, 2);
-								rights = setReadOnly(rights, 3);
-							} else {
-								rights = setReadOnly(rights, 0);//bei SectorIndex 0, darf Block 0 nicht rw sein, nur read-only
-								rights = setReadWrite(rights, 1);
-								rights = setReadWrite(rights, 2);
-								rights = setReadOnly(rights, 3);
-							}
-								
 						}
 					}
 					if (tag.getBlockCountInSector(sectorIndex) == 16){
@@ -453,12 +439,6 @@ public class Nfc {
 									rights = setReadWrite(rights, i%4);
 								}
 							}
-						} else {
-							//falls KeyA: read-write und Key B darf alles
-							rights = setReadWrite(rights, 0);
-							rights = setReadWrite(rights, 1);
-							rights = setReadWrite(rights, 2);
-							rights = setReadOnly(rights, 3);
 						}
 					}
 				}
@@ -492,8 +472,61 @@ public class Nfc {
 	 * @throws FsgException
 	 */
 	public void initializeTag(Intent intent) throws FsgException{
-		for (int i = 0; i < 40; i++) {
-			changeKey(intent, i, null, null, null);
+		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
+			Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+			MifareClassic tag = MifareClassic.get(tagFromIntent);
+			System.out.println("Initializing Tag...");
+			
+			try {
+				tag.connect();
+				for (int sectorIndex = 0; sectorIndex < 40; sectorIndex++) {//Alle Sektoren durchgehen
+					byte[] rights = new byte[tag.getBlockCountInSector(sectorIndex)];
+					if (tag.authenticateSectorWithKeyA(sectorIndex, keyA)){
+						//nicht read-only und Key B darf alles
+						if (sectorIndex != 0){
+							rights = setReadWrite(rights, 0);
+							rights = setReadWrite(rights, 1);
+							rights = setReadWrite(rights, 2);
+							rights = setReadOnly(rights, 3);
+						} else {
+							rights = setReadOnly(rights, 0);//bei SectorIndex 0, darf Block 0 nicht rw sein, nur read-only
+							rights = setReadWrite(rights, 1);
+							rights = setReadWrite(rights, 2);
+							rights = setReadOnly(rights, 3);
+						}			
+					}
+					String keyString = getHexString(keyA, keyA.length) + getHexString(rights, rights.length) + getHexString(keyB, keyB.length);
+					byte[] keyBlock = new byte[16];
+					keyBlock[0] = keyA[0];
+					keyBlock[1] = keyA[1];
+					keyBlock[2] = keyA[2];
+					keyBlock[3] = keyA[3];
+					keyBlock[4] = keyA[4];
+					keyBlock[5] = keyA[5];
+					keyBlock[6] = rights[0];
+					keyBlock[7] = rights[1];
+					keyBlock[8] = rights[2];
+					keyBlock[9] = rights[3];
+					keyBlock[10] = keyB[0];
+					keyBlock[11] = keyB[1];
+					keyBlock[12] = keyB[2];
+					keyBlock[13] = keyB[3];
+					keyBlock[14] = keyB[4];
+					keyBlock[15] = keyB[5];
+					if (tag.authenticateSectorWithKeyA(sectorIndex, keyA)){
+						tag.writeBlock(tag.sectorToBlock(sectorIndex)+tag.getBlockCountInSector(sectorIndex)-1, keyBlock);
+					}
+					System.out.println("Access changed: "+keyString);
+				}
+				tag.close();
+			} catch (UnsupportedEncodingException e1) {
+				e1.printStackTrace();
+				throw new FsgException(e1, this.getClass().toString(), FsgException.CHAR_ENCODE_FAILED);
+			}	catch (IOException e) {
+				Log.e(TAG, e.getLocalizedMessage());
+				System.out.println("Tag writing error!");
+				throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY_OR_FORMAT);
+			}
 		}
 	}
 	
@@ -663,7 +696,7 @@ public class Nfc {
 		if (tag.isConnected()) {
 			byte[] data = null;
 			try {
-				if (tag.authenticateSectorWithKeyA(tag.blockToSector(emptyBlockIndex), keyA)){
+				if (tag.authenticateSectorWithKeyB(tag.blockToSector(emptyBlockIndex), keyB)){
 					data = tag.readBlock(emptyBlockIndex); //Außer bei der Initialisierung sollte der Block 1 nicht leer sein, da dort die Fahrer-Infos hingeschrieben werden
 				} else {
 					System.out.println("Authentication Failure 2");
@@ -671,7 +704,7 @@ public class Nfc {
 				}
 				while ((!Arrays.equals(data, emptyBlock)) && (emptyBlockIndex < tag.getBlockCount()-1)){ //Solange Block nicht frei, letzter Block wird nicht geschaut, der soll frei bleiben
 					++emptyBlockIndex; //nächsten lesen
-					if (tag.authenticateSectorWithKeyA(tag.blockToSector(emptyBlockIndex), keyA)){ 
+					if (tag.authenticateSectorWithKeyB(tag.blockToSector(emptyBlockIndex), keyB)){ 
 						data = tag.readBlock(emptyBlockIndex); 
 					} else {
 						System.out.println("Authentication Failure 3");
@@ -707,7 +740,7 @@ public class Nfc {
 		byte[] emptyBlock = new byte[16];
 		if (tag.isConnected()){
 			try {
-				tag.authenticateSectorWithKeyA(tag.blockToSector(blockIndex), keyA);
+				tag.authenticateSectorWithKeyB(tag.blockToSector(blockIndex), keyB);
 				if (Arrays.equals(tag.readBlock(blockIndex), emptyBlock)){
 					return true;
 				} else {

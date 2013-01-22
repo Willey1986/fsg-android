@@ -60,6 +60,11 @@ public class ErrorActivity extends Activity {
     		res = getResources();
         	userText.setText(res.getString(R.string.error_end_of_road));
     		break;
+    	case FsgException.TAG_EMPTY:
+    		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
+    		res = getResources();
+        	userText.setText(res.getString(R.string.error_tag_empty));
+    		break;
 
     	}
        	Log.i(TAG, "activity created.");

@@ -21,13 +21,13 @@ public class AdminActivity extends Activity {
     public void onButtonClick(View view){
     	switch (view.getId() ){
     	case R.id.button6:
-    		startActivity(new Intent(this, TransferActivity.class));
+    		//startActivity(new Intent(this, TransferActivity.class));
     		break;
     	case R.id.button7:
-    		startActivity(new Intent(this, DeleteActivity.class));
+    		//startActivity(new Intent(this, DeleteActivity.class));
     		break;
     	case R.id.button8:
-    		startActivity(new Intent(this, DeleteOneActivity.class));
+    		//startActivity(new Intent(this, DeleteOneActivity.class));
     		break;
     		
     	}

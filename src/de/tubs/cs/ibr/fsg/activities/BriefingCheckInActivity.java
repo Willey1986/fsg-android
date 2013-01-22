@@ -1,5 +1,7 @@
 package de.tubs.cs.ibr.fsg.activities;
 
+import java.util.Arrays;
+
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -142,27 +144,35 @@ public class BriefingCheckInActivity extends NfcEnabledActivity { //NfcEnabledAc
 	}
 
 	@Override
-	public void executeNfcAction(Intent intent) {
+	public void executeNfcAction(Intent intent) {//TODO: Absturz/Fehler finden
 		try {
 			//nfc.resolveIntent(intent);
 			System.out.println("Checking In...");
 			nfc.readTag(intent);
-			NfcObject checkInObject = NfcData.interpretData(nfc.getData());
-			short driverID = checkInObject.getDriverObject().getDriverID();
-			DBAdapter database = new DBAdapter(this);
-			database.open();
-			if (!database.isTagBlacklisted(nfc.getTagID())){//Tag geblacklistet?
-				if (!database.getDriver(driverID).equals(null)){ //Wenn der Fahrer in der DB existiert
-					database.writeCheckIn(checkInObject.getDriverObject().getDriverID());
-				} else {
-					//Fahrer in DB schreiben?
+			byte[][] data = nfc.getData();
+			if (!Arrays.equals(data, null)){
+				System.out.println("not null (checkin)");
+				NfcObject checkInObject = NfcData.interpretData(data);
+				System.out.println("Data interpreted");
+				short driverID = checkInObject.getDriverObject().getDriverID();
+				System.out.println("DriverID: "+driverID);
+				DBAdapter database = new DBAdapter(this);
+				database.open();
+				if (!database.isTagBlacklisted(nfc.getTagID())){//Tag geblacklistet?
+					if (!database.getDriver(driverID).equals(null)){ //Wenn der Fahrer in der DB existiert
+						database.writeCheckIn(checkInObject.getDriverObject().getDriverID());
+					} else {
+						//Fahrer in DB schreiben?
+					}
 				}
+				if (database.isCheckedIn(driverID)){
+					System.out.println("Checked In, writing Tag...");
+					//nfc.writeTag(intent, NfcData.generateCheckIN(FsgHelper.generateIdForTodaysBriefing()));
+				}
+				database.close();
+			} else {
+				throw new FsgException(new Exception(), this.getClass().toString(), FsgException.TAG_EMPTY);
 			}
-			if (database.isCheckedIn(driverID)){
-				System.out.println("Checked In, writing Tag...");
-				nfc.writeTag(intent, NfcData.generateCheckIN(FsgHelper.generateIdForTodaysBriefing()));
-			}
-			database.close();
 		} catch (FsgException e) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
 			mIntent.putExtra("Exception", e);
