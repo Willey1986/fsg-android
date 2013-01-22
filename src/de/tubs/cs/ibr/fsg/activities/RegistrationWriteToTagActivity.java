@@ -108,7 +108,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
     public void executeNfcAction(Intent intent) {
 		txtStatus.setText("Band gefunden");
 		try {
-			//nfc.readTag(intent);
+			nfc.readTag(intent);
 			NfcObject tagContent = NfcData.interpretData(nfc.getData());
 			if (tagContent.getDriverObject().getTeamID() == 0) {
 				nfc.writeTag(intent, contentToWrite);
