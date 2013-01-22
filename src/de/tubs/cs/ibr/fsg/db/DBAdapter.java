@@ -468,11 +468,5 @@ public class DBAdapter {
 		Cursor cursor = database.rawQuery(sql, null);
 		return cursor;
 	}
-	
-	public void backUpDBToXML() {
-		//TODO Inhalte sämtlicher Tabellen auslesen und als XML speichern.
-	}
-	
-	
 
 }

@@ -55,6 +55,10 @@ public class ErrorActivity extends Activity {
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
     		userText.setText(R.string.error_driver_already_checked_in);
     		break;
+    	case FsgException.EMPTY_DATABASE:
+    		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
+    		userText.setText(R.string.error_empty_database);
+    		break;
     	case FsgException.END_OF_ROAD:
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
     		res = getResources();
