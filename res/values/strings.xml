@@ -124,6 +124,6 @@
     <string name="error_empty_database">Datenbank leer. Bitte zunächst neue Daten anfordern!</string>
     <string name="btnRunOne">1</string>
     <string name="btnRunTwo">2</string>
-    <string name="txtRunInfo">Anzahl zu fahrende Runs auswählen</string>
+    <string name="txtRunInfo">Wie viele Runs sollen gefahren werden?</string>
 
 </resources>

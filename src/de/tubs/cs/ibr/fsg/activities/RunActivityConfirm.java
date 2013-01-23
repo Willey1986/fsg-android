@@ -30,6 +30,13 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_run_confirm);
 		
+		Bundle extras = getIntent().getExtras();
+		String disciplineName = extras.getString("DisciplineName");
+		
+		TextView txtDisciplineName = (TextView) findViewById(R.id.txtDisciplineName);
+		
+		txtDisciplineName.setText(disciplineName);
+		
 		//String title = getIntent().getStringExtra("ActivityName");
 		
 //		TextView titleLabel = (TextView) findViewById(R.id.runTitle);

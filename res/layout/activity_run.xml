@@ -19,51 +19,51 @@
         android:text="@string/which_discipline"/>
       
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btnRunAcceleration"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_marginBottom="@dimen/grid04"
+        android:layout_weight="1"
         android:background="@layout/button_selector"
-        android:gravity="center" 
-        android:textColor="@color/button_text_color"
+        android:gravity="center"
         android:onClick="onButtonClick"
-        android:text="@string/acceleration" />
+        android:text="@string/acceleration"
+        android:textColor="@color/button_text_color" />
     
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnRunSkidPad"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_marginBottom="@dimen/grid04"
+        android:layout_weight="1"
         android:background="@layout/button_selector"
-        android:gravity="center" 
-        android:textColor="@color/button_text_color"
+        android:gravity="center"
         android:onClick="onButtonClick"
-        android:text="@string/skidpad" />
+        android:text="@string/skidpad"
+        android:textColor="@color/button_text_color" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btnRunAutocross"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_marginBottom="@dimen/grid04"
+        android:layout_weight="1"
         android:background="@layout/button_selector"
-        android:gravity="center" 
-        android:textColor="@color/button_text_color"
+        android:gravity="center"
         android:onClick="onButtonClick"
-        android:text="@string/autocross" />
+        android:text="@string/autocross"
+        android:textColor="@color/button_text_color" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btnRunEndurance"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_marginBottom="@dimen/grid04"
+        android:layout_weight="1"
         android:background="@layout/button_selector"
-        android:gravity="center" 
-        android:textColor="@color/button_text_color"
+        android:gravity="center"
         android:onClick="onButtonClick"
-        android:text="@string/endurance" />
+        android:text="@string/endurance"
+        android:textColor="@color/button_text_color" />
 
 </LinearLayout>

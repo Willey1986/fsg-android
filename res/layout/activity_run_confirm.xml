@@ -8,6 +8,14 @@
     android:padding="@dimen/grid04" >
 
     <TextView
+        android:id="@+id/txtDisciplineName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/grid07" />
+
+    <TextView
         android:id="@+id/txtRunInfo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
