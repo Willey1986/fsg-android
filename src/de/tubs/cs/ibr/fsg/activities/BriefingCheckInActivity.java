@@ -167,7 +167,7 @@ public class BriefingCheckInActivity extends NfcEnabledActivity { //NfcEnabledAc
 				}
 				if (database.isCheckedIn(driverID)){
 					System.out.println("Checked In, writing Tag...");
-					//nfc.writeTag(intent, NfcData.generateCheckIN(FsgHelper.generateIdForTodaysBriefing()));
+					nfc.writeTag(intent, NfcData.generateCheckIN(FsgHelper.generateIdForTodaysBriefing()));
 				}
 				database.close();
 			} else {

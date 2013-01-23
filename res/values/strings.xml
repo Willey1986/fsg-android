@@ -49,7 +49,7 @@
     <string name="wristband_near">Fahrerarmband an Gerät halten</string>
 
     <!-- RunActivity Strings -->
-    <string name="which_discipline">Welche Disziplin möchten Sie fahren?</string>
+    <string name="which_discipline">Disziplin und Anzahl Runs auswählen</string>
     <string name="acceleration">Acceleration</string>
     <string name="skidpad">Skid Pad</string>
     <string name="autocross">Autocross</string>
@@ -65,6 +65,9 @@
     <string name="btnRunOne">1</string>
     <string name="btnRunTwo">2</string>
     <string name="txtRunInfo">Anzahl zu fahrende Runs auswählen</string>
+    <string name="btnConfirm">Bestätigen</string>
+    <string name="txtConfirmDisciplineName">Ausgewählte Disziplin: </string>
+    <string name="txtConfirmRunCount">Ausgewählte Anzahl Runs: </string>
 
     <!-- Fahrerregistrierung Strings -->
     <string name="select_team">Wählen Sie ihr Team aus:</string>

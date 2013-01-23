@@ -6,25 +6,36 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ToggleButton;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 
 public class RunActivity extends Activity{
 	
-	Button btnAcceleration;
-	Button btnSkidPad;
-	Button btnAutocross;
-	Button btnEndurance;
+	ToggleButton tBtnAcceleration;
+	ToggleButton tBtnSkidPad;
+	ToggleButton tBtnAutocross;
+	ToggleButton tBtnEndurance;
+	ToggleButton tBtnRunOne;
+	ToggleButton tBtnRunTwo;
+	
+	Button btnRunConfirm;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_run);
-		btnAcceleration = (Button) findViewById(R.id.btnRunAcceleration);
-		btnSkidPad = (Button) findViewById(R.id.btnRunSkidPad);
-		btnAutocross = (Button) findViewById(R.id.btnRunAutocross);
-		btnEndurance = (Button) findViewById(R.id.btnRunEndurance);
+		tBtnAcceleration = (ToggleButton) findViewById(R.id.tBtnAcceleration);
+		tBtnSkidPad = (ToggleButton) findViewById(R.id.tBtnSkidPad);
+		tBtnAutocross = (ToggleButton) findViewById(R.id.tBtnAutocross);
+		tBtnEndurance = (ToggleButton) findViewById(R.id.tBtnEndurance);
+		tBtnRunOne = (ToggleButton) findViewById(R.id.tBtnRunOne);
+		tBtnRunTwo = (ToggleButton) findViewById(R.id.tBtnRunTwo);
+		
+		btnRunConfirm = (Button) findViewById(R.id.btnRunConfirm);
+
+		btnRunConfirm.setEnabled(false);
 	}
 	
     /**
@@ -32,34 +43,64 @@ public class RunActivity extends Activity{
      * @param view
      */
     public void onButtonClick(View view){
-    	
-    	Intent intent;
-    	
-    	
-    	
-    	
+
     	switch(view.getId()) {
-    		case R.id.btnRunAcceleration:
-    			intent = new Intent(this, RunActivityConfirm.class);
-    			intent.putExtra("DisciplineName", "Acceleration");
+    		case R.id.tBtnAcceleration:
+    			tBtnSkidPad.setChecked(false);
+    			tBtnAutocross.setChecked(false);
+    			tBtnEndurance.setChecked(false);
     			break;
-    		case R.id.btnRunSkidPad:
-    			intent = new Intent(this, RunActivityConfirm.class);
-    			intent.putExtra("DisciplineName", "Skid Pad");
-    			break;
-    		case R.id.btnRunAutocross:
-    			intent = new Intent(this, RunActivityConfirm.class);
-    			intent.putExtra("DisciplineName", "Autocross");
-    			break;
-    		case R.id.btnRunEndurance:
-    			intent = new Intent(this, RunActivityConfirm.class);
-    			intent.putExtra("DisciplineName", "Endurance");
-    			break;
-    		default:
-    			intent = null;
+    		case R.id.tBtnSkidPad:
+    			tBtnAcceleration.setChecked(false);
+    			tBtnAutocross.setChecked(false);
+    			tBtnEndurance.setChecked(false);
     			
+    			break;
+    		case R.id.tBtnAutocross:
+    			tBtnAcceleration.setChecked(false);
+    			tBtnSkidPad.setChecked(false);
+    			tBtnEndurance.setChecked(false);
+    			break;
+    		case R.id.tBtnEndurance:
+    			tBtnSkidPad.setChecked(false);
+    			tBtnAutocross.setChecked(false);
+    			tBtnAcceleration.setChecked(false);
+    			break;
+    		case R.id.tBtnRunOne:
+    			tBtnRunTwo.setChecked(false);
+    			break;
+    		case R.id.tBtnRunTwo:
+    			tBtnRunOne.setChecked(false);
+    			break;	
     	}
-    	startActivity(intent);
+    	
+    	checkRequirementsToContinue();
+    	//startActivity(intent);
+    }
+    
+    private void checkRequirementsToContinue() {
+		if ((tBtnAcceleration.isChecked() || tBtnSkidPad.isChecked() || tBtnAutocross.isChecked() || tBtnEndurance.isChecked()) && (tBtnRunOne.isChecked() || tBtnRunTwo.isChecked()))
+			btnRunConfirm.setEnabled(true);
+		else
+			btnRunConfirm.setEnabled(false);
+		
+	}
+
+	public void onConfirm(View view) {
+		Intent intent = new Intent(this, RunActivityConfirm.class);
+		if (tBtnAcceleration.isChecked())
+			intent.putExtra("DisciplineName", "Acceleration");
+		if (tBtnSkidPad.isChecked())
+			intent.putExtra("DisciplineName", "Skid Pad");
+		if (tBtnAutocross.isChecked())
+			intent.putExtra("DisciplineName", "Autocross");
+		if (tBtnEndurance.isChecked())
+			intent.putExtra("DisciplineName", "Endurance");
+		if (tBtnRunOne.isChecked())
+			intent.putExtra("RunCount", 1);
+		if (tBtnRunTwo.isChecked())
+			intent.putExtra("RunCount", 2);
+		startActivity(intent);
     }
 
 }
