@@ -1,0 +1,13 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llRunPost"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_grey"
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/grid14"
+    android:paddingRight="@dimen/grid14"
+    tools:context=".RunPost" >
+
+</LinearLayout>

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">FSG</string>
@@ -104,7 +105,7 @@
     <string name="update_request_title">Updates anfordern</string>
     <string name="request_button">Anfordern</string>
     <string name="cancel">Abbrechen</string>
-    
+
     <!-- Admin-Activity Strings -->
     <string name="admin_copy_tag">Band übertragen</string>
     <string name="admin_invalidate_tag">Band ungültig machen</string>
@@ -122,5 +123,7 @@
     <string name="title_activity_info_terminal_post">InfoTerminalPostActivity</string>
     <string name="title_activity_info_terminalinitialisierung">InfoTerminalinitialisierungActivity</string>
     <string name="title_activity_info_terminal_initialisierung">InfoTerminalInitialisierung</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_run_post">RunPost</string>
 
 </resources>

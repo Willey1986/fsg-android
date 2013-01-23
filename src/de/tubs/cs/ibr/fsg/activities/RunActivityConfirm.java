@@ -96,82 +96,13 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 		
 		
 	}
-	
-    /**
-     * 
-     * @param view
-     */
-    public void onButtonClick(View view){
-    	switch (view.getId() ){
-    		case R.id.scanButton:
-    		
-    			//user pressed scan button
-    			
-    			this.shouldShowWait(!this.isWaiting);
-    			
-    			//user should wait
-    			if(this.isWaiting){
-    				Button scanB = (Button) findViewById(R.id.scanButton);
-    				scanB.setText("Abbruch");
-    			}else{
-    				Button scanB = (Button) findViewById(R.id.scanButton);
-    				scanB.setText("Scan");
-    			}
-    			
-    			
-    			break;
-    		case R.id.check1:
-    			
-    			//user pressed 1 checkbox
-    			
-    			//unselect the other checkbox
-    			if(check1.isChecked()&&check2.isChecked()){
-    				check2.setChecked(false);
-    			}
-    			
-
-				Button scanB1 = (Button) findViewById(R.id.scanButton);
-				
-    			//nothing is checked
-    			if(!check1.isChecked()&&!check2.isChecked()){
-    				scanB1.setEnabled(false);
-    			}else{
-
-    				scanB1.setEnabled(true);
-    			}
-    			
-    			break;
-    			
-    		case R.id.check2:
-    			
-    			//user pressed 2 checkbox
-    			
-    			//unselect the other checkbox
-    			if(check1.isChecked()&&check2.isChecked()){
-    				check1.setChecked(false);
-    			}
-
-
-				Button scanB2 = (Button) findViewById(R.id.scanButton);
-				
-    			//nothing is checked
-    			if(!check1.isChecked()&&!check2.isChecked()){
-    				scanB2.setEnabled(false);
-    			}else{
-
-    				scanB2.setEnabled(true);
-    			}
-    			
-    			break;
-    			
-    	}
-    }
 
 
 	@Override
 	public void executeNfcAction(Intent intent) {
 		
 		String message = "";
+		boolean success = true;
 		
 		
 		try {
@@ -182,7 +113,82 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 			
 			if (tagContent.haveTheDriverTodaysBriefing()) {
 				if (tagContent.howManyDisciplinesAreDriven() >= 3) { //Bereits 3 Disziplinen gefahren
-					
+					if (disciplineName.equals("Acceleration")) {
+						short runs = tagContent.getAccelerationRuns();
+						if (runs == 0) {
+							message = "Maximale Anzahl gefahrene Disziplinen erreicht";
+							success = false;
+						} 
+						else {
+							if (runCount <= 2-runs) {
+								byte[][] contentToWrite = NfcData.generateRun(FsgHelper.RUN_DISCIPLINE_ACCELERATION);
+								nfc.writeTag(intent, contentToWrite);
+								success = true;
+							}
+							else {
+								message = "Bereits " + runs + " Runs absolviert.\nNoch " + (2-runs) + " Runs auf dieser Disziplin erlaubt";
+								success = false;
+								Log.e("ERROR",message);
+							}
+						}
+					}
+					if (disciplineName.equals("Skid Pad")) {
+						short runs = tagContent.getSkidPadRuns();
+						if (runs == 0) {
+							message = "Maximale Anzahl gefahrene Disziplinen erreicht";
+							success = false;
+						}
+						else {
+							if (runCount <= 2-runs) {
+								byte[][] contentToWrite = NfcData.generateRun(FsgHelper.RUN_DISCIPLINE_SKID_PAD);
+								nfc.writeTag(intent, contentToWrite);
+								success = true;
+							}
+							else {
+								message = "Bereits " + runs + " Runs absolviert.\nNoch " + (2-runs) + " Runs auf dieser Disziplin erlaubt";
+								success = false;
+								Log.e("ERROR",message);
+							}
+						}
+					}
+					if (disciplineName.equals("Autocross")) {
+						short runs = tagContent.getAutocrossRuns();
+						if (runs == 0) {
+							message = "Maximale Anzahl gefahrene Disziplinen erreicht";
+							success = false;
+						}
+						else {
+							if (runCount <= 2-runs) {
+								byte[][] contentToWrite = NfcData.generateRun(FsgHelper.RUN_DISCIPLINE_AUTOCROSS);
+								nfc.writeTag(intent, contentToWrite);
+								success = true;
+							}
+							else {
+								message = "Bereits " + runs + " Runs absolviert.\nNoch " + (2-runs) + " Runs auf dieser Disziplin erlaubt";
+								success = false;
+								Log.e("ERROR",message);
+							}
+						}
+					}
+					if (disciplineName.equals("Endurance")) {
+						short runs = tagContent.getEnduranceRuns();
+						if (runs == 0) {
+							message = "Maximale Anzahl gefahrene Disziplinen erreicht";
+							success = false;
+						}
+						else {
+							if (runCount <= 2-runs) {
+								byte[][] contentToWrite = NfcData.generateRun(FsgHelper.RUN_DISCIPLINE_ENDURANCE);
+								nfc.writeTag(intent, contentToWrite);
+								success = true;
+							}
+							else {
+								message = "Bereits " + runs + " Runs absolviert.\nNoch " + (2-runs) + " Runs auf dieser Disziplin erlaubt";
+								success = false;
+								Log.e("ERROR",message);
+							}
+						}
+					}
 					
 				} else { //weniger als 3 Disziplinen gefahren
 					if (disciplineName.equals("Acceleration")) {
@@ -191,9 +197,11 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 							for (int i = 0; i < runCount; i++) {
 								byte[][] contentToWrite = NfcData.generateRun(FsgHelper.RUN_DISCIPLINE_ACCELERATION);
 								nfc.writeTag(intent, contentToWrite);
+								success = true;
 							}
 						} else {
-							message = "Bereits " + runs + " Runs absolviert. Noch " + (2-runs) + " Runs auf dieser Disziplin möglich";
+							message = "Bereits " + runs + " Runs absolviert.\nNoch " + (2-runs) + " Runs auf dieser Disziplin erlaubt";
+							success = false;
 							Log.e("ERROR",message);
 						}
 					}
@@ -203,9 +211,11 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 							for (int i = 0; i < runCount; i++) {
 								byte[][] contentToWrite = NfcData.generateRun(FsgHelper.RUN_DISCIPLINE_SKID_PAD);
 								nfc.writeTag(intent, contentToWrite);
+								success = true;
 							}
 						} else {
-							message = "Bereits " + runs + " Runs absolviert. Noch " + (2-runs) + " Runs auf dieser Disziplin möglich";
+							message = "Bereits " + runs + " Runs absolviert.\nNoch " + (2-runs) + " Runs auf dieser Disziplin erlaubt";
+							success = false;
 							Log.e("ERROR",message);
 						}
 					}
@@ -215,9 +225,11 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 							for (int i = 0; i < runCount; i++) {
 								byte[][] contentToWrite = NfcData.generateRun(FsgHelper.RUN_DISCIPLINE_AUTOCROSS);
 								nfc.writeTag(intent, contentToWrite);
+								success = true;
 							}
 						} else {
-							message = "Bereits " + runs + " Runs absolviert. Noch " + (2-runs) + " Runs auf dieser Disziplin möglich";
+							message = "Bereits " + runs + " Runs absolviert.\nNoch " + (2-runs) + " Runs auf dieser Disziplin erlaubt";
+							success = false;
 							Log.e("ERROR",message);
 						}
 					}
@@ -225,11 +237,13 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 						short runs = tagContent.getEnduranceRuns();
 						if (runCount <= 2-runs) {
 							for (int i = 0; i < runCount; i++) {
-								byte[][] contentToWrite = NfcData.generateRun(FsgHelper.RUN_DISCIPLINE_ACCELERATION);
+								byte[][] contentToWrite = NfcData.generateRun(FsgHelper.RUN_DISCIPLINE_ENDURANCE);
 								nfc.writeTag(intent, contentToWrite);
+								success = true;
 							}
 						} else {
-							message = "Bereits " + runs + " Runs absolviert. Noch " + (2-runs) + " Runs auf dieser Disziplin möglich";
+							message = "Bereits " + runs + " Runs absolviert.\nNoch " + (2-runs) + " Runs auf dieser Disziplin erlaubt";
+							success = false;
 							Log.e("ERROR",message);
 						}
 					}
@@ -240,10 +254,11 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 			
 		}
 		
-		Intent mIntent = new Intent(this, RunActivityMessage.class);
+		Intent mIntent = new Intent(this, RunActivityPost.class);
 		mIntent.putExtra("DisciplineName", disciplineName);
 		mIntent.putExtra("RunCount", runCount);
-		mIntent.putExtra("ErrorMessage", message);
+		mIntent.putExtra("Message", message);
+		mIntent.putExtra("Success",success);
 		startActivity(mIntent);
 	}
 }
