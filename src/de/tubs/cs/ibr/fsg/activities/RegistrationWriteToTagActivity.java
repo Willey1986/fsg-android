@@ -88,13 +88,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 		}
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_registration_write_to_tag, menu);
-        return true;
-    }
-
-    
+   
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

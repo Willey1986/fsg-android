@@ -3,19 +3,8 @@
     <string name="app_name">FSG</string>
 
     <!-- Menus -->
-    <string name="menu_settings">Settings</string>
-    <string name="menu_reg_refresh">Refresh</string>
     <string name="menu_reg_insertDummyData">Sampledata in DB schreiben</string>
     <string name="menu_reg_showDataVersion">Datenversionsübersicht</string>
-    <string name="menu_reg_requestDriverPics">Fahrerbilder updaten</string>
-    <string name="menu_reg_requestDrivers">Fahrerdaten updaten</string>
-    <string name="menu_reg_requestTeams">Teams-Daten updaten</string>
-    <string name="menu_reg_requestBlackWristlets">Bänder-Blacklist updaten</string>
-    <string name="menu_reg_requestBlackDevices">Geräte-Blacklist updaten</string>
-    <string name="menu_reg_requestDriversTeams">Fahrer- und Teams-Daten updaten</string>
-    <string name="menu_reg_requestDriversTeamsDriverPics">Fahrerbilder, Fahrer- und Teams-Daten updaten</string>
-    <string name="menu_reg_requestBothBlack">Beide Blacklists updaten</string>
-    <string name="menu_reg_requestDriverTeamsBothBlack">Beide Blacklists, Fahrer- und Teams-Daten updaten</string>
     <string name="menu_reg_updateRequest">Updates anfordern</string>
 
     <!-- Titelzeile von Activities -->
@@ -23,8 +12,10 @@
     <string name="title_activity_error">Fehlermeldung</string>
     <string name="title_activity_data_version">Datenversionsübersicht</string>
     <string name="title_activity_update_request">Updates anfordern</string>
-    <string name="title_activity_registration_write_to_tag">RegistrationWriteToTagActivity</string>
-    <string name="title_activity_admin">AdminActivity</string>
+    <string name="title_activity_admin">Administratorbereich</string>
+    <string name="title_activity_delete">Band ungültig machen</string>
+    <string name="title_activity_transfer">Band übertragen</string>
+    <string name="title_activity_delete_one">Einzelnen Block ungültig machen</string>
 
     <!-- MainActivity Strings -->
     <string name="main_activity_button_1">Fahrerregistrierung</string>
@@ -49,6 +40,8 @@
     <string name="error_not_ibr_dtn">IBR-DTN-Daemon inaktiv. Bitte starten Sie ihn (ggf. installieren).</string> <!-- Wird beim IBR-DTN-Service benutzt -->
     <string name="error_security_exception">"Permission"-Fehler. Deinstallieren und installieren Sie die App erneut!</string> <!-- Wird beim IBR-DTN-Service benutzt -->
     <string name="error_end_of_road">Tut uns Leid, hier wird noch gebaut. ;-)</string>
+    <string name="error_driver_already_checked_in">Driver already checked in to this briefing</string>
+    <string name="error_empty_database">Datenbank leer. Bitte zunächst neue Daten anfordern!</string>
     <string name="ok">OK</string>
 
     <!-- Briefing (sowohl ein- als auch auschecken) Strings -->
@@ -69,6 +62,9 @@
     <string name="run_find_cancel">Abbruch</string>
     <string name="num1">1</string>
     <string name="num2">2</string>
+    <string name="btnRunOne">1</string>
+    <string name="btnRunTwo">2</string>
+    <string name="txtRunInfo">Anzahl zu fahrende Runs auswählen</string>
 
     <!-- Fahrerregistrierung Strings -->
     <string name="select_team">Wählen Sie ihr Team aus:</string>
@@ -100,10 +96,16 @@
     <string name="version_blacklist_devices">Geräte-Blacklist:</string>
     <string name="version_driver_pics">Fahrerbilder:</string>
 
-    <!-- Version-Activity Strings -->
+    <!-- Update-Activity Strings -->
     <string name="update_request_title">Updates anfordern</string>
     <string name="request_button">Anfordern</string>
     <string name="cancel">Abbrechen</string>
+    
+    <!-- Admin-Activity Strings -->
+    <string name="admin_copy_tag">Band übertragen</string>
+    <string name="admin_invalidate_tag">Band ungültig machen</string>
+    <string name="admin_invalidate_block">Einzelnen Block ungültig machen</string>
+    <string name="admin_configuration">Einstellungen</string>
 
     <!-- Notification Strings -->
     <string name="noti_title">FSG - Update erhalten</string>
@@ -112,18 +114,9 @@
     <string name="noti_text_teams">Teams-Daten</string>
     <string name="noti_text_blacklist_tags">Bänder-Blacklist</string>
     <string name="noti_text_blacklist_devices">Geräte-Blacklist</string>
-    <string name="error_driver_already_checked_in">Driver already checked in to this briefing</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_info_terminal_post">InfoTerminalPostActivity</string>
     <string name="title_activity_info_terminalinitialisierung">InfoTerminalinitialisierungActivity</string>
     <string name="title_activity_info_terminal_initialisierung">InfoTerminalInitialisierung</string>
-
-    <string name="title_activity_delete">Band ungültig machen</string>
-    <string name="title_activity_transfer">Band übertragen</string>
-    <string name="title_activity_delete_one">Einzl. Block ungültig machen</string>
-    <string name="error_empty_database">Datenbank leer. Bitte zunächst neue Daten anfordern!</string>
-    <string name="btnRunOne">1</string>
-    <string name="btnRunTwo">2</string>
-    <string name="txtRunInfo">Wie viele Runs sollen gefahren werden?</string>
 
 </resources>
