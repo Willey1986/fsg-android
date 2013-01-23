@@ -159,16 +159,16 @@ public class BriefingCheckInActivity extends NfcEnabledActivity { //NfcEnabledAc
 				DBAdapter database = new DBAdapter(this);
 				database.open();
 				if (!database.isTagBlacklisted(nfc.getTagID())){//Tag geblacklistet?
-					if (!database.getDriver(driverID).equals(null)){ //Wenn der Fahrer in der DB existiert
+					if (database.getDriver(driverID) != null){ //Wenn der Fahrer in der DB existiert
 						database.writeCheckIn(checkInObject.getDriverObject().getDriverID());
 					} else {
 						//Fahrer in DB schreiben?
 					}
 				}
-				if (database.isCheckedIn(driverID)){
+				//if (database.isCheckedIn(driverID)){
 					System.out.println("Checked In, writing Tag...");
-					//nfc.writeTag(intent, NfcData.generateCheckIN(FsgHelper.generateIdForTodaysBriefing()));
-				}
+					nfc.writeTag(intent, NfcData.generateCheckIN(FsgHelper.generateIdForTodaysBriefing()));
+				//}
 				database.close();
 			} else {
 				throw new FsgException(new Exception(), this.getClass().toString(), FsgException.TAG_EMPTY);
