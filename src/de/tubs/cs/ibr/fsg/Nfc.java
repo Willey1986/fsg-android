@@ -249,11 +249,9 @@ public class Nfc {
 							break;
 						}
 						// Key-Blöcke werden im Ergebnis Array nicht gespeichert. Setzt voraus, dass alle Key-Blöcke gleich aussehen!
-						if (i != 3) {//Block 3 ist der erste KeyBlock und sieht anders aus als die anderen
-							if (!Arrays.equals(data, keyBlock)){ 
-								content[i] = data;
-							}
-						}						
+						if (!Arrays.equals(data, keyBlock)){ 
+							content[i] = data;
+						}					
 					}
 				}
 				if (!Arrays.equals(content, null)){ //content != null
@@ -794,7 +792,6 @@ public class Nfc {
 	public void cleanTag(Intent intent) throws FsgException{
 		System.out.println("Cleaning Tag...");
 		byte[] rights = new byte[4];
-		byte[] rightsZero = new byte[4];
 		rights[0] = setBit(rights[0], 0);
 		rights[0] = setBit(rights[0], 1);
 		rights[0] = setBit(rights[0], 2);
@@ -818,15 +815,20 @@ public class Nfc {
 				MifareClassic tag = MifareClassic.get(tagFromIntent);
 				tag.connect();
 				byte[] keyBlock = null;
+				byte[] data = null;
+				byte[] emptyBlock = new byte[16];
 				if (tag.authenticateSectorWithKeyA(tag.blockToSector(7), keyB)){
 					keyBlock = tag.readBlock(7);
 				}
 				for (int i = 1; i < tag.getBlockCount(); i++){
 					if(tag.authenticateSectorWithKeyA(tag.blockToSector(i), MifareClassic.KEY_DEFAULT)){
-						if (i != 3){
-							if (!Arrays.equals(tag.readBlock(i), keyBlock)){
-								tag.writeBlock(i, new byte[16]);
-							}
+						data = tag.readBlock(i);
+						// Sobald der erste leere Block erreicht wird, wird die Schleife verlassen.
+						if(Arrays.equals(data, emptyBlock)){ 
+							break;
+						}
+						if (!Arrays.equals(data, keyBlock)){
+							tag.writeBlock(i, emptyBlock);
 						}
 					}
 				}
