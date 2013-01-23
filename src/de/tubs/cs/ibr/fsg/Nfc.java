@@ -60,7 +60,8 @@ public class Nfc {
 	private byte[] keyB = MifareClassic.KEY_DEFAULT;
 	
 	/**
-	 * Default Rechte eines Sektors
+	 * Default Rechte eines Sektors mit RW und Key B only
+	 * TransportConfiguration ist FF 07 80 69
 	 */
 	private byte[] defaultRights = {(byte) '0', (byte) 'F', (byte) '0', (byte) '0', (byte) 'F', (byte) 'F', (byte) '0', (byte) '0'};
 	
@@ -233,9 +234,9 @@ public class Nfc {
 			byte[] emptyBlock = new byte[16];
 			try {
 				tag.connect();
-				if (tag.authenticateSectorWithKeyB(tag.blockToSector(3), keyB)){
-					keyBlock = tag.readBlock(3);
-				} 
+				if (tag.authenticateSectorWithKeyB(tag.blockToSector(7), keyB)){
+					keyBlock = tag.readBlock(7);
+				}
 				if (tag.authenticateSectorWithKeyB(tag.blockToSector(0), keyB)){
 					//TagID separat auslesen
 					setTagID(tag.readBlock(0));
@@ -248,11 +249,11 @@ public class Nfc {
 							break;
 						}
 						// Key-Blöcke werden im Ergebnis Array nicht gespeichert. Setzt voraus, dass alle Key-Blöcke gleich aussehen!
-						if (!Arrays.equals(data, keyBlock)){ 
-							content[i] = data;
-						}
-						
-						
+						if (i != 3) {//Block 3 ist der erste KeyBlock und sieht anders aus als die anderen
+							if (!Arrays.equals(data, keyBlock)){ 
+								content[i] = data;
+							}
+						}						
 					}
 				}
 				if (!Arrays.equals(content, null)){ //content != null
@@ -443,16 +444,34 @@ public class Nfc {
 					}
 				}
 				String keyString = getHexString(newKeyA, newKeyA.length) + getHexString(rights, rights.length) + getHexString(newKeyB, newKeyB.length);
-				byte[] keyBlock = keyString.getBytes("UTF-8");
+				byte[] keyBlock = new byte[16];
+				keyBlock[0] = newKeyA[0];
+				keyBlock[1] = newKeyA[1];
+				keyBlock[2] = newKeyA[2];
+				keyBlock[3] = newKeyA[3];
+				keyBlock[4] = newKeyA[4];
+				keyBlock[5] = newKeyA[5];
+				keyBlock[6] = rights[0];
+				keyBlock[7] = rights[1];
+				keyBlock[8] = rights[2];
+				keyBlock[9] = rights[3];
+				keyBlock[10] = newKeyB[0];
+				keyBlock[11] = newKeyB[1];
+				keyBlock[12] = newKeyB[2];
+				keyBlock[13] = newKeyB[3];
+				keyBlock[14] = newKeyB[4];
+				keyBlock[15] = newKeyB[5];
 				if (tag.authenticateSectorWithKeyB(sectorIndex, keyB)){
-					tag.writeBlock(tag.sectorToBlock(sectorIndex)+tag.getBlockCountInSector(sectorIndex)-1, keyBlock);
-				} else if (tag.authenticateSectorWithKeyA(sectorIndex, keyA)){
 					tag.writeBlock(tag.sectorToBlock(sectorIndex)+tag.getBlockCountInSector(sectorIndex)-1, keyBlock);
 				}
 				System.out.println("Key changed!");
 				tag.close();
-				setKeyA(newKeyA);
-				setKeyB(newKeyB);
+				if ((newKeyA != keyA) && (newKeyA != MifareClassic.KEY_DEFAULT)){
+					setKeyA(newKeyA);
+				}
+				if ((newKeyB != keyB) && (newKeyB != MifareClassic.KEY_DEFAULT)){
+					setKeyB(newKeyB);
+				}
 			} catch (UnsupportedEncodingException e1) {
 				e1.printStackTrace();
 				throw new FsgException(e1, this.getClass().toString(), FsgException.CHAR_ENCODE_FAILED);
@@ -770,6 +789,54 @@ public class Nfc {
 			System.out.println("Tag disconnected!");
 		}
 		return lastSectorIndex;
+	}
+	
+	public void cleanTag(Intent intent) throws FsgException{
+		System.out.println("Cleaning Tag...");
+		byte[] rights = new byte[4];
+		byte[] rightsZero = new byte[4];
+		rights[0] = setBit(rights[0], 0);
+		rights[0] = setBit(rights[0], 1);
+		rights[0] = setBit(rights[0], 2);
+		rights[0] = setBit(rights[0], 3);
+		rights[0] = setBit(rights[0], 4);
+		rights[0] = setBit(rights[0], 5);
+		rights[0] = setBit(rights[0], 6);
+		rights[0] = setBit(rights[0], 7);
+		rights[1] = setBit(rights[1], 0);
+		rights[1] = setBit(rights[1], 1);
+		rights[1] = setBit(rights[1], 2);
+		rights[2] = setBit(rights[2], 7);
+		
+		System.out.println("Cleaning Tag with rights: "+getHexString(rights, rights.length));
+		try{
+			for (int i = 0; i < 40; i++){
+				changeKey(intent, i, MifareClassic.KEY_DEFAULT, rights, MifareClassic.KEY_DEFAULT);
+			}
+			if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
+				Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+				MifareClassic tag = MifareClassic.get(tagFromIntent);
+				tag.connect();
+				byte[] keyBlock = null;
+				if (tag.authenticateSectorWithKeyA(tag.blockToSector(7), keyB)){
+					keyBlock = tag.readBlock(7);
+				}
+				for (int i = 1; i < tag.getBlockCount(); i++){
+					if(tag.authenticateSectorWithKeyA(tag.blockToSector(i), MifareClassic.KEY_DEFAULT)){
+						if (i != 3){
+							if (!Arrays.equals(tag.readBlock(i), keyBlock)){
+								tag.writeBlock(i, new byte[16]);
+							}
+						}
+					}
+				}
+				tag.close();
+			}
+		} catch (IOException e) {
+			Log.e(TAG, e.getLocalizedMessage());
+			System.out.println("Tag cleaning error!");
+			throw new FsgException( e, this.getClass().toString(), FsgException.TAG_WRONG_KEY_OR_FORMAT);
+		}
 	}
 	
 	/**

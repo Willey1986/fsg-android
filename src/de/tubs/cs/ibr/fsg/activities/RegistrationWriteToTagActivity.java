@@ -5,7 +5,6 @@ import java.io.IOException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import de.tubs.cs.ibr.fsg.Nfc;
@@ -112,7 +111,9 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
 				FsgException e = new FsgException(null, "RegistrationWriteToTagActivity", FsgException.REGISTRATION_ALREADY_PRESENT);
 				throw e;
 			}
-			onBackPressed();
+			Intent mIntent = new Intent(this, RegistrationSuccessfulActivity.class);
+			startActivity(mIntent);
+			finish();
 		} catch (FsgException e) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
 			mIntent.putExtra("Exception", e);

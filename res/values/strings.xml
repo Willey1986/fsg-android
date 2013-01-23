@@ -79,6 +79,7 @@
     <string name="btnRegSearch">Suchen</string>
     <string name="tblDriversName">Name</string>
     <string name="lbSelectedTeam">Team: </string>
+    <string name="registrationSuccessful">Registrierung erfolgreich</string>
 
     <!-- InfoTerminal-Activity Strings -->
     <string name="infoTerminalTryAgain">Fehler beim Lesen, bitte probieren Sie es erneut.</string>
