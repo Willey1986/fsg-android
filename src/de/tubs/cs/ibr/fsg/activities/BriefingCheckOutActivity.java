@@ -27,6 +27,7 @@ public class BriefingCheckOutActivity extends NfcEnabledActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_briefing_checkout);
+		nfc = new Nfc(this);
 	}
 
 	

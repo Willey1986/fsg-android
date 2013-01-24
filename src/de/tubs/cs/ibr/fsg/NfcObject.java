@@ -39,8 +39,9 @@ public class NfcObject implements Parcelable{
 	public void removeBriefingByID(short id){
 		Iterator<NfcObjectBriefing> it = briefings.iterator();
 		while (it.hasNext()) {
-		  if(it.next().getBriefingID() == id){
-			  briefings.remove(it.next());
+			NfcObjectBriefing briefing = it.next();
+		  if(briefing.getBriefingID() == id){
+			  briefings.remove(briefing);
 		  }
 		}
 	}
