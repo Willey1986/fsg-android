@@ -47,6 +47,18 @@ public class NfcObject implements Parcelable{
 	}
 	
 	
+	public boolean  existThisBriefingByID(short id){
+		boolean result = false;
+		for (int i=0; i<briefings.size(); i++){
+			if (briefings.get(i).getBriefingID()== id){
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
+	
+	
 	public void clear() {
 		driverObject = new Driver();
 		briefings.removeAll(briefings);

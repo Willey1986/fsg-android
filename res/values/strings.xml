@@ -52,6 +52,8 @@
     <string name="checkInSuccessful">Einchecken erfolgreich</string>
     <string name="checkOutSuccessful">Auschecken erfolgreich</string>
     <string name="briefing">Briefing</string>
+    <string name="checkInDouble">Sie sind bereits für heute eingecheckt!</string>
+    <string name="checkOutDouble">Sie waren nicht eingecheckt!</string>
 
     <!-- RunActivity Strings -->
     <string name="which_discipline">Disziplin und Anzahl Runs auswählen</string>

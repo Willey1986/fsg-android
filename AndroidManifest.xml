@@ -79,6 +79,12 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:noHistory="true" >
         </activity>
         <activity
+            android:name="de.tubs.cs.ibr.fsg.activities.BriefingDoubleActivity"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/briefing"
+            android:noHistory="true" >
+        </activity>
+        <activity
             android:name="de.tubs.cs.ibr.fsg.activities.RunActivity"
             android:icon="@drawable/icon_run"
             android:label="@string/main_activity_button_4" >

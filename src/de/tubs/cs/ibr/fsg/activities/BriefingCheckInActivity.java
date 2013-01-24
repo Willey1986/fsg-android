@@ -166,17 +166,28 @@ public class BriefingCheckInActivity extends NfcEnabledActivity { //NfcEnabledAc
 						//Fahrer in DB schreiben?
 					}
 				}
-				//if (database.isCheckedIn(driverID)){
-					System.out.println("Checked In, writing Tag...");
-					nfc.writeTag(intent, NfcData.generateCheckIN(FsgHelper.generateIdForTodaysBriefing()));
-
-				//}
+				System.out.println("Checked In, writing Tag...");
+				short briefingID = FsgHelper.generateIdForTodaysBriefing();
+				
+				if (!checkInObject.existThisBriefingByID(briefingID)){
+					// Es existiert keinen CheckIn mit dieser ID (wohl gemerkt, nachdem man schon "gegengerechnet hat",
+					// das passiert bereits in interpretData(data), also koennen wir es ruhig so machen
+					nfc.writeTag(intent, NfcData.generateCheckIN(briefingID));
+					Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+					Intent mIntent = new Intent(this, BriefingSuccessfulActivity.class);
+					mIntent.putExtra("modus", BriefingSuccessfulActivity.CHECK_IN);
+					mIntent.putExtra(NfcAdapter.EXTRA_TAG, tagFromIntent);
+					startActivity(mIntent);
+		
+				}else{
+					// Es existiert bereits einen CheckIn fuer diesen Tag, doppelt ist nicht erlaubt! Na na na! :-)
+					Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+					Intent mIntent = new Intent(this, BriefingDoubleActivity.class);
+					mIntent.putExtra("modus", BriefingDoubleActivity.CHECK_IN);
+					mIntent.putExtra(NfcAdapter.EXTRA_TAG, tagFromIntent);
+					startActivity(mIntent);
+				}
 				database.close();
-				Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-				Intent mIntent = new Intent(this, BriefingSuccessfulActivity.class);
-				mIntent.putExtra("modus", BriefingSuccessfulActivity.CHECK_IN);
-				mIntent.putExtra(NfcAdapter.EXTRA_TAG, tagFromIntent);
-				startActivity(mIntent);
 			} else {
 				throw new FsgException(new Exception(), this.getClass().toString(), FsgException.TAG_EMPTY);
 			}

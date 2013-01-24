@@ -52,17 +52,28 @@ public class BriefingCheckOutActivity extends NfcEnabledActivity {
 						database.writeCheckOut(checkInObject.getDriverObject().getDriverID());
 					} 
 				}
-				//if (database.isCheckedIn(driverID)){
-					System.out.println("Checked OUT, writing to Tag...");
-					nfc.writeTag(intent, NfcData.generateCheckOUT(FsgHelper.generateIdForTodaysBriefing()));
 
-				//}
+				System.out.println("Checked OUT, writing to Tag...");
+				short briefingID = FsgHelper.generateIdForTodaysBriefing();
+				
+				if (checkInObject.existThisBriefingByID(briefingID)){
+					// Es existiert einen passenden CheckIn zu diesem CheckOut, also koennen wir ausschecken
+					nfc.writeTag(intent, NfcData.generateCheckOUT(briefingID));
+					Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+					Intent mIntent = new Intent(this, BriefingSuccessfulActivity.class);
+					mIntent.putExtra("modus", BriefingSuccessfulActivity.CHECK_OUT);
+					mIntent.putExtra(NfcAdapter.EXTRA_TAG, tagFromIntent);
+					startActivity(mIntent);
+				}else{
+					// Es existiert keinen passenden CheckIn, was soll denn dann das ausloggen? :-)
+					Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+					Intent mIntent = new Intent(this, BriefingDoubleActivity.class);
+					mIntent.putExtra("modus", BriefingDoubleActivity.CHECK_OUT);
+					mIntent.putExtra(NfcAdapter.EXTRA_TAG, tagFromIntent);
+					startActivity(mIntent);
+				}
+				
 				database.close();
-				Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-				Intent mIntent = new Intent(this, BriefingSuccessfulActivity.class);
-				mIntent.putExtra("modus", BriefingSuccessfulActivity.CHECK_OUT);
-				mIntent.putExtra(NfcAdapter.EXTRA_TAG, tagFromIntent);
-				startActivity(mIntent);
 			} else {
 				throw new FsgException(new Exception(), this.getClass().toString(), FsgException.TAG_EMPTY);
 			}
