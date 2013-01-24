@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
 import android.nfc.NfcAdapter;
+import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,6 +58,11 @@ public class BriefingCheckOutActivity extends NfcEnabledActivity {
 
 				//}
 				database.close();
+				Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+				Intent mIntent = new Intent(this, BriefingSuccessfulActivity.class);
+				mIntent.putExtra("modus", BriefingSuccessfulActivity.CHECK_OUT);
+				mIntent.putExtra(NfcAdapter.EXTRA_TAG, tagFromIntent);
+				startActivity(mIntent);
 			} else {
 				throw new FsgException(new Exception(), this.getClass().toString(), FsgException.TAG_EMPTY);
 			}
