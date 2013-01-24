@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,7 +19,7 @@ import android.widget.TextView;
 public class RunActivityPost extends Activity{
 
 	private String disciplineName, message;
-	private int runCount;
+	private int runCount, errorNumber;
 	private boolean success;
 	private Resources res;
 	
@@ -35,6 +36,7 @@ public class RunActivityPost extends Activity{
 		message = extras.getString("Message");
 		runCount = extras.getInt("RunCount");
 		success = extras.getBoolean("Success");
+		errorNumber = extras.getInt("ErrorNumber");
 		res = getResources();
 		
 		llRunPost = (LinearLayout) findViewById(R.id.llRunPost);
@@ -51,6 +53,7 @@ public class RunActivityPost extends Activity{
 			tvMessage.setTextSize(res.getDimension(R.dimen.grid07));
 			tvMessage.setTextColor(res.getColor(R.color.button_text_color));
 			tvMessage.setPadding(0, 0, 0, 16);
+			tvMessage.setGravity(Gravity.CENTER_HORIZONTAL);
 			
 			btnIgnore.setText("Trotzdem genehmigen");
 			btnIgnore.setHeight(100);
@@ -82,12 +85,18 @@ public class RunActivityPost extends Activity{
 				}
 			});
 
-			
-			llRunPost.addView(tvMessage);
-			llRunPost.addView(btnIgnore);
-			llRunPost.addView(btnGoBack);
-			
-			btnIgnore.getId();
+			if (errorNumber == RunActivityConfirm.ERROR_TAG_BLACKLISTED) {
+				llRunPost.addView(tvMessage);
+			}
+			if (errorNumber == RunActivityConfirm.ERROR_BRIEFING_ABSENT) {
+				llRunPost.addView(tvMessage);
+				llRunPost.addView(btnIgnore);
+			}
+			else {
+				llRunPost.addView(tvMessage);
+				llRunPost.addView(btnIgnore);
+				llRunPost.addView(btnGoBack);
+			}
 		
 		}
 	}

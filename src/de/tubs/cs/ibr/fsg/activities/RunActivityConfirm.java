@@ -24,8 +24,13 @@ import android.widget.TextView;
 
 public class RunActivityConfirm extends NfcEnabledActivity {
 
+	public static final int ERROR_MAX_DISCIPLINES_REACHED = 0;
+	public static final int ERROR_MAX_RUNS_IN_DISCIPLINE_REACHED = 1;
+	public static final int ERROR_TAG_BLACKLISTED = 2;
+	public static final int ERROR_BRIEFING_ABSENT = 3;
+	
 	String disciplineName, message;
-	int runCount;
+	int runCount, errorNumber;
 	TextView txtDisciplineName, txtRunCount, txtRunConfirmationProgress;
 	Resources res;
 	Bundle extras;
@@ -105,55 +110,29 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 							}
 						} else { //weniger als 3 Disziplinen gefahren
 							if (disciplineName.equals("Acceleration")) {
-								short runs = tagContent.getAccelerationRuns();
-								if (runCount <= 2-runs) {
-									writeRunsToTag(intent, runCount, FsgHelper.RUN_DISCIPLINE_ACCELERATION);
-								} else {
-									message = "Bereits " + runs + " Runs absolviert.\nNoch " + (2-runs) + " Runs auf dieser Disziplin erlaubt";
-									success = false;
-									Log.e("ERROR",message);
-								}
+								writeRunsWhileLessThanThreeDisciplinesArePresent(intent, tagContent, FsgHelper.RUN_DISCIPLINE_ACCELERATION);
 							}
 							if (disciplineName.equals("Skid Pad")) {
-								short runs = tagContent.getSkidPadRuns();
-								if (runCount <= 2-runs) {
-									writeRunsToTag(intent, runCount, FsgHelper.RUN_DISCIPLINE_SKID_PAD);
-								} else {
-									message = "Bereits " + runs + " Runs absolviert.\nNoch " + (2-runs) + " Runs auf dieser Disziplin erlaubt";
-									success = false;
-									Log.e("ERROR",message);
-								}
+								writeRunsWhileLessThanThreeDisciplinesArePresent(intent, tagContent, FsgHelper.RUN_DISCIPLINE_SKID_PAD);
 							}
 							if (disciplineName.equals("Autocross")) {
-								short runs = tagContent.getAutocrossRuns();
-								if (runCount <= 2-runs) {
-									writeRunsToTag(intent, runCount, FsgHelper.RUN_DISCIPLINE_AUTOCROSS);
-								} else {
-									message = "Bereits " + runs + " Runs absolviert.\nNoch " + (2-runs) + " Runs auf dieser Disziplin erlaubt";
-									success = false;
-									Log.e("ERROR",message);
-								}
+								writeRunsWhileLessThanThreeDisciplinesArePresent(intent, tagContent, FsgHelper.RUN_DISCIPLINE_AUTOCROSS);
 							}
 							if (disciplineName.equals("Endurance")) {
-								short runs = tagContent.getEnduranceRuns();
-								if (runCount <= 2-runs) {
-									writeRunsToTag(intent, runCount, FsgHelper.RUN_DISCIPLINE_ENDURANCE);
-								} else {
-									message = "Bereits " + runs + " Runs absolviert.\nNoch " + (2-runs) + " Runs auf dieser Disziplin erlaubt";
-									success = false;
-									Log.e("ERROR",message);
-								}
+								writeRunsWhileLessThanThreeDisciplinesArePresent(intent, tagContent, FsgHelper.RUN_DISCIPLINE_ENDURANCE);
 							}
 						}
 					}
 					else {
 						message = "Abgelehnt:\nBriefing nicht besucht";
+						errorNumber = ERROR_BRIEFING_ABSENT;
 						success = false;
 					}
 				}
 			}
 			else {
 				message = "Armband gesperrt";
+				errorNumber = ERROR_TAG_BLACKLISTED;
 				success = false;
 			}
 			
@@ -168,7 +147,34 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 		mIntent.putExtra("RunCount", runCount);
 		mIntent.putExtra("Message", message);
 		mIntent.putExtra("Success",success);
+		mIntent.putExtra("ErrorNumber",errorNumber);
 		startActivity(mIntent);
+	}
+	
+	private void writeRunsWhileLessThanThreeDisciplinesArePresent(Intent intent, NfcObject tagContent, int disciplineNumber) {						//Was für ein toller Name ;)
+		short runs = 0;
+		switch (disciplineNumber) {
+		case FsgHelper.RUN_DISCIPLINE_ACCELERATION:
+			runs = tagContent.getAccelerationRuns();
+			break;
+		case FsgHelper.RUN_DISCIPLINE_SKID_PAD:
+			runs = tagContent.getSkidPadRuns();
+			break;
+		case FsgHelper.RUN_DISCIPLINE_AUTOCROSS:
+			runs = tagContent.getAutocrossRuns();
+			break;
+		case FsgHelper.RUN_DISCIPLINE_ENDURANCE:
+			runs = tagContent.getEnduranceRuns();
+			break;	
+		}
+		if (runCount <= 2-runs) {
+			writeRunsToTag(intent, runCount, disciplineNumber);
+		} else {
+			message = "Bereits " + runs + " Runs absolviert.\nNoch " + (2-runs) + " Runs auf dieser Disziplin erlaubt";
+			errorNumber = ERROR_MAX_RUNS_IN_DISCIPLINE_REACHED;
+			success = false;
+			Log.e("ERROR",message);
+		}
 	}
 	
 	private void writeRunsWhileThreeDisciplinesArePresent(Intent intent, NfcObject tagContent, int disciplineNumber) {
@@ -189,6 +195,7 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 		}
 		if (runs == 0) {
 			message = "Maximale Anzahl gefahrene Disziplinen erreicht";
+			errorNumber = ERROR_MAX_DISCIPLINES_REACHED;
 			success = false;
 		} 
 		else {
@@ -197,6 +204,7 @@ public class RunActivityConfirm extends NfcEnabledActivity {
 			}
 			else {
 				message = "Bereits " + runs + " Runs absolviert.\nNoch " + (2-runs) + " Runs auf dieser Disziplin erlaubt";
+				errorNumber = ERROR_MAX_RUNS_IN_DISCIPLINE_REACHED;
 				success = false;
 				Log.e("ERROR",message);
 			}
