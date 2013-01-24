@@ -18,6 +18,7 @@ public class NfcObject implements Parcelable{
 	private short autocrossRuns;
 	private short enduranceRuns;
 	private ArrayList<NfcObjectBriefing> briefings;
+	private boolean tagInvalidated;
 
 
 	public NfcObject(){
@@ -28,6 +29,7 @@ public class NfcObject implements Parcelable{
 		autocrossRuns = 0;
 		enduranceRuns = 0;
 		eventID = 0;
+		tagInvalidated = false;
 	}
 	
 	public void addBriefing(NfcObjectBriefing temp){
@@ -52,6 +54,7 @@ public class NfcObject implements Parcelable{
 		autocrossRuns = 0;
 		enduranceRuns = 0;
 		eventID = 0;
+		tagInvalidated = true;
 	}
 	
 	
@@ -228,6 +231,9 @@ public class NfcObject implements Parcelable{
     	return result;
     }
 	
+    public boolean isValid() {
+    	return !tagInvalidated;
+    }
 	
 	
 }

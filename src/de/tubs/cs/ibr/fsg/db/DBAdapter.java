@@ -31,6 +31,10 @@ public class DBAdapter {
 		dbHelper.close();
 	}
 	
+	public void clearDB() {
+		execSQL("DELETE FROM " + DBHelper.TABLE_BLACKLISTED_TAGS + ";");
+	}
+	
 	public void writeSampleData() {
 		database.delete(DBHelper.TABLE_DRIVERS, null, null);
 		database.delete(DBHelper.TABLE_TEAMS, null, null);
@@ -121,8 +125,8 @@ public class DBAdapter {
 			JSONArray tags = new JSONArray(jsonArray);
 			for(int i = 0; i < tags.length(); i++) {
 				JSONObject jDevice = tags.getJSONObject(i);
-				BlacklistedTag tag = new BlacklistedTag(jDevice.getInt("TagID"));
-				writeBlacklistedTagToDB(tag);
+				//BlacklistedTag tag = new BlacklistedTag(jDevice.getString("TagID"));
+				writeBlacklistedTagToDB(jDevice.getString("TagID"));
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -391,9 +395,9 @@ public class DBAdapter {
 	 * Schreibt ein Objekt BlacklistedTag in die Datenbank
 	 * @param blTag = Blacklisted Tag
 	 */
-	public void writeBlacklistedTagToDB(BlacklistedTag blTag) {
-		ContentValues values = blTag.getContentValues();
-		database.insert(DBHelper.TABLE_BLACKLISTED_TAGS, null, values);
+	public void writeBlacklistedTagToDB(String tagID) {
+		String sql = "INSERT INTO " + DBHelper.TABLE_BLACKLISTED_TAGS + " (" + DBHelper.BLACKLISTED_TAGS_COLUMN_TAG_ID + ") VALUES ('" + tagID + "');";
+		execSQL(sql);
 	}
 	
 	/**

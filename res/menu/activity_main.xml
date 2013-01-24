@@ -9,6 +9,9 @@
         android:id="@+id/miRegInsertDummyData"
         android:title="@string/menu_reg_insertDummyData"/>
     <item
+        android:id="@+id/clearDB"
+        android:title="@string/menu_reg_clearDB"/>
+    <item
         android:id="@+id/showDataVersion"
         android:title="@string/menu_reg_showDataVersion"/>
     <item

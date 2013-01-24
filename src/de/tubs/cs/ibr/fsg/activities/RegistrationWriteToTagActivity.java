@@ -101,7 +101,7 @@ public class RegistrationWriteToTagActivity extends NfcEnabledActivity {
     public void executeNfcAction(Intent intent) {
 		txtStatus.setText("Band gefunden");
 		try {
-			//nfc.cleanTag(intent);						//Falls Karte voll, Kommentar entfernen um Karte zu leeren
+			nfc.cleanTag(intent);						//Falls Karte voll, Kommentar entfernen um Karte zu leeren
 			nfc.initializeTag(intent);
 			nfc.readTag(intent);
 			NfcObject tagContent = NfcData.interpretData(nfc.getData());

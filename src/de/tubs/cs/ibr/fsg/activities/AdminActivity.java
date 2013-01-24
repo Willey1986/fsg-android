@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 public class AdminActivity extends Activity {
-
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +24,7 @@ public class AdminActivity extends Activity {
     		//startActivity(new Intent(this, CopyTagActivity.class));
     		break;
     	case R.id.buttonInvalidateTag:
-    		//startActivity(new Intent(this, InvalidateTagActivity.class));
+    		startActivity(new Intent(this,AdminInvalidateTagActivity.class));
     		break;
     	case R.id.buttonInvalidateBlock:
     		//startActivity(new Intent(this, InvalidateBlockActivity.class));
@@ -51,6 +51,5 @@ public class AdminActivity extends Activity {
     	return true;
     	
     	
-    }
-        
+    }        
 }
