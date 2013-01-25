@@ -15,7 +15,8 @@ public class NfcData {
 	//constants for the encryption/decryption
 	//private final static String SECUREKEY = "KEY";
 	
-	/* reads out & converts the binary encoded data
+	/**
+	 * reads out, converts the binary encoded data and saves Data to an NfcObject
 	 */
 	public static NfcObject interpretData(byte[][] inputBlock) throws FsgException{
 		NfcObject outputObject = new NfcObject();		
@@ -29,16 +30,19 @@ public class NfcData {
 					short[] test = new short[8];
 					for(int j=1;j<15;j+=2){
 						test[j/2] = (short) (((inputBlock[i][j+1]&0xFF) << 8) | (inputBlock[i][j]&0xFF));
-					}					
+					}		
+					
+					System.out.println("fahrzeugID: "+test[0]);
+					//System.out.println("userID: "+test[1]);
+					//System.out.println("teamID: "+test[2]);
+					//System.out.println("eventID: "+test[3]);
+					
 					outputObject.getDriverObject().setTeamID(test[2]);
 					outputObject.getDriverObject().setDriverID(test[1]);
-					//TODO:FehlerHIER:outputObject.DriverObject.getTeam().setCarNr(test[0]);
+					outputObject.getDriverObject().getTeam().setCarNr(test[0]);
 					outputObject.setEventID(test[3]);
-						/*
-						System.out.println("fahrzeugID: "+test[0]);
-						System.out.println("userID: "+test[1]);
-						System.out.println("teamID: "+test[2]);
-						System.out.println("eventID: "+test[3]);*/
+						
+
 					break;
 					
 				case 11: //Registrierungsdaten name        		
@@ -74,8 +78,8 @@ public class NfcData {
 					
 				case 21: //Check OUT
 					short briefingIDo 	= (short) (((inputBlock[i][2]&0xFF) << 8) | (inputBlock[i][1]&0xFF));
-					int tstampo 		= (int) (((inputBlock[i][6]&0xFF) << 32) | ((inputBlock[i][5]&0xFF) << 16) | ((inputBlock[i][4]&0xFF) << 8) | (inputBlock[i][3]&0xFF));
-					long tstamp2o 		= (Long.parseLong(String.valueOf(tstampo))+tstampConstant)*1000;
+					//int tstampo 		= (int) (((inputBlock[i][6]&0xFF) << 32) | ((inputBlock[i][5]&0xFF) << 16) | ((inputBlock[i][4]&0xFF) << 8) | (inputBlock[i][3]&0xFF));
+					//long tstamp2o 		= (Long.parseLong(String.valueOf(tstampo))+tstampConstant)*1000;
 					
 					outputObject.removeBriefingByID(briefingIDo);
 					break;
@@ -143,8 +147,9 @@ public class NfcData {
 		return outputObject;
 	}
 
-	/*
-	 * generates the data blocks for the reg. data
+	
+	/**
+	 * generates the data blocks for the Registration data (name inclusive)
 	 */
 	public static byte[][] generateDataRegistration(Driver theDriver) throws FsgException, IOException {	
 		//check for working driver object
@@ -218,6 +223,12 @@ public class NfcData {
 		return outputBlock;
 	}
 	
+	
+	/**
+	 * Generates the CheckIN Data
+	 * @param briefingID
+	 * @return byte[][]
+	 */
 	public static byte[][] generateCheckIN(short briefingID){
 		byte[][] outputBlock = new byte[1][16];
 		byte contentID = 20;
@@ -234,6 +245,12 @@ public class NfcData {
 		return outputBlock;
 	}
 	
+	
+	/**
+	 * Generates the CheckOUT Data
+	 * @param briefingID
+	 * @return byte[][] 
+	 */
 	public static byte[][] generateCheckOUT(short briefingID){
 		byte[][] outputBlock = new byte[1][16];
 		byte contentID = 21;
@@ -302,6 +319,10 @@ public class NfcData {
 	}
 	
 	
+	/**
+	 * Generiert einen Block der ein Tag als komplett gelöscht markiert. (Macht Daten auf Tag ungültig)
+	 * @return byte[][]
+	 */
 	public static byte[][] generateDataDestroyCompleteTag(){
 		byte[][] outputBlock = new byte[1][16];
 		byte contentID = 99;
@@ -311,6 +332,11 @@ public class NfcData {
 		return outputBlock;
 	}
 	
+	
+	/**
+	 * Interne Methode zum berechnen des verkürzten Timestamps
+	 * @return int
+	 */
 	private static int makeBetterTimestampNOW(){
 		//get the Time	| converted output: 2010-03-08 14:59:30.252
 		java.util.Date date = new java.util.Date();		
@@ -319,10 +345,5 @@ public class NfcData {
 			//System.out.println("TimeIN: "+date);
 		//to convert to UnixTimestamp use: / 1000L
 		return (int)((date.getTime()/1000)-tstampConstant);
-	}
-	
-	public static byte[] toBytes(short s) {
-        return new byte[]{(byte)(s & 0x00FF),(byte)((s & 0xFF00)>>8)};
-    }
-	
+	}	
 }	
