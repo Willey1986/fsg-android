@@ -194,32 +194,85 @@ public class NfcData {
 		
 		//read out and convert the name now
 		contentID = 11;
-		String prename, lastname;
-		
 		try{
-			prename	= theDriver.getFirstName(); 
-				if(prename.length()>15) prename = prename.substring(0, 16);
-			lastname = theDriver.getLastName().substring(0, 1)+".";
+			// 1 bis 4 Bytes pro Buchstabe bei UTF-8  
+			// Umlaute immer 2 Bytes
+			// -> Wir wissen nie, wieviele Bytes ein Charakter braucht,
+			// darum ist das Zuschneiden des Namen nicht trivial
+			
+			// Wir haben insgesamt 15 Bytes zur Verfügung: 16 Bytes minus 1 Byte fuer die ContentID.
+			// Zuerst finden wir raus, wieviel Platz (in Bytes) der gekuertzte 
+			// Nachname braucht (+ Leerzeichen zwischen Vorname und Nachname ).
+			String lastname = " " + theDriver.getLastName().substring(0, 1) + ".";
+			byte[] lastnameBytes = lastname.getBytes("UTF-8");
+			int lastnameBytesAmount = lastnameBytes.length;  // <- So viele Bytes braucht der Nachname
+			
+			// Nun rechnen wir aus, viele Bytes fuer den Vornamen uebrig bleiben:
+			// 15 Bytes - Nachname Bytes
+			int availableFirstnameBytes = 15 - lastnameBytesAmount;
+			
+			// Jetzt geht es darum zu schauen, passt der Vorname ungekuerzt oder nicht.
+			// Wenn nicht, dann muessen wir den Vornamen so kuerzen, dass er passt.
+			byte[] firstnameBytesSplited;
+			String firstname = theDriver.getFirstName();
+			if (availableFirstnameBytes < firstname.getBytes("UTF-8").length){
+				// In diesem Fall muessen wir den Vornamen zurechtschneiden
+				firstnameBytesSplited = new  byte[availableFirstnameBytes];
+				int counter = 0;
+				String blank = " ";
+
+				for(int i=0 ; i<availableFirstnameBytes ; i++){
+					byte[] characterfirstnameBytes = firstname.substring(i, i+1).getBytes("UTF-8");
+					
+					if ((counter+characterfirstnameBytes.length)==availableFirstnameBytes){
+						for(int a=0 ; a<characterfirstnameBytes.length ; a++){
+							firstnameBytesSplited[counter] = characterfirstnameBytes[a];
+							counter = counter + 1;
+						}
+						break;
+					}
+					
+					if ((counter+characterfirstnameBytes.length)<availableFirstnameBytes){
+						for(int a=0 ; a<characterfirstnameBytes.length ; a++){
+							firstnameBytesSplited[counter] = characterfirstnameBytes[a];
+							counter = counter + 1;
+						}
+
+					}else{
+						// Hier ist der Fall, wenn ein Sonderzeichen genau mitten auf dem Schnitt
+						// stehen wuerde, so dass wir seine notwendige Bytes so trennen wuerden, dass
+						// wir ein ungewolltes ? auf der Darstellung haetten. Darum fuellen wir hier
+						// das Ende mit Leerzeichen, sonst sieht es in der App haesslich/unsauber aus.
+						firstnameBytesSplited[counter] = blank.getBytes("UTF-8")[0];
+						counter = counter + 1;
+					}
+				}
+				
+			}else{
+				// In diesem Fall passt der Vorname ungekuerzt
+				firstnameBytesSplited = firstname.getBytes("UTF-8");
+			}
+			
+
+			//####################################################################
+			// Jetzt sind wir so weit, alles in unserem outputBlock zu speichern
+			// Zuerst die contentID
+			outputBlock[1][0] = contentID;
+			// Nun der Vorname
+			for(int i=0 ; i<firstnameBytesSplited.length ; i++){
+				outputBlock[1][i+1] = firstnameBytesSplited[i];
+			}
+			// Schliesslich der Nachname
+			for(int i=0 ; i<lastnameBytesAmount ; i++){
+				outputBlock[1][firstnameBytesSplited.length+1+i] = lastnameBytes[i];
+			}
+			//####################################################################
+
 		} catch (Exception  e) {
+			e.printStackTrace();
 			throw new FsgException( e, "NfcData", FsgException.GENERIC_EXCEPTION);
 		}
-		
-		String fullname = " "+prename+" "+lastname;	// whitespace at first position is essential; space for the contentID	
-			//System.out.println("NfcData#Name: "+fullname);
-		
-		/* >= 1Byte pro Buchstabe bei UTF-8
-		 * >= 2Byte pro Buchstabe bei UTF-16 (UTF-16LE)
-		 * 	Umlaute immer 2Byte
-		 */				
-		
-		byte[] fullnameBytes = fullname.getBytes("UTF-8");
-		System.arraycopy(fullnameBytes, 0, outputBlock[1], 0, fullnameBytes.length);
-		//outputBlock[1] = fullname.getBytes("UTF-8");
-		outputBlock[1][0] = contentID; //write contentID AFTER text, to overwrite whitespace
-		
-		
-		
-		
+
 		return outputBlock;
 	}
 	

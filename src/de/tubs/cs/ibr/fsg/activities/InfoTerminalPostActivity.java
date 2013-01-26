@@ -46,9 +46,13 @@ public class InfoTerminalPostActivity extends Activity {
 		dba.open();
 		Driver databaseDriver = dba.getDriver(mNfcObject.getDriverObject().getDriverID());
 		String lastNameFromDatabase = null;
+		String firstNameFromDatabase = null;
 		if (databaseDriver!=null){
 			lastNameFromDatabase = databaseDriver.getLastName();
+			firstNameFromDatabase = databaseDriver.getFirstName();
 		}
+		
+		
 		if (lastNameFromDatabase==null || lastNameFromDatabase.equalsIgnoreCase("")){
 			lastNameFromDatabase = mNfcObject.getDriverObject().getLastName() ;
 		}
@@ -56,9 +60,12 @@ public class InfoTerminalPostActivity extends Activity {
 		driverLastName.setText( lastNameFromDatabase );
 		
 
-		
+		if (firstNameFromDatabase==null || firstNameFromDatabase.equalsIgnoreCase("")){
+			firstNameFromDatabase = mNfcObject.getDriverObject().getFirstName() ;
+		}
 		TextView driverFirstName = (TextView) findViewById(R.id.textViewFirstname2);
-		driverFirstName.setText( mNfcObject.getDriverObject().getFirstName() );
+		driverFirstName.setText( firstNameFromDatabase );
+		
 		
 		TextView accelerationRuns = (TextView) findViewById(R.id.textViewAccelerationRuns2);
 		accelerationRuns.setText( String.valueOf(mNfcObject.getAccelerationRuns()) );
