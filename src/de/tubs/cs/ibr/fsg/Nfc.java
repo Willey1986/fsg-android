@@ -790,7 +790,7 @@ public class Nfc {
 	}
 	
 	public void cleanTag(Intent intent) throws FsgException{
-		System.out.println("Cleaning Tag...");
+		//System.out.println("Cleaning Tag...");
 		byte[] rights = new byte[4];
 		rights[0] = setBit(rights[0], 0);
 		rights[0] = setBit(rights[0], 1);
@@ -805,7 +805,6 @@ public class Nfc {
 		rights[1] = setBit(rights[1], 2);
 		rights[2] = setBit(rights[2], 7);
 		
-		System.out.println("Cleaning Tag with rights: "+getHexString(rights, rights.length));
 		try{
 			for (int i = 0; i < 40; i++){
 				changeKey(intent, i, MifareClassic.KEY_DEFAULT, rights, MifareClassic.KEY_DEFAULT);
