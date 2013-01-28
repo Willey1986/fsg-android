@@ -140,7 +140,7 @@ public class NfcData {
 					break;
 					
 				default:
-					System.out.println("Error: contentID "+inputBlock[i][0]+" not readable!");
+					//System.out.println("Error: contentID "+inputBlock[i][0]+" not readable!");
 					break;
 			}
 		}

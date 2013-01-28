@@ -17,31 +17,42 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class CopyTagActivity extends NfcEnabledActivity {
 	
 	private DBAdapter dba;
 	private Nfc nfc;
+	private short step = 0;
+	private NfcObject theData = null;
+	private short driverID;
+	private short moveon = 0;
+	private String tagID = "";
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_admin_invalidate_tag);
 		dba = new DBAdapter(this);
 		nfc = new Nfc(this);
+		step = 1;
 		
 		dba.open();
 	}
 
 	@Override
 	public void executeNfcAction(Intent intent) {
-		NfcObject theData = null;
-		short driverID;
-		short moveon = 0;
-		String tagID = "";
-		
+	if(step==1){
+			
 		try {
+			System.out.println("Auslesen go!");
 			//ALTES TAG AUSLESEN
 			nfc.readTag(intent);
 			byte[][] data = nfc.getData();
@@ -55,16 +66,59 @@ public class CopyTagActivity extends NfcEnabledActivity {
 				//In Datenbank auf Blacklisted prüfen
 				DBAdapter database = new DBAdapter(this);
 				database.open();
-				if (!database.isTagBlacklisted(tagID)){//Tag geblacklistet?
+				if (true){//!database.isTagBlacklisted(tagID)){//Tag geblacklistet?
 					if (database.getDriver(driverID) != null){ //Wenn der Fahrer in der DB existiert
-						moveon = 1;
+						step = 2;
+						System.out.println("Auslesen ende!");
 					} else {
-						//TODO: Exception "Fahrer existiert nicht"
+						System.out.println("Fahrer existiert nicht!");
 					}
+				}else {
+					System.out.println("Tag blacklisted!");
 				}
-			}
+			}	
+		//DONE
+		} catch (FsgException e) {
+			e.printStackTrace();
+		}	
+	}
+		
+			
+			//TODO: Hier "Neue Karte ranhalten" auf Bildschirm anzeigen
+			/*
+				new AlertDialog.Builder (this);
+       	 		LayoutInflater factory = LayoutInflater.from(this);
+       	 		final View textEntryView = factory.inflate(R.layout.dialog_login, null);
+       	 		AlertDialog.Builder alert = new AlertDialog.Builder(this);                 
+       	 		alert.setTitle("Test");  
+       	 		alert.setMessage("Test :");                
+       	 		alert.setView(textEntryView);
+       	 	
+       	 		final Activity obj = this;
+       	 	
+       	 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {  
+       	 			public void onClick(DialogInterface dialog, int whichButton) {  
+       	 				EditText mUserText;
+       	 				mUserText = (EditText) textEntryView.findViewById(R.id.txt_password);
+       	 			}
+       	 		}); 
+       	 		
+       	 	alert.show();
+*/
 				
-			if(moveon==1){
+	else if(step==2){
+		
+		((TextView) findViewById(R.id.textView1)).setText("neues Band an Gerät halten");
+		((TextView) findViewById(R.id.textView2)).setText("neues Band beschreiben");
+		
+			//löschen
+				try{
+					nfc.cleanTag(intent);
+					nfc.initializeTag(intent);
+					System.out.println("card cleaned");
+				} catch (FsgException e) {
+					
+				}
 			//Blacklisten des alten Bandes anhand der Band-ID DBAdapter.writeBlacklistedTag(int tagId)
 				dba.writeBlacklistedTagToDB(tagID);
 			//Band als ungültig kennzeichnen: Nfc.invalidateTag()
@@ -130,6 +184,8 @@ public class CopyTagActivity extends NfcEnabledActivity {
 						
 						byte[][] contentToWrite = encryptedBriefing; 
 						nfc.writeTag(intent, contentToWrite);
+						//ENDE
+						step = 1;
 					
 					} catch (FsgException e) {
 						Intent mIntent = new Intent(this, ErrorActivity.class);
@@ -137,14 +193,12 @@ public class CopyTagActivity extends NfcEnabledActivity {
 						startActivity(mIntent);
 						finish();
 					}
-				}
+				 }
 				//Runs
-					//TODO
-			}
-			//DONE
-		} catch (FsgException e) {
-			e.printStackTrace();
-		}				
+					
+				
+				
+			}		
 		
 	}
 
