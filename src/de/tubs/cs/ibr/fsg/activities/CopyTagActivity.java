@@ -68,6 +68,8 @@ public class CopyTagActivity extends NfcEnabledActivity {
 				database.open();
 				if (true){//!database.isTagBlacklisted(tagID)){//Tag geblacklistet?
 					if (database.getDriver(driverID) != null){ //Wenn der Fahrer in der DB existiert
+						((TextView) findViewById(R.id.textView1)).setText("neues Band an Gerät halten");
+						((TextView) findViewById(R.id.textView2)).setText("neues Band beschreiben");
 						step = 2;
 						System.out.println("Auslesen ende!");
 					} else {
@@ -106,11 +108,7 @@ public class CopyTagActivity extends NfcEnabledActivity {
        	 	alert.show();
 */
 				
-	else if(step==2){
-		
-		((TextView) findViewById(R.id.textView1)).setText("neues Band an Gerät halten");
-		((TextView) findViewById(R.id.textView2)).setText("neues Band beschreiben");
-		
+	else if(step==2){		
 			//löschen
 				try{
 					nfc.cleanTag(intent);
