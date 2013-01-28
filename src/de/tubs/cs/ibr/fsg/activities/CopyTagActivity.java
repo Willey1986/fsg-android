@@ -186,8 +186,6 @@ public class CopyTagActivity extends NfcEnabledActivity {
 						
 						//byte[][] contentToWrite = encodedBriefing; 
 						nfc.writeTag(intent, encodedBriefing);
-						//ENDE
-						step = 1;
 					
 					} catch (FsgException e) {
 						Intent mIntent = new Intent(this, ErrorActivity.class);
@@ -196,10 +194,72 @@ public class CopyTagActivity extends NfcEnabledActivity {
 						finish();
 					}
 				 }
-				//Runs
-					
+				
+				//RUNS 
+				//ACCELERATION
+				for(int m=0;m<theData.getAccelerationRuns();m++){
+					try {
+						//kompliziertes auslesen des Timestamps und konvertierung
+						byte[][] encodedBriefing = NfcData.generateRun((short)1, NfcData.makeBetterTimestampNOW());
+						//TODO: Timestamp aus alten RUNS verwenden und keinen neuen anlegen
+						nfc.writeTag(intent, encodedBriefing);					
+					} catch (FsgException e) {
+						Intent mIntent = new Intent(this, ErrorActivity.class);
+						mIntent.putExtra("Exception", e);
+						startActivity(mIntent);
+						finish();
+					}
+				 }
+				
+				//SKID_PAD
+				for(int m=0;m<theData.getAccelerationRuns();m++){
+					try {
+						//kompliziertes auslesen des Timestamps und konvertierung
+						byte[][] encodedBriefing = NfcData.generateRun((short)2, NfcData.makeBetterTimestampNOW());
+						//TODO: Timestamp aus alten RUNS verwenden und keinen neuen anlegen
+						nfc.writeTag(intent, encodedBriefing);					
+					} catch (FsgException e) {
+						Intent mIntent = new Intent(this, ErrorActivity.class);
+						mIntent.putExtra("Exception", e);
+						startActivity(mIntent);
+						finish();
+					}
+				 }
+				 
+				//AUTOCROSS
+				for(int m=0;m<theData.getAccelerationRuns();m++){
+					try {
+						//kompliziertes auslesen des Timestamps und konvertierung
+						byte[][] encodedBriefing = NfcData.generateRun((short)3, NfcData.makeBetterTimestampNOW());
+						//TODO: Timestamp aus alten RUNS verwenden und keinen neuen anlegen
+						nfc.writeTag(intent, encodedBriefing);					
+					} catch (FsgException e) {
+						Intent mIntent = new Intent(this, ErrorActivity.class);
+						mIntent.putExtra("Exception", e);
+						startActivity(mIntent);
+						finish();
+					}
+				 }
+				
+				//ENDURANCE
+				for(int m=0;m<theData.getAccelerationRuns();m++){
+					try {
+						//kompliziertes auslesen des Timestamps und konvertierung
+						byte[][] encodedBriefing = NfcData.generateRun((short)4, NfcData.makeBetterTimestampNOW());
+						//TODO: Timestamp aus alten RUNS verwenden und keinen neuen anlegen
+						nfc.writeTag(intent, encodedBriefing);					
+					} catch (FsgException e) {
+						Intent mIntent = new Intent(this, ErrorActivity.class);
+						mIntent.putExtra("Exception", e);
+						startActivity(mIntent);
+						finish();
+					}
+				 }
 				
 				
+				//ENDE				
+				((TextView) findViewById(R.id.textView1)).setText("Auslesen erledigt");
+				((TextView) findViewById(R.id.textView2)).setText("Daten wurden übertragen");
 			}		
 		
 	}
