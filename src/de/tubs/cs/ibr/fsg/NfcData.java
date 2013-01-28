@@ -298,6 +298,22 @@ public class NfcData {
 		return outputBlock;
 	}
 	
+	public static byte[][] generateCheckIN(short briefingID, int timestampIN){
+		byte[][] outputBlock = new byte[1][16];
+		byte contentID = 20;
+		int timestamp = timestampIN;
+		
+		outputBlock[0][0] = contentID;
+		outputBlock[0][1] = (byte)(briefingID & 0xff);
+		outputBlock[0][2] = (byte)((briefingID >> 8) & 0xff);
+		outputBlock[0][3] = (byte)(timestamp & 0xff);
+		outputBlock[0][4] = (byte)((timestamp >> 8) & 0xff);
+		outputBlock[0][5] = (byte)((timestamp >> 16) & 0xff);
+		outputBlock[0][6] = (byte)((timestamp >> 32) & 0xff);		
+		
+		return outputBlock;
+	}
+	
 	
 	/**
 	 * Generates the CheckOUT Data
@@ -393,6 +409,16 @@ public class NfcData {
 	private static int makeBetterTimestampNOW(){
 		//get the Time	| converted output: 2010-03-08 14:59:30.252
 		java.util.Date date = new java.util.Date();		
+			//System.out.println("TimestampIN: "+date.getTime());
+			//System.out.println("TimestampINc:"+(int)((date.getTime()/1000)-tstampConstant));
+			//System.out.println("TimeIN: "+date);
+		//to convert to UnixTimestamp use: / 1000L
+		return (int)((date.getTime()/1000)-tstampConstant);
+	}	
+	
+	public static int makeBetterTimestampFrom(long tstamp){
+		//get the Time	| converted output: 2010-03-08 14:59:30.252
+		java.util.Date date = new java.util.Date(tstamp);		
 			//System.out.println("TimestampIN: "+date.getTime());
 			//System.out.println("TimestampINc:"+(int)((date.getTime()/1000)-tstampConstant));
 			//System.out.println("TimeIN: "+date);
