@@ -117,6 +117,8 @@
     <string name="admin_invalidate_tag">Band ungültig machen</string>
     <string name="admin_invalidate_block">Einzelnen Block ungültig machen</string>
     <string name="admin_configuration">Einstellungen</string>
+    <string name="admin_cleanTag">Tag leeren</string>
+    <string name="admin_initializeTag">Tag initialisieren</string>
 
     <!-- Notification Strings -->
     <string name="noti_title">FSG - Update erhalten</string>

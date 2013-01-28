@@ -51,7 +51,37 @@
         android:textColor="@color/button_text_color"
         android:onClick="onButtonClick"
         android:text="@string/admin_invalidate_block" />
-    
+        
+        <Button
+        android:id="@+id/buttonCleanTag"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginBottom="@dimen/grid04"
+        android:background="@layout/button_selector"
+        android:drawableLeft="@drawable/icon_invalidate_block"
+        android:gravity="left|center_vertical" 
+        android:drawablePadding="@dimen/grid04"
+        android:paddingLeft="@dimen/grid04"
+        android:textColor="@color/button_text_color"
+        android:onClick="onButtonClick"
+        android:text="@string/admin_cleanTag" />
+        
+        <Button
+        android:id="@+id/buttonInitializeTag"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginBottom="@dimen/grid04"
+        android:background="@layout/button_selector"
+        android:drawableLeft="@drawable/icon_briefing_in"
+        android:gravity="left|center_vertical" 
+        android:drawablePadding="@dimen/grid04"
+        android:paddingLeft="@dimen/grid04"
+        android:textColor="@color/button_text_color"
+        android:onClick="onButtonClick"
+        android:text="@string/admin_initializeTag" />
+        
         <Button
         android:id="@+id/buttonConfiguration"
         android:layout_width="@dimen/button_width"

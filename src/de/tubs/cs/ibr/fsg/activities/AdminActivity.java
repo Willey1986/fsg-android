@@ -29,6 +29,12 @@ public class AdminActivity extends Activity {
     	case R.id.buttonInvalidateBlock:
     		//startActivity(new Intent(this, InvalidateBlockActivity.class));
     		break;
+    	case R.id.buttonCleanTag:
+    		startActivity(new Intent(this, CleanTagActivity.class));
+    		break;
+    	case R.id.buttonInitializeTag:
+    		startActivity(new Intent(this, InitializeTagActivity.class));
+    		break;
     	case R.id.buttonConfiguration:
     		//startActivity(new Intent(this, ConfigurationActivity.class));
     		break;

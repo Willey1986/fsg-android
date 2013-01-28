@@ -29,16 +29,7 @@ public class BriefingCheckInActivity extends NfcEnabledActivity { //NfcEnabledAc
 	private static IntentFilter[] mFilters;
 	private static String[][] mTechLists;
 	
-	private static final String TAG = "purchtagscanact";
-	private static final int AUTH = 1;
-	private static final int EMPTY_BLOCK_0 = 2;
-	private static final int EMPTY_BLOCK_1 = 3;
-	private static final int NETWORK = 4;
-	// Hex help
-	private static final byte[] HEX_CHAR_TABLE = { (byte) '0', (byte) '1',
-			(byte) '2', (byte) '3', (byte) '4', (byte) '5', (byte) '6',
-			(byte) '7', (byte) '8', (byte) '9', (byte) 'A', (byte) 'B',
-			(byte) 'C', (byte) 'D', (byte) 'E', (byte) 'F' };
+	private static final String TAG = "BriefingCheckInActivity";
 
 	private Nfc nfc;
 	
@@ -147,9 +138,10 @@ public class BriefingCheckInActivity extends NfcEnabledActivity { //NfcEnabledAc
 	@Override
 	public void executeNfcAction(Intent intent) {//TODO: Absturz/Fehler finden
 		try {
+			nfc.cleanTag(intent);
 			//nfc.resolveIntent(intent);
 			//System.out.println("Checking In...");
-			nfc.readTag(intent);
+			/*nfc.readTag(intent);
 			byte[][] data = nfc.getData();
 			if (!Arrays.equals(data, null)){
 				//System.out.println("not null (checkin)");
@@ -190,7 +182,7 @@ public class BriefingCheckInActivity extends NfcEnabledActivity { //NfcEnabledAc
 				database.close();
 			} else {
 				throw new FsgException(new Exception(), this.getClass().toString(), FsgException.TAG_EMPTY);
-			}
+			}*/
 		} catch (FsgException e) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
 			mIntent.putExtra("Exception", e);
