@@ -111,7 +111,7 @@ public class CopyTagActivity extends NfcEnabledActivity {
 	else if(step==2){		
 			//löschen
 				try{
-					nfc.cleanTag(intent);
+					//nfc.cleanTag(intent);
 					nfc.initializeTag(intent);
 					System.out.println("card cleaned");
 				} catch (FsgException e) {
