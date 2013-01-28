@@ -148,15 +148,15 @@ public class BriefingCheckInActivity extends NfcEnabledActivity { //NfcEnabledAc
 	public void executeNfcAction(Intent intent) {//TODO: Absturz/Fehler finden
 		try {
 			//nfc.resolveIntent(intent);
-			System.out.println("Checking In...");
+			//System.out.println("Checking In...");
 			nfc.readTag(intent);
 			byte[][] data = nfc.getData();
 			if (!Arrays.equals(data, null)){
-				System.out.println("not null (checkin)");
+				//System.out.println("not null (checkin)");
 				NfcObject checkInObject = NfcData.interpretData(data);
-				System.out.println("Data interpreted");
+				//System.out.println("Data interpreted");
 				short driverID = checkInObject.getDriverObject().getDriverID();
-				System.out.println("DriverID: "+driverID);
+				//System.out.println("DriverID: "+driverID);
 				DBAdapter database = new DBAdapter(this);
 				database.open();
 				if (!database.isTagBlacklisted(nfc.getTagID())){//Tag geblacklistet?

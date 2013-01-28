@@ -245,12 +245,14 @@ public class Nfc {
 					if (tag.authenticateSectorWithKeyB(tag.blockToSector(i), keyB)){
 						data = tag.readBlock(i);
 						// Sobald der erste leere Block erreicht wird, wird die Schleife verlassen.
-						if(Arrays.equals(data, emptyBlock)){ 
+						if(Arrays.equals(data, emptyBlock)){
+							System.out.println("Empty Block");
 							break;
 						}
 						// Key-Blöcke werden im Ergebnis Array nicht gespeichert. Setzt voraus, dass alle Key-Blöcke gleich aussehen!
 						if (!Arrays.equals(data, keyBlock)){ 
-							content[i] = data;
+							System.out.println("Content "+i+": "+getHexString(content[i], content[i].length));
+							content[i-1] = data;
 						}					
 					}
 				}
@@ -258,6 +260,7 @@ public class Nfc {
 					System.out.println("not null (Nfc.java)");
 					byte[][] decryptedContent = read(content);
 					setData(decryptedContent);
+					System.out.println("Content: "+getHexString(decryptedContent));
 				}
 //				if (!cardData.isEmpty()){
 //					System.out.println("CardData: "+cardData);
@@ -709,7 +712,7 @@ public class Nfc {
 	
 	private int getEmptyBlock(MifareClassic tag) throws FsgException{
 		byte[] emptyBlock = new byte[16];
-		int emptyBlockIndex = 1; //Weil erster Block des Tags Hersteller-Infos enthält
+		int emptyBlockIndex = 0; //Weil erster Block des Tags Hersteller-Infos enthält
 		if (tag.isConnected()) {
 			byte[] data = null;
 			try {
@@ -790,7 +793,7 @@ public class Nfc {
 	}
 	
 	public void cleanTag(Intent intent) throws FsgException{
-		System.out.println("Cleaning Tag...");
+		//System.out.println("Cleaning Tag...");
 		byte[] rights = new byte[4];
 		rights[0] = setBit(rights[0], 0);
 		rights[0] = setBit(rights[0], 1);
@@ -805,7 +808,6 @@ public class Nfc {
 		rights[1] = setBit(rights[1], 2);
 		rights[2] = setBit(rights[2], 7);
 		
-		System.out.println("Cleaning Tag with rights: "+getHexString(rights, rights.length));
 		try{
 			for (int i = 0; i < 40; i++){
 				changeKey(intent, i, MifareClassic.KEY_DEFAULT, rights, MifareClassic.KEY_DEFAULT);
@@ -881,6 +883,13 @@ public class Nfc {
 		String string = new String();
 		for (int i=0; i < stringArray.length; i++){
 			string += stringArray[i]+" ";
+		}
+	    return string;
+	}
+	public String getHexString(byte[][] byteArray) {
+		String string = new String();
+		for (int i=0; i < byteArray.length; i++){
+			string += getHexString(byteArray[i], byteArray[i].length)+" ";
 		}
 	    return string;
 	}
