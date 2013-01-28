@@ -21,7 +21,7 @@ public class AdminActivity extends Activity {
     public void onButtonClick(View view){
     	switch (view.getId() ){
     	case R.id.buttonCopyTag:
-    		//startActivity(new Intent(this, CopyTagActivity.class));
+    		startActivity(new Intent(this, CopyTagActivity.class));
     		break;
     	case R.id.buttonInvalidateTag:
     		startActivity(new Intent(this,AdminInvalidateTagActivity.class));
