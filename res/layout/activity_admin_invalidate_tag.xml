@@ -12,7 +12,7 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Armband ungültig machen"
+        android:text="altes Band an Gerät halten"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/button_text_color"
         android:textSize="@dimen/grid07" />
@@ -21,7 +21,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fahrerarmband an Gerät halten"
+        android:text="Armband ungültig machen"
         android:textColor="@color/button_text_color"
         android:textColorHint="@color/button_text_color" />
 
