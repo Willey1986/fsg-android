@@ -50,7 +50,18 @@ public class CopyTagActivity extends NfcEnabledActivity {
 	@Override
 	public void executeNfcAction(Intent intent) {
 	if(step==1){
-			
+		new AlertDialog.Builder (this);
+   	 	LayoutInflater factory = LayoutInflater.from(this);
+   	    AlertDialog.Builder alert = new AlertDialog.Builder(this);                 
+   	    alert.setTitle("Bitte neues Band an Gerät halten.");               	 	
+   	    alert.setPositiveButton("Fertig", new DialogInterface.OnClickListener() {  
+   	    public void onClick(DialogInterface dialog, int whichButton) {  
+   	        }               
+   	      } 
+   	     );  
+   	    
+   	    alert.show();  
+   	            
 		try {
 			System.out.println("Auslesen go!");
 			//ALTES TAG AUSLESEN
@@ -66,7 +77,7 @@ public class CopyTagActivity extends NfcEnabledActivity {
 				//In Datenbank auf Blacklisted prüfen
 				DBAdapter database = new DBAdapter(this);
 				database.open();
-				if (true){//!database.isTagBlacklisted(tagID)){//Tag geblacklistet?
+				if (true){//TODO:!database.isTagBlacklisted(tagID)){//Tag geblacklistet?
 					if (database.getDriver(driverID) != null){ //Wenn der Fahrer in der DB existiert
 						((TextView) findViewById(R.id.textView1)).setText("neues Band an Gerät halten");
 						((TextView) findViewById(R.id.textView2)).setText("neues Band beschreiben");
@@ -109,9 +120,10 @@ public class CopyTagActivity extends NfcEnabledActivity {
 */
 				
 	else if(step==2){		
+			
 			//löschen
 				try{
-					nfc.cleanTag(intent);
+					//nfc.cleanTag(intent);
 					nfc.initializeTag(intent);
 					System.out.println("card cleaned");
 				} catch (FsgException e) {
@@ -257,7 +269,8 @@ public class CopyTagActivity extends NfcEnabledActivity {
 				 }
 				
 				
-				//ENDE				
+				//ENDE
+				step = 3;
 				((TextView) findViewById(R.id.textView1)).setText("Auslesen erledigt");
 				((TextView) findViewById(R.id.textView2)).setText("Daten wurden übertragen");
 			}		
