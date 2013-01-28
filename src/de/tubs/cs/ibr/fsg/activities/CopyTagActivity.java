@@ -129,7 +129,10 @@ public class CopyTagActivity extends NfcEnabledActivity {
 				
 				try {
 					byte[][] encodedDriver = NfcData.generateDataRegistration(theData.getDriverObject());
-					StringBuffer encodedString = new StringBuffer();
+					
+					
+					/*StringBuffer encodedString = new StringBuffer();
+					
 					for(int i = 0; i < encodedDriver.length; i++) {
 						for(int j=0; j<encodedDriver[i].length; j++) {
 							encodedString.append(encodedDriver[i][j]);
@@ -142,10 +145,10 @@ public class CopyTagActivity extends NfcEnabledActivity {
 						for(int j = 0; j < encryptedDriver[i].length; j++) {
 							encryptedString.append(encryptedDriver[i][j]);
 						}
-					}
+					}*/
 					
-					byte[][] contentToWrite = encryptedDriver; 
-					nfc.writeTag(intent, contentToWrite);
+					//byte[][] contentToWrite = encodedDriver; 
+					nfc.writeTag(intent, encodedDriver);
 				} catch (FsgException e) {
 					Intent mIntent = new Intent(this, ErrorActivity.class);
 					mIntent.putExtra("Exception", e);
@@ -165,6 +168,7 @@ public class CopyTagActivity extends NfcEnabledActivity {
 						byte[][] encodedBriefing = NfcData.generateCheckIN(
 								theData.getBriefings().get(m).getBriefingID(), 
 								NfcData.makeBetterTimestampFrom(theData.getBriefings().get(m).getTimestamp()));
+						/*
 						StringBuffer encodedString = new StringBuffer();
 						for(int i = 0; i < encodedBriefing.length; i++) {
 							for(int j=0; j<encodedBriefing[i].length; j++) {
@@ -178,10 +182,10 @@ public class CopyTagActivity extends NfcEnabledActivity {
 							for(int j = 0; j < encryptedBriefing[i].length; j++) {
 								encryptedString.append(encryptedBriefing[i][j]);
 							}
-						}
+						}*/
 						
-						byte[][] contentToWrite = encryptedBriefing; 
-						nfc.writeTag(intent, contentToWrite);
+						//byte[][] contentToWrite = encodedBriefing; 
+						nfc.writeTag(intent, encodedBriefing);
 						//ENDE
 						step = 1;
 					
