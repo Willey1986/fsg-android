@@ -92,8 +92,8 @@ public class CopyTagActivity extends NfcEnabledActivity {
 						}
 					}
 					
-					 byte[][] contentToWrite = encryptedDriver; 
-					 nfc.writeTag(intent, contentToWrite);
+					byte[][] contentToWrite = encryptedDriver; 
+					nfc.writeTag(intent, contentToWrite);
 				} catch (FsgException e) {
 					Intent mIntent = new Intent(this, ErrorActivity.class);
 					mIntent.putExtra("Exception", e);
@@ -106,7 +106,38 @@ public class CopyTagActivity extends NfcEnabledActivity {
 					finish();
 				}
 				//Briefings
-					//TODO
+				//für #briefings die es gibt, lese aus und schreibe auf band
+				for(int m=0;m<theData.getBriefings().size();m++){
+					try {
+						//kompliziertes auslesen des Timestamps und konvertierung
+						byte[][] encodedBriefing = NfcData.generateCheckIN(
+								theData.getBriefings().get(m).getBriefingID(), 
+								NfcData.makeBetterTimestampFrom(theData.getBriefings().get(m).getTimestamp()));
+						StringBuffer encodedString = new StringBuffer();
+						for(int i = 0; i < encodedBriefing.length; i++) {
+							for(int j=0; j<encodedBriefing[i].length; j++) {
+								encodedString.append(encodedBriefing[i][j]);
+							}
+						}
+						
+						byte[][] encryptedBriefing = scm.encryptString(encodedBriefing);
+						StringBuffer encryptedString = new StringBuffer();
+						for(int i = 0; i < encryptedBriefing.length; i++) {
+							for(int j = 0; j < encryptedBriefing[i].length; j++) {
+								encryptedString.append(encryptedBriefing[i][j]);
+							}
+						}
+						
+						byte[][] contentToWrite = encryptedBriefing; 
+						nfc.writeTag(intent, contentToWrite);
+					
+					} catch (FsgException e) {
+						Intent mIntent = new Intent(this, ErrorActivity.class);
+						mIntent.putExtra("Exception", e);
+						startActivity(mIntent);
+						finish();
+					}
+				}
 				//Runs
 					//TODO
 			}

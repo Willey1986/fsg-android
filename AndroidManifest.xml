@@ -158,6 +158,11 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:name="de.tubs.cs.ibr.fsg.activities.AdminInvalidateTagActivity"
             android:label="@string/title_activity_admin_invalidate_tag" >
         </activity>
+        
+        <activity
+            android:name="de.tubs.cs.ibr.fsg.activities.CopyTagActivity"
+            android:label="Copy Tag" >
+        </activity>
     </application>
 
 </manifest>
