@@ -18,6 +18,7 @@ public class NfcObject implements Parcelable{
 	private short autocrossRuns;
 	private short enduranceRuns;
 	private ArrayList<NfcObjectBriefing> briefings;
+	private boolean tagInvalidated;
 
 
 	public NfcObject(){
@@ -28,6 +29,7 @@ public class NfcObject implements Parcelable{
 		autocrossRuns = 0;
 		enduranceRuns = 0;
 		eventID = 0;
+		tagInvalidated = false;
 	}
 	
 	public void addBriefing(NfcObjectBriefing temp){
@@ -37,10 +39,23 @@ public class NfcObject implements Parcelable{
 	public void removeBriefingByID(short id){
 		Iterator<NfcObjectBriefing> it = briefings.iterator();
 		while (it.hasNext()) {
-		  if(it.next().getBriefingID() == id){
-			  briefings.remove(it.next());
+			NfcObjectBriefing briefing = it.next();
+		  if(briefing.getBriefingID() == id){
+			  briefings.remove(briefing);
 		  }
 		}
+	}
+	
+	
+	public boolean  existThisBriefingByID(short id){
+		boolean result = false;
+		for (int i=0; i<briefings.size(); i++){
+			if (briefings.get(i).getBriefingID()== id){
+				result = true;
+				break;
+			}
+		}
+		return result;
 	}
 	
 	
@@ -52,6 +67,7 @@ public class NfcObject implements Parcelable{
 		autocrossRuns = 0;
 		enduranceRuns = 0;
 		eventID = 0;
+		tagInvalidated = true;
 	}
 	
 	
@@ -228,6 +244,9 @@ public class NfcObject implements Parcelable{
     	return result;
     }
 	
+    public boolean isValid() {
+    	return !tagInvalidated;
+    }
 	
 	
 }

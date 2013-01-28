@@ -1,69 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:weightSum="20"
     android:background="@drawable/background_grey"
-    android:gravity="center_vertical|center_horizontal" >
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/grid14"
+    android:paddingRight="@dimen/grid14" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="@dimen/button_width"
+    <TableLayout
+        android:id="@+id/TableLayout1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginBottom="@dimen/grid04"
-        android:textSize="@dimen/grid06"
-        android:gravity="center"
-        android:textColor="@color/button_text_color"
-        android:text="@string/which_discipline"/>
-      
-    <Button
-        android:id="@+id/btnRunAcceleration"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/grid04"
-        android:layout_weight="1"
-        android:background="@layout/button_selector"
-        android:gravity="center"
-        android:onClick="onButtonClick"
-        android:text="@string/acceleration"
-        android:textColor="@color/button_text_color" />
-    
-    <Button
-        android:id="@+id/btnRunSkidPad"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/grid04"
-        android:layout_weight="1"
-        android:background="@layout/button_selector"
-        android:gravity="center"
-        android:onClick="onButtonClick"
-        android:text="@string/skidpad"
-        android:textColor="@color/button_text_color" />
+        android:layout_weight="0"
+        android:padding="@dimen/grid04" >
 
-    <Button
-        android:id="@+id/btnRunAutocross"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/grid04"
-        android:layout_weight="1"
-        android:background="@layout/button_selector"
-        android:gravity="center"
-        android:onClick="onButtonClick"
-        android:text="@string/autocross"
-        android:textColor="@color/button_text_color" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
 
-    <Button
-        android:id="@+id/btnRunEndurance"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/grid04"
-        android:layout_weight="1"
-        android:background="@layout/button_selector"
-        android:gravity="center"
-        android:onClick="onButtonClick"
-        android:text="@string/endurance"
-        android:textColor="@color/button_text_color" />
+            <TextView
+                android:id="@+id/txtRunInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/which_discipline"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/button_text_color" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal" >
+
+            <ToggleButton
+                android:id="@+id/tBtnAcceleration"
+                android:layout_width="@dimen/button_run_width"
+                android:layout_height="@dimen/button_run_width"
+                android:onClick="onButtonClick"
+                android:textColor="@color/button_text_color"
+                android:textOff="@string/acceleration"
+                android:textOn="@string/acceleration"
+                android:textSize="@dimen/grid06" />
+
+            <ToggleButton
+                android:id="@+id/tBtnSkidPad"
+                android:layout_width="@dimen/button_run_width"
+                android:layout_height="@dimen/button_run_width"
+                android:onClick="onButtonClick"
+                android:textColor="@color/button_text_color"
+                android:textOff="@string/skidpad"
+                android:textOn="@string/skidpad"
+                android:textSize="@dimen/grid06" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal" >
+
+            <ToggleButton
+                android:id="@+id/tBtnAutocross"
+                android:layout_width="@dimen/button_run_width"
+                android:layout_height="@dimen/button_run_width"
+                android:onClick="onButtonClick"
+                android:textColor="@color/button_text_color"
+                android:textOff="@string/autocross"
+                android:textOn="@string/autocross"
+                android:textSize="@dimen/grid06" />
+
+            <ToggleButton
+                android:id="@+id/tBtnEndurance"
+                android:layout_width="@dimen/button_run_width"
+                android:layout_height="@dimen/button_run_width"
+                android:onClick="onButtonClick"
+                android:textColor="@color/button_text_color"
+                android:textOff="@string/endurance"
+                android:textOn="@string/endurance"
+                android:textSize="@dimen/grid06" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="@dimen/button_run_go_width"
+                android:layout_height="@dimen/grid01"
+                android:layout_marginBottom="@dimen/grid01"
+                android:layout_marginTop="@dimen/grid01"
+                android:background="@color/button_text_color" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <ToggleButton
+                android:id="@+id/tBtnRunOne"
+                android:layout_width="@dimen/button_run_width"
+                android:layout_height="@dimen/button_run_height"
+                android:onClick="onButtonClick"
+                android:text="ToggleButton"
+                android:textColor="@color/button_text_color"
+                android:textOff="@string/btnRunOne"
+                android:textOn="@string/btnRunOne"
+                android:textSize="@dimen/grid06" />
+
+            <ToggleButton
+                android:id="@+id/tBtnRunTwo"
+                android:layout_width="@dimen/button_run_width"
+                android:layout_height="@dimen/button_run_height"
+                android:onClick="onButtonClick"
+                android:text="ToggleButton"
+                android:textColor="@color/button_text_color"
+                android:textOff="@string/btnRunTwo"
+                android:textOn="@string/btnRunTwo"
+                android:textSize="@dimen/grid06" />
+
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="@dimen/button_run_go_width"
+                android:layout_height="@dimen/grid01"
+                android:layout_marginBottom="@dimen/grid01"
+                android:layout_marginTop="@dimen/grid01"
+                android:background="@color/button_text_color" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/btnRunConfirm"
+                android:layout_width="@dimen/button_run_go_width"
+                android:layout_height="@dimen/button_run_height"
+                android:layout_weight="0"
+                android:onClick="onConfirm"
+                android:text="@string/btnConfirm"
+                android:textColor="@color/button_text_color"
+                android:textSize="@dimen/grid06" />
+
+        </LinearLayout>
+
+    </TableLayout>
 
 </LinearLayout>

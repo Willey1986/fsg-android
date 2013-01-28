@@ -31,27 +31,27 @@ public class ErrorActivity extends Activity {
     	case FsgException.GENERIC_EXCEPTION:
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
     		res = getResources();
-        	userText.setText(res.getString(R.string.error_generic_exception));
+        	userText.setText(R.string.error_generic_exception);
     		break;
     	case FsgException.TAG_MEMORY_FULL:
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
     		res = getResources();
-        	userText.setText(res.getString(R.string.error_tag_memory_full));
+        	userText.setText(R.string.error_tag_memory_full);
     		break;
     	case FsgException.TAG_WRONG_KEY:
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
     		res = getResources();
-        	userText.setText(res.getString(R.string.error_tag_wrong_key));
+        	userText.setText(R.string.error_tag_wrong_key);
     		break;
     	case FsgException.TAG_WRONG_KEY_OR_FORMAT:
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
     		res = getResources();
-        	userText.setText(res.getString(R.string.error_tag_wrong_key_or_format));
+        	userText.setText(R.string.error_tag_wrong_key_or_format);
     		break;
     	case FsgException.NOT_NFC_SUPPORT:
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
     		res = getResources();
-        	userText.setText(res.getString(R.string.error_not_nfc_support));
+        	userText.setText(R.string.error_not_nfc_support);
     		break;
     	case FsgException.DRIVER_ALREADY_CHECKED_IN:
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);

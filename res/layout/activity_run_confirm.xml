@@ -7,48 +7,55 @@
     android:orientation="vertical"
     android:padding="@dimen/grid04" >
 
-    <TextView
-        android:id="@+id/txtDisciplineName"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textColor="@color/button_text_color"
-        android:textSize="@dimen/grid07" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/txtRunInfo"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/txtRunInfo"
-        android:textColor="@color/button_text_color"
-        android:textSize="@dimen/grid06" />
+        <TextView
+            android:id="@+id/txtRunDisciplineName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txtConfirmDisciplineName"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid07" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/txtRunCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txtConfirmRunCount"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/grid07" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:gravity="center" >
+        android:gravity="center"
+        android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/btnRunOne"
-            android:layout_width="@dimen/button_run_width"
-            android:layout_height="@dimen/button_run_width"
-            android:layout_margin="@dimen/grid01"
-            android:background="@layout/button_selector"
-            android:text="@string/btnRunOne"
-            android:textColor="@color/button_text_color"
-            android:textColorHint="@color/button_text_color"
-            android:textSize="@dimen/grid12" />
+        <TextView
+            android:id="@+id/txtRunConfirmationProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/button_text_color" />
 
-        <Button
-            android:id="@+id/btnRunTwo"
-            android:layout_width="@dimen/button_run_width"
-            android:layout_height="@dimen/button_run_width"
-            android:layout_margin="@dimen/grid01"
-            android:background="@layout/button_selector"
-            android:text="@string/btnRunTwo"
-            android:textColor="@color/button_text_color"
-            android:textSize="@dimen/grid12" />
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

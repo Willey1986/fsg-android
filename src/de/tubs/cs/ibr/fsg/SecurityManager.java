@@ -45,6 +45,8 @@ public class SecurityManager {
 	
 	private final byte[] key = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
+	//use new encryption/decryption
+	private static final boolean USE_NEW_SECURITY = false;
 	
 	
 	/**
@@ -125,14 +127,30 @@ public class SecurityManager {
 			throw new FsgException( new Exception("SecurityManager#Input for Encryption is too short"), this.getClass().toString(), FsgException.GENERIC_EXCEPTION );
 		}
 		
-		
 		byte [] singleByteArray = this.convertToOneByteArray(raw);
 		
 		byte [] encryptedSingleByteArray = this.encryptBytes(singleByteArray);
 		
 		
-		
-		return this.convertToTwoByteArray(encryptedSingleByteArray);
+		if(USE_NEW_SECURITY){
+
+			//copy the array
+			byte [] shiftedEncryptedByteArray = new byte[encryptedSingleByteArray.length+1];
+			
+			//add the length of the encrypted bytes
+			shiftedEncryptedByteArray[0] = (byte) encryptedSingleByteArray.length;
+			
+			//insert the size byte
+			for(int i=0;i<encryptedSingleByteArray.length;i++){
+				shiftedEncryptedByteArray[i+1] = encryptedSingleByteArray[i];
+			}
+			return this.convertToTwoByteArray(shiftedEncryptedByteArray);
+		}else{
+
+			byte [][] encryptedByteArray = this.convertToTwoByteArray(encryptedSingleByteArray);
+			
+			return encryptedByteArray;
+		}
 	}
 	
 	
@@ -153,15 +171,31 @@ public class SecurityManager {
 			throw new FsgException( new Exception("SecurityManager#Input for decrypting is too short"), this.getClass().toString(), FsgException.GENERIC_EXCEPTION );
 		}
 		
-		byte [] [] decryptedString= new byte [encryptedInput.length] [];
-		
 		byte [] singleByteArray = this.convertToOneByteArray(encryptedInput);
 		
-		byte [] encryptedSingleByteArray = this.decryptBytes(singleByteArray);
+		if(USE_NEW_SECURITY){
+
+			//copy the array
+			byte [] unshiftedArray = new byte[singleByteArray[0]];
+			
+			//remove the size byte
+			for(int i=0;i<singleByteArray[0];i++){
+				unshiftedArray[i] = singleByteArray[i+1];
+			}
+			
+
+			byte [] encryptedSingleByteArray = this.decryptBytes(unshiftedArray);
+			
+			return this.convertToTwoByteArray(encryptedSingleByteArray);
+		}else{
+
+			byte [] encryptedSingleByteArray = this.decryptBytes(singleByteArray);
+			
+			byte[][]decryptedArray = this.convertToTwoByteArray(encryptedSingleByteArray);
+			
+			return decryptedArray;
+		}
 		
-		
-		
-		return this.convertToTwoByteArray(encryptedSingleByteArray);
 	}
 	/**
 	 * Method to get the key for encryption
@@ -213,11 +247,11 @@ public class SecurityManager {
 	        kgen.init(256, sr);
 	        // kgen.init(128, sr);
 	    } catch (Exception e) {
-	        // Log.w(LOG, "This device doesn't suppor 256bits, trying 192bits.");
+	        // Log.w(LOG, "This device doesn't support 256bits, trying 192bits.");
 	        try {
 	            kgen.init(192, sr);
 	        } catch (Exception e1) {
-	            // Log.w(LOG, "This device doesn't suppor 192bits, trying 128bits.");
+	            // Log.w(LOG, "This device doesn't support 192bits, trying 128bits.");
 	            try{
 	            	kgen.init(128, sr);
 	            }catch(Exception e2){
@@ -411,6 +445,11 @@ public class SecurityManager {
     	
     	int numberOfSections = input.length / BYTEARRAYSIZE;
     	
+    	//not precisely 16 bytes
+    	if(input.length%BYTEARRAYSIZE!=0){
+    		numberOfSections++;
+    	}
+    	
     	byte[][]twoByteArray = new byte[numberOfSections][BYTEARRAYSIZE];
     	
     	for(int i=0;i<input.length;i++){
@@ -419,6 +458,138 @@ public class SecurityManager {
     	
     	return twoByteArray;
     	
+    }
+    
+    /** Method to decrypt and remove byte indexing
+     * 
+     * @param encryptedBytes encrypted bytes with indexing bytes
+     * @return decrypted bytes
+     * @throws FsgException 
+     */
+    public byte[][]decryptCardInput(byte[][] encryptedBytes)throws FsgException{
+    	
+    	//ignore first section 0 (first bytes)
+    	int bytePosition = BYTEARRAYSIZE;
+    	
+    	//length of byte-blocks connected together
+    	int length = encryptedBytes[bytePosition/BYTEARRAYSIZE][0]+1;
+    	
+    	
+    	int numSection = length/BYTEARRAYSIZE;
+    	
+    	//more than x mod 16
+    	if(length%BYTEARRAYSIZE!=0){
+    		numSection++;
+    	}
+    	
+    	//read the driver information
+    	byte [][]byteArray = new byte[numSection][BYTEARRAYSIZE];
+    	
+    	for(int i=0;i<length;i++){
+    		
+    		int currentSection = i/BYTEARRAYSIZE;
+    		int index = i % BYTEARRAYSIZE;
+    		
+    		//third row needs to skipped
+    		byte tmp = encryptedBytes[bytePosition/BYTEARRAYSIZE][bytePosition%BYTEARRAYSIZE];
+    		if(bytePosition/BYTEARRAYSIZE==3&&tmp==0){
+    			bytePosition+=16;
+    		}
+    		
+    		byteArray[currentSection][index] = encryptedBytes[bytePosition/BYTEARRAYSIZE][bytePosition%BYTEARRAYSIZE];
+    		
+    		//increase the byte
+    		bytePosition++;
+    	}
+    	
+    	byte [][]completeArray = this.decryptString(byteArray);
+    	
+    	
+    	//check next section
+    	int section = bytePosition/BYTEARRAYSIZE;
+    	
+    	//check wether half full section was filled
+    	if(bytePosition%BYTEARRAYSIZE!=0){
+    		section++;
+    	}
+ 	
+//    	//repeat until next array is null
+//    	while(encryptedBytes[section][0]!=0){
+//    		
+//    		//check the length
+//    		length = encryptedBytes[section][0]+1;
+//    		
+//    		numSection = length/BYTEARRAYSIZE;
+//    		
+//        	//more than x mod 16
+//        	if(length%BYTEARRAYSIZE!=0){
+//        		numSection++;
+//        	}
+//        	
+//        	//read the driver information
+//        	byte [][]array = new byte[numSection][BYTEARRAYSIZE];
+//        	
+//        	for(int i=0;i<length;i++){
+//        		
+//        		int currentSection = i/BYTEARRAYSIZE;
+//        		int index = i % BYTEARRAYSIZE;
+//        		
+//        		//skip zero block
+//        		if(i % BYTEARRAYSIZE==0 && encryptedBytes[bytePosition/BYTEARRAYSIZE][bytePosition%BYTEARRAYSIZE]==0){
+//        			bytePosition+=BYTEARRAYSIZE;
+//        		}
+//        		
+//        		array[currentSection][index] = encryptedBytes[bytePosition/BYTEARRAYSIZE][bytePosition%BYTEARRAYSIZE];
+//        		
+//        		//increase the byte
+//        		bytePosition++;
+//        	}
+//        	
+//        	boolean isZeroBlock = false;
+//        	
+//        	for(int j=0;j<BYTEARRAYSIZE;j++){
+//        		if(array[numSection-1][j]==0){
+//        			isZeroBlock = true;
+//        			break;
+//        		}
+//        	}
+//        	
+//        	if(isZeroBlock){
+//        		byte[][]reducedArray = new byte[array.length-1][BYTEARRAYSIZE];
+//        		for(int k=0;k<reducedArray.length;k++){
+//        			reducedArray[k] = array[k];
+//        		}
+//        		array = reducedArray;
+//        	}
+//        	
+//        	//decrypt the current entry
+//        	byte[][] currentDecryptedArray = this.decryptString(array);
+//        	
+//        	//merge the arrays into tmp array
+//        	byte[][] tmpArray = new byte[currentDecryptedArray.length+completeArray.length][BYTEARRAYSIZE];
+//        	
+//        	for(int i=0;i<tmpArray.length;i++){
+//        		
+//        		if(i<completeArray.length){
+//        			tmpArray[i] = completeArray[i];
+//        		}else{
+//        			//insert all new items
+//        			tmpArray[i] = currentDecryptedArray[i-completeArray.length];
+//        		}
+//        	}
+//        	
+//        	completeArray = tmpArray;
+//    		
+//    		section = bytePosition/BYTEARRAYSIZE;
+//        	
+//        	//check wether half full section was filled
+//        	if(bytePosition%BYTEARRAYSIZE!=0){
+//        		section++;
+//        	}
+//    	}
+    	
+    	
+    	return completeArray;
     }
     
 }

@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
        dba = new DBAdapter(this);
+       dba.open();
        
     }
        
@@ -49,8 +50,6 @@ public class MainActivity extends Activity {
 		    		chooseAdmin();
 		    		break;
 		    	case R.id.miRegInsertDummyData:
-		    		dba.open();
-		    		dba.isTagBlacklisted("sdfsdf");
 					dba.writeSampleData();
 					return true;
 				case R.id.showDataVersion:
@@ -58,6 +57,9 @@ public class MainActivity extends Activity {
 					return true;
 				case R.id.updateRequest:
 					startActivity(new Intent(this, UpdateRequestActivity.class));
+					return true;
+				case R.id.clearDB:
+					dba.clearDB();
 					return true;
 		    }	
         	return true;

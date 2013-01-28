@@ -16,7 +16,10 @@
     <dimen name="grid14">56dp</dimen>
     
     <dimen name="button_width">260dp</dimen>
-    <dimen name="button_run_width">150dp</dimen>
+    <dimen name="button_run_width">200dp</dimen>
+    <dimen name="button_run_height">100dp</dimen>
+    <dimen name="button_run_go_width">400dp</dimen>
+    
     
     <dimen name="table_header">16dp</dimen>
     

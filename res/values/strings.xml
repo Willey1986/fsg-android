@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">FSG</string>
@@ -6,6 +7,7 @@
     <string name="menu_reg_insertDummyData">Sampledata in DB schreiben</string>
     <string name="menu_reg_showDataVersion">Datenversionsübersicht</string>
     <string name="menu_reg_updateRequest">Updates anfordern</string>
+    <string name="menu_reg_clearDB">Datenbank leeren</string>
 
     <!-- Titelzeile von Activities -->
     <string name="title_activity_main">FSG</string>
@@ -47,9 +49,14 @@
     <!-- Briefing (sowohl ein- als auch auschecken) Strings -->
     <string name="init_driver">Initialisierung des Fahrers</string>
     <string name="wristband_near">Fahrerarmband an Gerät halten</string>
+    <string name="checkInSuccessful">Einchecken erfolgreich</string>
+    <string name="checkOutSuccessful">Auschecken erfolgreich</string>
+    <string name="briefing">Briefing</string>
+    <string name="checkInDouble">Sie sind bereits für heute eingecheckt!</string>
+    <string name="checkOutDouble">Sie waren nicht eingecheckt!</string>
 
     <!-- RunActivity Strings -->
-    <string name="which_discipline">Welche Disziplin möchten Sie fahren?</string>
+    <string name="which_discipline">Disziplin und Anzahl Runs auswählen</string>
     <string name="acceleration">Acceleration</string>
     <string name="skidpad">Skid Pad</string>
     <string name="autocross">Autocross</string>
@@ -65,6 +72,9 @@
     <string name="btnRunOne">1</string>
     <string name="btnRunTwo">2</string>
     <string name="txtRunInfo">Anzahl zu fahrende Runs auswählen</string>
+    <string name="btnConfirm">Bestätigen</string>
+    <string name="txtConfirmDisciplineName">Ausgewählte Disziplin: </string>
+    <string name="txtConfirmRunCount">Ausgewählte Anzahl Runs: </string>
 
     <!-- Fahrerregistrierung Strings -->
     <string name="select_team">Wählen Sie ihr Team aus:</string>
@@ -101,7 +111,7 @@
     <string name="update_request_title">Updates anfordern</string>
     <string name="request_button">Anfordern</string>
     <string name="cancel">Abbrechen</string>
-    
+
     <!-- Admin-Activity Strings -->
     <string name="admin_copy_tag">Band übertragen</string>
     <string name="admin_invalidate_tag">Band ungültig machen</string>
@@ -119,5 +129,8 @@
     <string name="title_activity_info_terminal_post">InfoTerminalPostActivity</string>
     <string name="title_activity_info_terminalinitialisierung">InfoTerminalinitialisierungActivity</string>
     <string name="title_activity_info_terminal_initialisierung">InfoTerminalInitialisierung</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_run_post">RunPost</string>
+    <string name="title_activity_admin_invalidate_tag">Tag ungültig machen</string>
 
 </resources>
