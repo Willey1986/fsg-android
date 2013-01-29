@@ -5,6 +5,7 @@ import java.util.*;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import de.tubs.cs.ibr.fsg.dtn.DTNService;
 import de.tubs.cs.ibr.fsg.dtn.UpdateRequest;
 
@@ -37,10 +38,13 @@ public class FsgHelper {
 	 * @param JSONData Die Daten aller Tags in JSON-Format.
 	 */
 	public static void sendLastDatasetOfAllTags(Context mContext, String JSONData){
+		SharedPreferences prefs = mContext.getSharedPreferences("de.tubs.cs.ibr.fsg", Context.MODE_MULTI_PROCESS);
+        String serverAddress = prefs.getString("server_address", "dtn://fsg-backend.dtn/fsg");
+        
 		UpdateRequest mRequest = new UpdateRequest();
 		Intent mIntent = new Intent(mContext, DTNService.class);
 		mIntent.setAction(de.tubs.cs.ibr.fsg.Intent.SEND_DATA);
-		mIntent.putExtra("destination", "dtn://fsg-backend.dtn/fsg");
+		mIntent.putExtra("destination", serverAddress);
 		mIntent.putExtra("type", "16");
 		mIntent.putExtra("request", mRequest);
 		mIntent.putExtra("version", "0");
@@ -57,10 +61,13 @@ public class FsgHelper {
 	 * @param JSONData Die Daten des Tags in JSON-Format.
 	 */
 	public static void sendDatasetOfOneTag(Context mContext, String JSONData){
+		SharedPreferences prefs = mContext.getSharedPreferences("de.tubs.cs.ibr.fsg", Context.MODE_MULTI_PROCESS);
+        String serverAddress = prefs.getString("server_address", "dtn://fsg-backend.dtn/fsg");
+        
 		UpdateRequest mRequest = new UpdateRequest();
 		Intent mIntent = new Intent(mContext, DTNService.class);
 		mIntent.setAction(de.tubs.cs.ibr.fsg.Intent.SEND_DATA);
-		mIntent.putExtra("destination", "dtn://fsg-backend.dtn/fsg");
+		mIntent.putExtra("destination", serverAddress);
 		mIntent.putExtra("type", "15");
 		mIntent.putExtra("request", mRequest);
 		mIntent.putExtra("version", "0");

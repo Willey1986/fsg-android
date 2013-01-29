@@ -3,6 +3,7 @@ package de.tubs.cs.ibr.fsg.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -65,9 +66,12 @@ public class UpdateRequestActivity extends Activity {
 	 */
 
 	private void requestRegistrationUpdate(UpdateRequest mRequest) {
+		SharedPreferences prefs = this.getSharedPreferences("de.tubs.cs.ibr.fsg", Context.MODE_MULTI_PROCESS);
+        String serverAddress = prefs.getString("server_address", "dtn://fsg-backend.dtn/fsg");
+        
 		Intent mIntent = new Intent(this, DTNService.class);
 		mIntent.setAction(de.tubs.cs.ibr.fsg.Intent.SEND_DATA);
-		mIntent.putExtra("destination", "dtn://fsg-backend.dtn/fsg");
+		mIntent.putExtra("destination", serverAddress);
 		mIntent.putExtra("type", "1");
 		mIntent.putExtra("request", mRequest);
 		mIntent.putExtra("version", "0");

@@ -426,7 +426,7 @@ public class DTNService extends IntentService {
 	 */
 	protected boolean isANewVersion(int receivedVersion, int dataType) {
 		boolean isANewVersion = false;
-		SharedPreferences prefs = this.getSharedPreferences("de.tubs.cs.ibr.fsg", Context.MODE_PRIVATE);
+		SharedPreferences prefs = this.getSharedPreferences("de.tubs.cs.ibr.fsg", Context.MODE_MULTI_PROCESS);
 		int savedVersion = 0;
 		
 		if(dataType==FsgProtocol.DATA_DRIVER_PICS){
@@ -462,7 +462,7 @@ public class DTNService extends IntentService {
 	 */
 	protected void saveToPreferencesTheNewVersion(int receivedVersion, int dataType) {
 
-		SharedPreferences prefs = this.getSharedPreferences("de.tubs.cs.ibr.fsg", Context.MODE_PRIVATE);
+		SharedPreferences prefs = this.getSharedPreferences("de.tubs.cs.ibr.fsg", Context.MODE_MULTI_PROCESS);
 		
 		if(dataType==FsgProtocol.DATA_DRIVER_PICS){
 			SharedPreferences.Editor editor = prefs.edit();
@@ -503,8 +503,11 @@ public class DTNService extends IntentService {
 	protected void sendNewVersionConfirmation(int receivedVersion, int dataType) {
 		Intent mIntent = new Intent(this, DTNService.class);
 		UpdateRequest updateRequest = new UpdateRequest(true,true,true,true,true);
+		SharedPreferences prefs = getSharedPreferences("de.tubs.cs.ibr.fsg", Context.MODE_MULTI_PROCESS);
+        String serverAddress = prefs.getString("server_address", "dtn://fsg-backend.dtn/fsg");
+        
 		mIntent.setAction(de.tubs.cs.ibr.fsg.Intent.SEND_DATA);
-		mIntent.putExtra("destination", "dtn://fsg-backend.dtn/fsg"  );
+		mIntent.putExtra("destination", serverAddress );
 		mIntent.putExtra("request",     updateRequest );    // Fuer Empfangsbestaretigungen nicht wichtig, kann leer sein.
 		mIntent.putExtra("version",     String.valueOf(receivedVersion) );
 		mIntent.putExtra("payload",     "nichts");          // Fuer Empfangsbestaretigungen nicht wichtig, kann leer sein.

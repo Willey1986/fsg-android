@@ -163,6 +163,12 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             android:label="@string/admin_copy_tag" 
             android:icon="@drawable/icon_copy_tag">
         </activity>
+        <activity
+            android:name="de.tubs.cs.ibr.fsg.activities.ConfigurationActivity"
+            android:label="@string/admin_configuration" 
+            android:icon="@drawable/icon_configuration"
+            android:noHistory="true">
+        </activity>
         
 
         <service
