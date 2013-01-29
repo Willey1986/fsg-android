@@ -332,6 +332,7 @@ public class Nfc {
 					throw new FsgException( new Exception(), this.getClass().toString(), FsgException.TAG_MEMORY_FULL);
 				}
 				tag.close();
+				//System.out.println("Setting read-only");
 			} catch (IOException e) {
 				Log.e(TAG, e.getLocalizedMessage());
 				System.out.println("Tag writing error!");

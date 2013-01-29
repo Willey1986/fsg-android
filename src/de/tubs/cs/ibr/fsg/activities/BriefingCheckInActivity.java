@@ -138,10 +138,10 @@ public class BriefingCheckInActivity extends NfcEnabledActivity { //NfcEnabledAc
 	@Override
 	public void executeNfcAction(Intent intent) {//TODO: Absturz/Fehler finden
 		try {
-			nfc.cleanTag(intent);
+			//nfc.cleanTag(intent);
 			//nfc.resolveIntent(intent);
 			//System.out.println("Checking In...");
-			/*nfc.readTag(intent);
+			nfc.readTag(intent);
 			byte[][] data = nfc.getData();
 			if (!Arrays.equals(data, null)){
 				//System.out.println("not null (checkin)");
@@ -182,7 +182,7 @@ public class BriefingCheckInActivity extends NfcEnabledActivity { //NfcEnabledAc
 				database.close();
 			} else {
 				throw new FsgException(new Exception(), this.getClass().toString(), FsgException.TAG_EMPTY);
-			}*/
+			}
 		} catch (FsgException e) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
 			mIntent.putExtra("Exception", e);
