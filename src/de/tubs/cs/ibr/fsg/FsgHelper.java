@@ -80,6 +80,8 @@ public class FsgHelper {
 		SharedPreferences prefs = mContext.getSharedPreferences("de.tubs.cs.ibr.fsg", Context.MODE_MULTI_PROCESS);
 		SharedPreferences.Editor editor = prefs.edit();
 		
+		editor.putString("admin_password", "kuh");
+		editor.putString("server_address", "dtn://fsg-backend.dtn/fsg");
 		editor.putInt("version_driver_pics", 0 );
 		editor.putInt("version_drivers", 0 );
 		editor.putInt("version_teams", 0 );
