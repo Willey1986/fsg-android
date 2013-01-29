@@ -96,7 +96,7 @@ public class RunActivityPost extends Activity{
 			if (errorNumber == RunActivityConfirm.ERROR_TAG_BLACKLISTED) {
 				llRunPost.addView(tvMessage);
 			}
-			if (errorNumber == RunActivityConfirm.ERROR_BRIEFING_ABSENT) {
+			else if (errorNumber == RunActivityConfirm.ERROR_BRIEFING_ABSENT) {
 				llRunPost.addView(tvMessage);
 				llRunPost.addView(btnIgnore);
 			}
