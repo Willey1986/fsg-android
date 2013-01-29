@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/miRegInsertDummyData" android:title="@string/menu_reg_insertDummyData"/>
-    <item android:id="@+id/showDataVersion" android:title="@string/menu_reg_showDataVersion"/>
-    <item android:id="@+id/updateRequest" android:title="@string/menu_reg_updateRequest"/>
-
-</menu>

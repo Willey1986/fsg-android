@@ -449,6 +449,11 @@ public class DBAdapter {
 		}
 	}
 	
+	public void writeTagContentToDB(String tagID, String contentAsJSONArray) {
+		String sql = "INSERT INTO " + DBHelper.TABLE_TAG_CONTENTS + " (" + DBHelper.TAG_CONTENTS_COLUMN_TAG_ID + "," + DBHelper.TAG_CONTENTS_COLUMN_TAG_CONTENT + ") VALUES ('" + tagID + "','" + contentAsJSONArray +"');";
+		execSQL(sql);
+	}
+	
 	/**
 	 * Dient dem direkten Ausf�hren von SQL-Ausdr�cken
 	 * @param sql = SQL-String

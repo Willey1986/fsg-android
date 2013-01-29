@@ -39,7 +39,7 @@ public class CopyTagActivity extends NfcEnabledActivity {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_admin_invalidate_tag);
+		setContentView(R.layout.activity_admin_copy_tag);
 		dba = new DBAdapter(this);
 		nfc = new Nfc(this);
 		step = 1;

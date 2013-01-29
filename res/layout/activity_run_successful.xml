@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:padding="@dimen/grid06"
+    android:background="@drawable/background_green"> 
+
+    <TextView
+        android:id="@+id/textViewRunSuForCenter"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="" />
+
+    <Button
+        android:id="@+id/buttonRunSuccessful"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/textViewRunSuForCenter"
+        android:layout_centerHorizontal="true"
+        android:background="@layout/button_selector"
+        android:gravity="center" 
+        android:textColor="@color/button_text_color"
+        android:layout_marginTop="@dimen/grid12"
+        android:textSize="@dimen/grid06"
+        android:onClick="onButtonClick"
+        android:text="@string/ok" />
+
+    <TextView
+        android:id="@+id/textViewRunSuccessful"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textViewRunSuForCenter"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="0dp"
+        android:gravity="center"
+        android:textColor="@color/button_text_color"
+        android:text="@string/runSuccessful"
+        android:textSize="@dimen/grid10"/>
+    
+</RelativeLayout>

@@ -15,7 +15,7 @@ public class DataVersionActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_data_version);
 		
-		SharedPreferences prefs = this.getSharedPreferences("de.tubs.cs.ibr.fsg", Context.MODE_PRIVATE);
+		SharedPreferences prefs = this.getSharedPreferences("de.tubs.cs.ibr.fsg", Context.MODE_MULTI_PROCESS);
 		
 		TextView driversVesionTextView = (TextView) findViewById(R.id.textViewDriversVersion);
 		int version = prefs.getInt("version_drivers", 0);

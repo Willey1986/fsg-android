@@ -43,9 +43,17 @@ public class RunActivityPost extends Activity{
 		btnIgnore = new Button(this);
 		btnGoBack = new Button(this);
 		
-		if (success) 
-			llRunPost.setBackgroundDrawable(res.getDrawable(R.drawable.background_green));
-		else {
+		if (success) {
+			//llRunPost.setBackgroundDrawable(res.getDrawable(R.drawable.background_green));
+			setContentView(R.layout.activity_run_successful);
+			Button okButton = (Button) findViewById(R.id.buttonRunSuccessful);
+			okButton.setOnClickListener(new OnClickListener() {
+
+	            public void onClick(View v) {
+	            	onBackPressed();
+	            }
+	        });
+		}else {
 			llRunPost.setBackgroundDrawable(res.getDrawable(R.drawable.background_red));
 			
 			TextView tvMessage = new TextView(this);
@@ -107,11 +115,5 @@ public class RunActivityPost extends Activity{
 		startActivity(mIntent);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_run_post, menu);
-		return true;
-	}
 
 }

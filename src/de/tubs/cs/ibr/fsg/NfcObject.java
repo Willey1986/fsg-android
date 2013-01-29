@@ -7,6 +7,10 @@ import de.tubs.cs.ibr.fsg.NfcObjectBriefing;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -237,11 +241,24 @@ public class NfcObject implements Parcelable{
      * @return Alle Daten in JSON-Format, die auf einem Tag geschrieben sind.
      */
     public String getJSONData(){
-    	String result = "TODO";
+    	JSONObject jsonObject = new JSONObject();
+    	try {
+    		jsonObject.put("TIMESTAMP",FsgHelper.generateUNIXTimestamp());
+    		jsonObject.put("VALID",isValid());
+    		jsonObject.put("DRIVER_ID",getDriverObject().getDriverID());
+    		jsonObject.put("BRIEFING_VISITED_TODAY",haveTheDriverTodaysBriefing());
+    		jsonObject.put("ACC_RUNS",getAccelerationRuns());
+    		jsonObject.put("SKIDP_RUNS",getSkidPadRuns());
+    		jsonObject.put("AUTOX_RUNS",getAutocrossRuns());
+    		jsonObject.put("ENDU_RUNS",getEnduranceRuns());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
     	//TODO Das hier muss mit Leben gefuellt werden
     	
-    	return result;
+    	return jsonObject.toString();
     }
 	
     public boolean isValid() {

@@ -69,9 +69,15 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String VALUES_COLUMN_ID = "_id";
 	public static final String VALUES_COLUMN_KEY = "key";
 	public static final String VALUES_COLUMN_VALUE = "value";
+	
+	public static final String TABLE_TAG_CONTENTS = "tag_contents";
+	public static final String TAG_CONTENTS_COLUMN_ID = "_id";
+	public static final String TAG_CONTENTS_COLUMN_TAG_ID = "tag_id";
+	public static final String TAG_CONTENTS_COLUMN_TAG_CONTENT = "content";
+	
 
 	public static final String DATABASE_NAME = "fsg.db";
-	public static final int DATABASE_VERSION = 56;
+	public static final int DATABASE_VERSION = 70;
 
 	public static final String TABLE_CLASSES_CREATE = "CREATE TABLE " + TABLE_CLASSES + " (" 
 			+ CLASSES_COLUMN_CLASS + " TEXT NOT NULL,"
@@ -135,6 +141,11 @@ public class DBHelper extends SQLiteOpenHelper{
 			+ VALUES_COLUMN_ID + " INTEGER PRIMARY KEY NOT NULL UNIQUE,"
 			+ VALUES_COLUMN_KEY + " TEXT NOT NULL,"
 			+ VALUES_COLUMN_VALUE + " TEXT NOT NULL);";
+	
+	public static final String TABLE_TAG_CONTENTS_CREATE = "CREATE TABLE " + TABLE_TAG_CONTENTS + " ("
+			+ TAG_CONTENTS_COLUMN_ID + " INTEGER PRIMARY KEY NOT NULL UNIQUE, "
+			+ TAG_CONTENTS_COLUMN_TAG_ID + " TEXT NOT NULL, "
+			+ TAG_CONTENTS_COLUMN_TAG_CONTENT + " TEXT NOT NULL);";
 
 	public DBHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -152,6 +163,7 @@ public class DBHelper extends SQLiteOpenHelper{
 		database.execSQL(TABLE_INVALID_DRIVEN_RUNS_CREATE);
 		database.execSQL(TABLE_VALUES_CREATE);
 		database.execSQL(TABLE_REGISTERED_TAGS_CREATE);
+		database.execSQL(TABLE_TAG_CONTENTS_CREATE);
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -169,6 +181,7 @@ public class DBHelper extends SQLiteOpenHelper{
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_INVALID_DRIVEN_RUNS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_VALUES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_REGISTERED_TAGS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_TAG_CONTENTS);
 		onCreate(db);
 	}
 

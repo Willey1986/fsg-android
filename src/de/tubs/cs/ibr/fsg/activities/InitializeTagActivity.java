@@ -60,12 +60,14 @@ public class InitializeTagActivity extends NfcEnabledActivity {
 			nfc.resolveIntent(mIntent);
 		} catch (FsgException e1) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("admin", "true");
 			mIntent.putExtra("Exception", e1);
 			startActivity(mIntent);
 			finish();
 		} catch (MalformedMimeTypeException e2) {
 			FsgException mException =  new FsgException( e2, this.getClass().toString(), FsgException.GENERIC_EXCEPTION );
 			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("admin", "true");
 			mIntent.putExtra("Exception", mException);
 			startActivity(mIntent);
 			finish();
@@ -84,11 +86,13 @@ public class InitializeTagActivity extends NfcEnabledActivity {
 			
 		}catch (FsgException e1){
 			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("admin", "true");
 			mIntent.putExtra("Exception", e1);
 			startActivity(mIntent);
 			finish();
 		}catch (Exception e2){
 			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("admin", "true");
 			mIntent.putExtra("Exception", e2);
 			startActivity(mIntent);
 			finish();
@@ -107,11 +111,13 @@ public class InitializeTagActivity extends NfcEnabledActivity {
 			
 		}catch (FsgException e1){
 			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("admin", "true");
 			mIntent.putExtra("Exception", e1);
 			startActivity(mIntent);
 			finish();
 		}catch (Exception e2){
 			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("admin", "true");
 			mIntent.putExtra("Exception", e2);
 			startActivity(mIntent);
 			finish();
@@ -126,6 +132,7 @@ public class InitializeTagActivity extends NfcEnabledActivity {
 			nfc.initializeTag(intent);
 		} catch (FsgException e) {
 			Intent mIntent = new Intent(this, ErrorActivity.class);
+			mIntent.putExtra("admin", "true");
 			mIntent.putExtra("Exception", e);
 			Log.e(TAG, e.toString());
 			startActivity(mIntent);

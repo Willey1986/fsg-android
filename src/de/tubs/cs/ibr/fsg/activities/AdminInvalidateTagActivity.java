@@ -27,13 +27,6 @@ public class AdminInvalidateTagActivity extends NfcEnabledActivity{
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_admin_invalidate_tag, menu);
-		return true;
-	}
-
-	@Override
 	public void executeNfcAction(Intent intent) {
 		try {
 			nfc.readTag(intent);
