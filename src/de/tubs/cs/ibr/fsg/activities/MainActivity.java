@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import de.tubs.cs.ibr.fsg.FsgHelper;
 import de.tubs.cs.ibr.fsg.R;
 import de.tubs.cs.ibr.fsg.db.DBAdapter;
 
@@ -57,6 +58,7 @@ public class MainActivity extends Activity {
 			return true;
 		case R.id.clearDB:
 			dba.clearDB();
+			FsgHelper.deleteTheSharedPreferences(this);
 			return true;
 		}
 		return true;

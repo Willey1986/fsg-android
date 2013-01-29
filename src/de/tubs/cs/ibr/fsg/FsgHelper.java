@@ -76,6 +76,19 @@ public class FsgHelper {
 	}
 	
 	
+	public static void deleteTheSharedPreferences(Context mContext){
+		SharedPreferences prefs = mContext.getSharedPreferences("de.tubs.cs.ibr.fsg", Context.MODE_MULTI_PROCESS);
+		SharedPreferences.Editor editor = prefs.edit();
+		
+		editor.putInt("version_driver_pics", 0 );
+		editor.putInt("version_drivers", 0 );
+		editor.putInt("version_teams", 0 );
+		editor.putInt("version_black_tags", 0 );
+		editor.putInt("version_black_devices", 0 );
+		editor.commit();
+        
+
+	}
 	
 	
 	

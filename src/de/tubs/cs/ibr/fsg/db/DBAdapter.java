@@ -44,6 +44,7 @@ public class DBAdapter {
 		execSQL("DELETE FROM " + DBHelper.TABLE_INVALID_DRIVEN_RUNS + ";");
 		execSQL("DELETE FROM " + DBHelper.TABLE_VALUES + ";");
 		execSQL("DELETE FROM " + DBHelper.TABLE_REGISTERED_TAGS + ";");
+		
 	}
 	
 	public void writeSampleData() {
