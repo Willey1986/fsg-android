@@ -77,7 +77,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	
 
 	public static final String DATABASE_NAME = "fsg.db";
-	public static final int DATABASE_VERSION = 70;
+	public static final int DATABASE_VERSION = 80;
 
 	public static final String TABLE_CLASSES_CREATE = "CREATE TABLE " + TABLE_CLASSES + " (" 
 			+ CLASSES_COLUMN_CLASS + " TEXT NOT NULL,"

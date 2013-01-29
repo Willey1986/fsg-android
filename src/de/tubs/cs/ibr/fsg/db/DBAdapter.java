@@ -33,6 +33,17 @@ public class DBAdapter {
 	
 	public void clearDB() {
 		execSQL("DELETE FROM " + DBHelper.TABLE_BLACKLISTED_TAGS + ";");
+		execSQL("DELETE FROM " + DBHelper.TABLE_BLACKLISTED_DEVICES + ";");
+		execSQL("DELETE FROM " + DBHelper.TABLE_CHECKED_IN + ";");
+		execSQL("DELETE FROM " + DBHelper.TABLE_CHECKED_OUT + ";");
+		execSQL("DELETE FROM " + DBHelper.TABLE_CLASSES + ";");
+		execSQL("DELETE FROM " + DBHelper.TABLE_DRIVEN_RUNS + ";");
+		execSQL("DELETE FROM " + DBHelper.TABLE_DRIVERS + ";");
+		execSQL("DELETE FROM " + DBHelper.TABLE_TEAMS + ";");
+		execSQL("DELETE FROM " + DBHelper.TABLE_TAG_CONTENTS + ";");
+		execSQL("DELETE FROM " + DBHelper.TABLE_INVALID_DRIVEN_RUNS + ";");
+		execSQL("DELETE FROM " + DBHelper.TABLE_VALUES + ";");
+		execSQL("DELETE FROM " + DBHelper.TABLE_REGISTERED_TAGS + ";");
 	}
 	
 	public void writeSampleData() {
