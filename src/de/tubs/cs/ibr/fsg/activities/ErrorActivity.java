@@ -14,6 +14,8 @@ import de.tubs.cs.ibr.fsg.exceptions.FsgException;
 public class ErrorActivity extends Activity {
 
 	private final static String TAG = "ErrorActivity";
+	
+	public boolean isErrorFromAdminArea = false;
 	Exception mException;
 	private int mCase = 0;
 	
@@ -44,6 +46,12 @@ public class ErrorActivity extends Activity {
         	userText.setText(R.string.error_tag_wrong_key);
     		break;
     	case FsgException.TAG_WRONG_KEY_OR_FORMAT:
+    		try{
+    			Intent mIntent = getIntent();
+    			this.isErrorFromAdminArea = (Boolean.parseBoolean(mIntent.getStringExtra("admin")));
+    		}catch(NullPointerException e){
+    			this.isErrorFromAdminArea = false;
+    		}
     		userText = (TextView) findViewById(R.id.textViewWithErrorMessage);
     		res = getResources();
         	userText.setText(R.string.error_tag_wrong_key_or_format);
@@ -87,9 +95,13 @@ public class ErrorActivity extends Activity {
     public void onButtonClick(View view){
     	if (this.mCase == FsgException.REGISTRATION_ALREADY_PRESENT){
     		onBackPressed();
+    	}else if (isErrorFromAdminArea){
+    		onBackPressed();
+    		//startActivity(new  Intent(this, AdminActivity.class));
     	}else{
     		startActivity(new  Intent(this, MainActivity.class));
     	}
+    	
 		
     }
  

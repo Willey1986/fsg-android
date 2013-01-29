@@ -132,8 +132,38 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
         <activity
             android:name="de.tubs.cs.ibr.fsg.activities.RunActivityMessage"
             android:icon="@drawable/icon_run"
-            android:label="@string/main_activity_button_4" >
+            android:label="@string/main_activity_button_4" 
+            android:noHistory="true" >
         </activity>
+        <activity
+            android:name="de.tubs.cs.ibr.fsg.activities.RunActivityPost"
+            android:icon="@drawable/icon_run"
+            android:label="@string/main_activity_button_4"
+            android:noHistory="true" >
+        </activity>
+        <activity
+            android:name="de.tubs.cs.ibr.fsg.activities.AdminInvalidateTagActivity"
+            android:label="@string/admin_invalidate_tag" 
+            android:icon="@drawable/icon_invalidate_tag">
+        </activity>
+        <activity
+            android:name="de.tubs.cs.ibr.fsg.activities.CleanTagActivity"
+            android:label="@string/admin_cleanTag" 
+            android:noHistory="true" 
+            android:icon="@drawable/icon_clean_tag">
+        </activity>
+        <activity
+            android:name="de.tubs.cs.ibr.fsg.activities.InitializeTagActivity"
+            android:label="@string/admin_initializeTag" 
+            android:noHistory="true" 
+            android:icon="@drawable/icon_init_tag">
+        </activity>
+        <activity
+            android:name="de.tubs.cs.ibr.fsg.activities.CopyTagActivity"
+            android:label="@string/admin_copy_tag" 
+            android:icon="@drawable/icon_copy_tag">
+        </activity>
+        
 
         <service
             android:name="de.tubs.cs.ibr.fsg.dtn.DTNService"
@@ -150,27 +180,8 @@ Falls die App im Playstore nur für Geräte mit NFC-Hardware verfügbar sein sol
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name="de.tubs.cs.ibr.fsg.activities.RunActivityPost"
-            android:label="@string/title_activity_run_post" >
-        </activity>
-        <activity
-            android:name="de.tubs.cs.ibr.fsg.activities.AdminInvalidateTagActivity"
-            android:label="@string/title_activity_admin_invalidate_tag" >
-        </activity>
-        <activity
-            android:name="de.tubs.cs.ibr.fsg.activities.CleanTagActivity"
-            android:label="Clean Tag" >
-        </activity>
-        <activity
-            android:name="de.tubs.cs.ibr.fsg.activities.InitializeTagActivity"
-            android:label="Initialize Tag" >
-        </activity>
-        
-        <activity
-            android:name="de.tubs.cs.ibr.fsg.activities.CopyTagActivity"
-            android:label="Copy Tag" >
-        </activity>
+
+
     </application>
 
 </manifest>
