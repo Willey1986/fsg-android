@@ -9,6 +9,7 @@ import java.util.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -240,17 +241,16 @@ public class NfcObject implements Parcelable{
      * @return Alle Daten in JSON-Format, die auf einem Tag geschrieben sind.
      */
     public String getJSONData(){
-    	String result = "TODO";
-    	JSONArray jsonArray = new JSONArray();
+    	JSONObject jsonObject = new JSONObject();
     	try {
-    		jsonArray.put(0,FsgHelper.generateUNIXTimestamp());
-			jsonArray.put(1,isValid());
-			jsonArray.put(3,getDriverObject().getDriverID());
-			jsonArray.put(4,haveTheDriverTodaysBriefing());
-			jsonArray.put(5,getAccelerationRuns());
-			jsonArray.put(6,getSkidPadRuns());
-			jsonArray.put(7,getAutocrossRuns());
-			jsonArray.put(8,getEnduranceRuns());
+    		jsonObject.put("TIMESTAMP",FsgHelper.generateUNIXTimestamp());
+    		jsonObject.put("VALID",isValid());
+    		jsonObject.put("DRIVER_ID",getDriverObject().getDriverID());
+    		jsonObject.put("BRIEFING_VISITED_TODAY",haveTheDriverTodaysBriefing());
+    		jsonObject.put("ACC_RUNS",getAccelerationRuns());
+    		jsonObject.put("SKIDP_RUNS",getSkidPadRuns());
+    		jsonObject.put("AUTOX_RUNS",getAutocrossRuns());
+    		jsonObject.put("ENDU_RUNS",getEnduranceRuns());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -258,7 +258,7 @@ public class NfcObject implements Parcelable{
     	
     	//TODO Das hier muss mit Leben gefuellt werden
     	
-    	return jsonArray.toString();
+    	return jsonObject.toString();
     }
 	
     public boolean isValid() {
