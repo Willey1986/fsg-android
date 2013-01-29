@@ -41,6 +41,7 @@
     <string name="error_end_of_road">Tut uns Leid, hier wird noch gebaut. ;-)</string>
     <string name="error_driver_already_checked_in">Driver already checked in to this briefing</string>
     <string name="error_empty_database">Datenbank leer. Bitte zunächst neue Daten anfordern!</string>
+    <string name="error_admin_password_empy">Passwort leer. Bitte geben Sie ein Passwort ein!</string>
     <string name="ok">OK</string>
 
     <!-- Briefing (sowohl ein- als auch auschecken) Strings -->
@@ -118,6 +119,12 @@
     <string name="admin_cleanTag">Band leeren</string>
     <string name="admin_initializeTag">Band initialisieren</string>
     <string name="oldTagNear">Altes Band an Gerät halten</string> 
+    
+    <!-- Admin-Activity Strings -->
+    <string name="labelServer">Server-Adresse:</string> 
+    <string name="labelPassword">Administratorpasswort</string> 
+    <string name="save">Speichern</string> 
+    
 
     <!-- Notification Strings -->
     <string name="noti_title">FSG - Update erhalten</string>

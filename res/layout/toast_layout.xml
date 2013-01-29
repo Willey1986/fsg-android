@@ -16,6 +16,7 @@
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/grid01"
         android:gravity="center"
         android:textColor="@color/button_text_color"
         android:textSize="@dimen/grid06" />

@@ -36,7 +36,7 @@ public class AdminActivity extends Activity {
     		startActivity(new Intent(this, InitializeTagActivity.class));
     		break;
     	case R.id.buttonConfiguration:
-    		//startActivity(new Intent(this, ConfigurationActivity.class));
+    		startActivity(new Intent(this, ConfigurationActivity.class));
     		break;
     	}
     }
