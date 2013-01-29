@@ -224,7 +224,7 @@ public class CopyTagActivity extends NfcEnabledActivity {
 				 }
 				
 				//SKID_PAD
-				for(int m=0;m<theData.getAccelerationRuns();m++){
+				for(int m=0;m<theData.getSkidPadRuns();m++){
 					try {
 						//kompliziertes auslesen des Timestamps und konvertierung
 						byte[][] encodedBriefing = NfcData.generateRun((short)2, NfcData.makeBetterTimestampNOW());
@@ -239,7 +239,7 @@ public class CopyTagActivity extends NfcEnabledActivity {
 				 }
 				 
 				//AUTOCROSS
-				for(int m=0;m<theData.getAccelerationRuns();m++){
+				for(int m=0;m<theData.getAutocrossRuns();m++){
 					try {
 						//kompliziertes auslesen des Timestamps und konvertierung
 						byte[][] encodedBriefing = NfcData.generateRun((short)3, NfcData.makeBetterTimestampNOW());
@@ -254,7 +254,7 @@ public class CopyTagActivity extends NfcEnabledActivity {
 				 }
 				
 				//ENDURANCE
-				for(int m=0;m<theData.getAccelerationRuns();m++){
+				for(int m=0;m<theData.getEnduranceRuns();m++){
 					try {
 						//kompliziertes auslesen des Timestamps und konvertierung
 						byte[][] encodedBriefing = NfcData.generateRun((short)4, NfcData.makeBetterTimestampNOW());
